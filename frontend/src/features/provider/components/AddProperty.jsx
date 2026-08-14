@@ -220,7 +220,7 @@ export default function AddProperty() {
         address: formData.location.address,
         pincode: formData.location.pincode,
         rooms: parseInt(formData.propertyDetails.rooms),
-        area: parseFloat(formData.propertyDetails.area),
+        areaInSqft: parseFloat(formData.propertyDetails.area),
         rent: parseFloat(formData.pricing.rent),
         deposit: parseFloat(formData.pricing.deposit),
         amenities: formData.amenities,

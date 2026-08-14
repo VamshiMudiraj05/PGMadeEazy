@@ -1,1 +1,48 @@
-node_modules
+# Compiled class files
+*.class
+**/*.class
+
+# Maven build directory
+target/
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.lst
+
+# IDE & Editor files
+bin/
+**/bin/
+.settings/
+**/.settings/
+.project
+.classpath
+.idea/
+**/.idea/
+*.iml
+**/*.iml
+.vscode/
+
+# Logs
+*.log
+error.log
+error_details.log
+
+# Environment variables
+.env
+.env*.local
+
+# Node / Bolt tooling
+node_modules/
+.bolt/
+.DS_Store
