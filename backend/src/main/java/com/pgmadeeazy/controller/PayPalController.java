@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pgmadeeazy.service.PayPalService;
 
 @RestController
-@RequestMapping("/api/paypal")
+@RequestMapping("/api/bookings/payments")
 public class PayPalController {
 
     private static final Logger logger = LoggerFactory.getLogger(PayPalController.class);
