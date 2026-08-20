@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Check, X, ArrowLeft, MapPin, Home, Users, DollarSign, Calendar, Building, Phone, Mail, Clock, User } from 'lucide-react';
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 const PropertyApproval = () => {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ const PropertyApproval = () => {
                   {property.images && property.images.length > 0 ? (
                     <>
                       <img
-                        src={property.images[currentImageIndex[property.id]]}
+                        src={getSecureImageUrl(property.images[currentImageIndex[property.id]])}
                         alt={`${property.name} - Image ${currentImageIndex[property.id] + 1}`}
                         className="w-full h-full object-cover"
                       />

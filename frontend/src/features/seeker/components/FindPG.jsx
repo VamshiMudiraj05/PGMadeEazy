@@ -5,6 +5,8 @@ import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import PropertyDetails from './PropertyDetails';
 
+import { getSecureImageUrl } from '../../../utils/imageUtils';
+
 const FindPG = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
@@ -157,7 +159,7 @@ const FindPG = () => {
                   {property.images && property.images.length > 0 ? (
                     <>
                       <img
-                        src={property.images[currentImageIndex[property.id]]}
+                        src={getSecureImageUrl(property.images[currentImageIndex[property.id]])}
                         alt={`${property.name} - Image ${currentImageIndex[property.id] + 1}`}
                         className="w-full h-full object-cover"
                       />

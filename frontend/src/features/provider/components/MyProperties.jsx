@@ -4,6 +4,7 @@ import { Building2, Edit, Trash2, Plus, ArrowLeft, MapPin, Users, DollarSign, Al
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../../../context/AuthContext';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -230,7 +231,7 @@ const MyProperties = () => {
                 {/* Property Image */}
                 <div className="h-48 overflow-hidden mb-4">
                   <img
-                    src={property.images?.[0] || 'https://via.placeholder.com/400x300'}
+                    src={getSecureImageUrl(property.images?.[0])}
                     alt={property.name}
                     className="w-full h-full object-cover rounded-lg"
                   />

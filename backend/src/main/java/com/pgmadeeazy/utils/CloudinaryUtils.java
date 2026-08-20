@@ -47,7 +47,8 @@ public class CloudinaryUtils {
             ));
             
             logger.info("Successfully uploaded file: {}", file.getOriginalFilename());
-            return uploadResult.get("url").toString();
+            Object secureUrl = uploadResult.get("secure_url");
+            return secureUrl != null ? secureUrl.toString() : uploadResult.get("url").toString();
         } catch (IOException e) {
             logger.error("Failed to upload file: {}", file.getOriginalFilename(), e);
             throw new IOException("Failed to upload file: " + e.getMessage());
@@ -69,7 +70,8 @@ public class CloudinaryUtils {
             "public_id", file.getOriginalFilename()
         ));
 
-        return uploadResult.get("url").toString();
+        Object secureUrl = uploadResult.get("secure_url");
+        return secureUrl != null ? secureUrl.toString() : uploadResult.get("url").toString();
     }
 
     public List<String> uploadImages(List<MultipartFile> files) throws IOException {

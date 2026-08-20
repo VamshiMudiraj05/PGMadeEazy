@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 export default function PendingApprovals() {
   const [pendingProperties, setPendingProperties] = useState([]);
@@ -67,7 +69,7 @@ export default function PendingApprovals() {
             <div key={property.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               {property.images && property.images.length > 0 && (
                 <img
-                  src={property.images[0]}
+                  src={getSecureImageUrl(property.images[0])}
                   alt={property.name}
                   className="w-full h-48 object-cover"
                 />

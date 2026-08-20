@@ -4,6 +4,7 @@ import { Building2, ArrowLeft, MapPin, Users, DollarSign, XCircle } from 'lucide
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../../../context/AuthContext';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 const RejectedProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -88,7 +89,7 @@ const RejectedProperties = () => {
                 {/* Property Image */}
                 <div className="h-48 overflow-hidden mb-4">
                   <img
-                    src={property.images?.[0] || 'https://via.placeholder.com/400x300'}
+                    src={getSecureImageUrl(property.images?.[0])}
                     alt={property.name}
                     className="w-full h-full object-cover rounded-lg"
                   />

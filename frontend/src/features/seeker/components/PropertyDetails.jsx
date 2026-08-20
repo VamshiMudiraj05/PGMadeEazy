@@ -3,6 +3,7 @@ import { X, MapPin, Users, DollarSign, Building, Phone, Mail, Clock, User, Home,
 import BookingForm from './BookingForm';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 const PropertyDetails = ({ property, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -56,7 +57,7 @@ const PropertyDetails = ({ property, onClose }) => {
           {/* Image Carousel */}
           <div className="relative h-[400px]">
             <img
-              src={property.images[currentImageIndex]}
+              src={getSecureImageUrl(property.images[currentImageIndex])}
               alt={property.name}
               className="w-full h-full object-cover"
             />
