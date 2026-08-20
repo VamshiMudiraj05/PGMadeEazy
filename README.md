@@ -1,5 +1,8 @@
 # 🏡 PG Made Eazy — Modern Paying Guest & Accommodation Platform
 
+🔗 **Live Application:** [https://pg-made-eazy.vercel.app/](https://pg-made-eazy.vercel.app/)
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-pg--made--eazy.vercel.app-F97316?style=for-the-badge&logo=vercel&logoColor=white)](https://pg-made-eazy.vercel.app/)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20%2F%20Local-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
