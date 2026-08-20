@@ -1,6 +1,5 @@
 package com.pgmadeeazy.service;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -26,14 +26,18 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
+    @Value("${app.frontend.url:https://pg-made-eazy.vercel.app}")
+    private String frontendUrl;
+
+    @Async
     public void sendRegistrationEmail(String to, String name, String userType) {
         try {
-            logger.info("Attempting to send email to: {}", to);
+            logger.info("Attempting to send email asynchronously to: {}", to);
             
             Context context = new Context();
             context.setVariable("name", name);
             context.setVariable("userType", userType);
-            context.setVariable("loginUrl", "http://localhost:5173/login");
+            context.setVariable("loginUrl", frontendUrl + "/login");
 
             String emailContent = templateEngine.process("registration-email", context);
             logger.debug("Generated email content: {}", emailContent);
@@ -48,9 +52,9 @@ public class EmailService {
 
             mailSender.send(message);
             logger.info("Email sent successfully to: {}", to);
-        } catch (MessagingException e) {
-            logger.error("Failed to send email to: {}", to, e);
-            throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("Could not send registration email to {}: {}", to, e.getMessage());
+            // Do not rethrow - registration should still succeed even if SMTP connection fails
         }
     }
-} 
+}

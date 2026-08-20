@@ -39,12 +39,15 @@ public class RegistrationService {
         seeker.setPassword(passwordEncoder.encode(seeker.getPassword()));
         Seeker savedSeeker = seekerRepository.save(seeker);
 
-        // Send welcome email
-        emailService.sendRegistrationEmail(
-            savedSeeker.getEmail(),
-            savedSeeker.getFullName(),
-            "seeker"
-        );
+        // Send welcome email (non-blocking)
+        try {
+            emailService.sendRegistrationEmail(
+                savedSeeker.getEmail(),
+                savedSeeker.getFullName(),
+                "seeker"
+            );
+        } catch (Exception ignored) {
+        }
 
         return savedSeeker;
     }
@@ -67,12 +70,15 @@ public class RegistrationService {
         provider.setPassword(passwordEncoder.encode(provider.getPassword()));
         Provider savedProvider = providerRepository.save(provider);
 
-        // Send welcome email
-        emailService.sendRegistrationEmail(
-            savedProvider.getEmail(),
-            savedProvider.getFullName(),
-            "provider"
-        );
+        // Send welcome email (non-blocking)
+        try {
+            emailService.sendRegistrationEmail(
+                savedProvider.getEmail(),
+                savedProvider.getFullName(),
+                "provider"
+            );
+        } catch (Exception ignored) {
+        }
 
         return savedProvider;
     }
