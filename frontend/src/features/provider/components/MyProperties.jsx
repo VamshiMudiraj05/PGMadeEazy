@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building2, Edit, Trash2, Plus, ArrowLeft, MapPin, Users, DollarSign, AlertCircle } from 'lucide-react';
+import { 
+  Building2, 
+  Edit3, 
+  Trash2, 
+  Plus, 
+  ArrowLeft, 
+  MapPin, 
+  Users, 
+  DollarSign, 
+  AlertCircle,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Save,
+  X,
+  Phone,
+  Mail,
+  ShieldCheck
+} from 'lucide-react';
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../../../context/AuthContext';
@@ -22,8 +40,8 @@ const MyProperties = () => {
   const loadProperties = async () => {
     try {
       setLoading(true);
-      const ownerProperties = await propertyApi.getPropertiesByOwner(user.email);
-      setProperties(ownerProperties);
+      const ownerProperties = await propertyApi.getPropertiesByOwner(user?.email || user?.name);
+      setProperties(ownerProperties || []);
     } catch (err) {
       setError('Failed to load properties');
       toast.error('Failed to load properties');
@@ -32,16 +50,32 @@ const MyProperties = () => {
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusBadge = (status) => {
     switch (status) {
       case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800';
+        return {
+          bg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+          icon: Clock,
+          label: 'Awaiting Admin Review'
+        };
       case 'APPROVED':
-        return 'bg-green-100 text-green-800';
+        return {
+          bg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+          icon: CheckCircle2,
+          label: 'Live & Approved'
+        };
       case 'REJECTED':
-        return 'bg-red-100 text-red-800';
+        return {
+          bg: 'bg-red-500/10 text-red-400 border-red-500/20',
+          icon: XCircle,
+          label: 'Rejected'
+        };
       default:
-        return 'bg-gray-100 text-gray-800';
+        return {
+          bg: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+          icon: AlertCircle,
+          label: status || 'Draft'
+        };
     }
   };
 
@@ -66,7 +100,6 @@ const MyProperties = () => {
   const validateForm = () => {
     const requiredFields = ['name', 'city', 'area', 'rent', 'rooms', 'buildingType'];
     
-    // Validate required fields
     for (const field of requiredFields) {
       if (!editForm[field] || editForm[field].toString().trim() === '') {
         toast.error(`Please fill in ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
@@ -74,7 +107,6 @@ const MyProperties = () => {
       }
     }
     
-    // Validate numeric fields
     const numericFields = ['rent', 'rooms', 'deposit'];
     for (const field of numericFields) {
       if (editForm[field] && isNaN(Number(editForm[field]))) {
@@ -83,7 +115,6 @@ const MyProperties = () => {
       }
     }
     
-    // Validate phone number format
     if (editForm.ownerPhone && !/^[0-9]{10}$/.test(editForm.ownerPhone)) {
       toast.error('Phone number must be 10 digits');
       return false;
@@ -96,7 +127,6 @@ const MyProperties = () => {
     if (!validateForm()) return;
     
     try {
-      // Create FormData and append property as JSON string
       const formData = new FormData();
       formData.append('property', JSON.stringify(editForm));
       
@@ -118,7 +148,6 @@ const MyProperties = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Handle checkbox inputs (amenities and rules)
     if (type === 'checkbox') {
       setEditForm(prev => {
         const currentArray = prev[name] || [];
@@ -130,7 +159,6 @@ const MyProperties = () => {
         };
       });
     } else {
-      // Handle other inputs
       setEditForm(prev => ({
         ...prev,
         [name]: value
@@ -139,11 +167,11 @@ const MyProperties = () => {
   };
 
   const handleDelete = async (propertyId) => {
-    if (window.confirm('Are you sure you want to delete this property?')) {
+    if (window.confirm('Are you sure you want to delete this property listing?')) {
       try {
         await propertyApi.deleteProperty(propertyId);
         toast.success('Property deleted successfully');
-        loadProperties(); // Reload the properties list
+        loadProperties();
       } catch (err) {
         toast.error('Failed to delete property');
       }
@@ -152,312 +180,297 @@ const MyProperties = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-red-500 text-center p-4 bg-red-50 rounded-lg">
-        {error}
+      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
+        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
+        <p className="text-sm font-semibold text-zinc-400">Loading your listed properties...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black pb-0">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Back Navigation */}
-          <div className="flex items-center mb-6">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+        
+        {/* Navigation Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="flex items-center text-white hover:text-orange-500 transition-colors"
+              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Back to Dashboard
+              <ArrowLeft className="w-5 h-5" />
             </button>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                My Property Catalog
+              </h1>
+              <p className="text-xs text-zinc-400 mt-0.5">Manage live listings, edit details, and monitor approval status</p>
+            </div>
           </div>
 
-          {/* Header Section */}
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-white">My Properties</h1>
+          <button
+            onClick={() => navigate('/provider-dashboard/add-property')}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-md shadow-orange-500/20 transition-all hover:-translate-y-0.5 self-start sm:self-auto"
+          >
+            <Plus className="w-4 h-4" />
+            <span>List New Property</span>
+          </button>
+        </div>
+
+        {error ? (
+          <div className="glass-panel p-8 rounded-2xl border border-red-500/30 text-center max-w-md mx-auto">
+            <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-red-400 mb-4">{error}</p>
+            <button
+              onClick={loadProperties}
+              className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors"
+            >
+              Retry Loading
+            </button>
+          </div>
+        ) : properties.length === 0 ? (
+          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto glow-orange-sm">
+            <Building2 className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
+            <h2 className="text-xl font-extrabold text-white mb-1.5">No Properties in Catalog</h2>
+            <p className="text-xs text-zinc-400 mb-6">You haven't listed any accommodations under your host profile yet.</p>
             <button
               onClick={() => navigate('/provider-dashboard/add-property')}
-              className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors duration-300"
+              className="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all hover:-translate-y-0.5"
             >
-              <Plus className="h-5 w-5" />
-              Add New Property
+              + List Your First PG Stay
             </button>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.map((property, pIdx) => {
+              const isEditing = editingProperty === property.id;
+              const statusInfo = getStatusBadge(property.status || property.approvalStatus);
+              const StatusIcon = statusInfo.icon;
 
-          {/* Properties Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-0">
-            {properties.map((property) => (
-              <div
-                key={property.id}
-                className="bg-black/80 p-6 rounded-xl shadow-xl border border-orange-600 hover:shadow-orange-500/20 transition-shadow duration-300"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <Building2 className="h-6 w-6 text-orange-500" />
-                    <h2 className="text-xl font-semibold text-white">
-                      {property.name}
-                    </h2>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        property.approvalStatus === 'PENDING'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : property.approvalStatus === 'APPROVED'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {property.approvalStatus}
-                    </span>
-                    {property.approvalStatus === 'PENDING' && (
-                      <div className="flex items-center text-yellow-500 text-sm">
-                        <AlertCircle className="w-4 h-4 mr-1" />
-                        <span>Awaiting Admin Review</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+              return (
+                <div
+                  key={property.id || pIdx}
+                  className="rounded-3xl overflow-hidden glass-panel border border-zinc-800 hover:border-orange-500/40 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-orange-500/5 glow-orange-sm"
+                >
+                  {/* Photo Header */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+                    <img
+                      src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
+                      alt={property.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                    
+                    {/* Status Pill */}
+                    <div className="absolute top-3 right-3">
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border backdrop-blur-md ${statusInfo.bg}`}>
+                        <StatusIcon className="w-3 h-3" />
+                        <span>{statusInfo.label}</span>
+                      </span>
+                    </div>
 
-                {/* Property Image */}
-                <div className="h-48 overflow-hidden mb-4">
-                  <img
-                    src={getSecureImageUrl(property.images?.[0])}
-                    alt={property.name}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center text-gray-300">
-                    <MapPin className="w-5 h-5 mr-2 text-orange-500" />
-                    {editingProperty === property.id ? (
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          name="city"
-                          value={editForm.city}
-                          onChange={handleInputChange}
-                          className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-24"
-                          placeholder="City"
-                        />
-                        <input
-                          type="text"
-                          name="area"
-                          value={editForm.area}
-                          onChange={handleInputChange}
-                          className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-24"
-                          placeholder="Area"
-                        />
-                      </div>
-                    ) : (
-                      <span>{property.city}, {property.area} sq ft</span>
-                    )}
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <DollarSign className="w-5 h-5 mr-2 text-orange-500" />
-                    {editingProperty === property.id ? (
-                      <input
-                        type="number"
-                        name="rent"
-                        value={editForm.rent}
-                        onChange={handleInputChange}
-                        className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-32"
-                        placeholder="Rent"
-                      />
-                    ) : (
-                      <span>₹{property.rent}/month</span>
-                    )}
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <Users className="w-5 h-5 mr-2 text-orange-500" />
-                    {editingProperty === property.id ? (
-                      <input
-                        type="number"
-                        name="rooms"
-                        value={editForm.rooms}
-                        onChange={handleInputChange}
-                        className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-24"
-                        placeholder="Rooms"
-                      />
-                    ) : (
-                      <span>{property.rooms} rooms</span>
-                    )}
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <Building2 className="w-5 h-5 mr-2 text-orange-500" />
-                    {editingProperty === property.id ? (
-                      <input
-                        type="text"
-                        name="buildingType"
-                        value={editForm.buildingType}
-                        onChange={handleInputChange}
-                        className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-32"
-                        placeholder="Building Type"
-                      />
-                    ) : (
-                      <span>{property.buildingType}</span>
-                    )}
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <DollarSign className="w-5 h-5 mr-2 text-orange-500" />
-                    {editingProperty === property.id ? (
-                      <input
-                        type="number"
-                        name="deposit"
-                        value={editForm.deposit}
-                        onChange={handleInputChange}
-                        className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white w-32"
-                        placeholder="Deposit"
-                      />
-                    ) : (
-                      <span>Deposit: ₹{property.deposit}</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Amenities */}
-                {property.amenities && property.amenities.length > 0 && (
-                  <div className="mb-4">
-                    <h3 className="text-white font-semibold mb-2">Amenities</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {property.amenities.map((amenity, index) => (
-                        <span
-                          key={index}
-                          className="bg-orange-600/20 text-orange-500 px-3 py-1 rounded-full text-sm"
-                        >
-                          {amenity}
-                        </span>
-                      ))}
+                    {/* Rent Pill */}
+                    <div className="absolute bottom-3 left-3">
+                      <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-zinc-950/80 text-orange-400 border border-orange-500/30 backdrop-blur-md">
+                        ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-zinc-400 font-normal">/mo</span>
+                      </span>
                     </div>
                   </div>
-                )}
 
-                {/* Owner Details */}
-                <div className="mb-4">
-                  <h3 className="text-white font-semibold mb-2">Owner Details</h3>
-                  <div className="space-y-2 text-gray-300 text-sm">
-                    {editingProperty === property.id ? (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <span className="w-16">Name:</span>
+                  {/* Card Content & Form Fields */}
+                  <div className="p-5 flex-grow flex flex-col justify-between">
+                    {isEditing ? (
+                      <div className="space-y-3 text-xs">
+                        <div>
+                          <label className="text-[10px] uppercase font-bold text-zinc-400">Property Title</label>
                           <input
                             type="text"
-                            name="ownerName"
-                            value={editForm.ownerName}
+                            name="name"
+                            value={editForm.name}
                             onChange={handleInputChange}
-                            className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white flex-1"
+                            className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-16">Phone:</span>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">City</label>
+                            <input
+                              type="text"
+                              name="city"
+                              value={editForm.city}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">Area</label>
+                            <input
+                              type="text"
+                              name="area"
+                              value={editForm.area}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">Rent (₹)</label>
+                            <input
+                              type="number"
+                              name="rent"
+                              value={editForm.rent}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">Rooms</label>
+                            <input
+                              type="number"
+                              name="rooms"
+                              value={editForm.rooms}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">Building Type</label>
+                            <input
+                              type="text"
+                              name="buildingType"
+                              value={editForm.buildingType}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] uppercase font-bold text-zinc-400">Deposit (₹)</label>
+                            <input
+                              type="number"
+                              name="deposit"
+                              value={editForm.deposit}
+                              onChange={handleInputChange}
+                              className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase font-bold text-zinc-400">Host Phone</label>
                           <input
-                            type="text"
+                            type="tel"
                             name="ownerPhone"
                             value={editForm.ownerPhone}
                             onChange={handleInputChange}
-                            className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white flex-1"
+                            className="w-full mt-1 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-orange-500"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-16">Email:</span>
-                          <input
-                            type="email"
-                            name="ownerEmail"
-                            value={editForm.ownerEmail}
-                            onChange={handleInputChange}
-                            className="bg-black/50 border border-orange-600 rounded px-2 py-1 text-white flex-1"
-                          />
-                        </div>
-                      </>
+                      </div>
                     ) : (
-                      <>
-                        <p>Name: {property.ownerName}</p>
-                        <p>Phone: {property.ownerPhone}</p>
-                        <p>Email: {property.ownerEmail}</p>
-                      </>
+                      <div>
+                        <h3 className="text-base font-bold text-white truncate mb-1">
+                          {property.name}
+                        </h3>
+                        
+                        <div className="flex items-center gap-1.5 text-xs text-zinc-400 mb-3">
+                          <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                          <span className="truncate">{property.city}, {property.area}</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-zinc-800/80 text-xs text-zinc-300">
+                          <div>
+                            <span className="text-zinc-500 block text-[10px]">Total Rooms</span>
+                            <span className="font-semibold">{property.rooms} Rooms</span>
+                          </div>
+                          <div>
+                            <span className="text-zinc-500 block text-[10px]">Deposit</span>
+                            <span className="font-semibold">₹{property.deposit?.toLocaleString()}</span>
+                          </div>
+                        </div>
+
+                        {/* Amenities Chips */}
+                        {property.amenities && property.amenities.length > 0 && (
+                          <div className="mt-3">
+                            <div className="flex flex-wrap gap-1.5 max-h-16 overflow-hidden">
+                              {property.amenities.slice(0, 3).map((amenity, aIdx) => (
+                                <span
+                                  key={aIdx}
+                                  className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px] font-semibold"
+                                >
+                                  {amenity}
+                                </span>
+                              ))}
+                              {property.amenities.length > 3 && (
+                                <span className="px-2 py-0.5 rounded-lg bg-zinc-800 text-zinc-400 text-[10px]">
+                                  +{property.amenities.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Host Contact Box */}
+                        <div className="mt-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 text-xs">
+                          <div className="font-semibold text-white truncate">{property.ownerName}</div>
+                          <div className="flex items-center gap-1.5 text-zinc-400 mt-1">
+                            <Phone className="w-3 h-3 text-orange-500 shrink-0" />
+                            <span>{property.ownerPhone}</span>
+                          </div>
+                        </div>
+                      </div>
                     )}
+
+                    {/* Action Bar */}
+                    <div className="mt-5 pt-3 border-t border-zinc-800/80 flex items-center justify-between gap-2">
+                      {isEditing ? (
+                        <>
+                          <button
+                            onClick={() => handleSave(property.id)}
+                            className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5"
+                          >
+                            <Save className="w-3.5 h-3.5" />
+                            <span>Save Changes</span>
+                          </button>
+                          <button
+                            onClick={handleCancel}
+                            className="py-2 px-3 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 text-xs font-semibold transition"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleEdit(property)}
+                            className="flex-1 py-2 px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 hover:text-white hover:border-orange-500/40 text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                          >
+                            <Edit3 className="w-3.5 h-3.5 text-orange-400" />
+                            <span>Edit Listing</span>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(property.id)}
+                            className="p-2 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Delete listing"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </>
+                      )}
+                    </div>
+
                   </div>
                 </div>
-
-                {/* Rules */}
-                <div className="mb-4">
-                  <h3 className="text-white font-semibold mb-2">Rules</h3>
-                  {editingProperty === property.id ? (
-                    <textarea
-                      name="rules"
-                      value={editForm.rules.join('\n')}
-                      onChange={(e) => setEditForm(prev => ({
-                        ...prev,
-                        rules: e.target.value.split('\n').filter(rule => rule.trim() !== '')
-                      }))}
-                      className="w-full bg-black/50 border border-orange-600 rounded px-2 py-1 text-white text-sm"
-                      placeholder="Enter rules (one per line)"
-                      rows="4"
-                    />
-                  ) : (
-                    property.rules && property.rules.length > 0 && (
-                      <ul className="text-gray-300 text-sm list-disc list-inside">
-                        {property.rules.map((rule, index) => (
-                          <li key={index}>{rule}</li>
-                        ))}
-                      </ul>
-                    )
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between mt-4">
-                  {editingProperty === property.id ? (
-                    <button
-                      onClick={() => handleSave(property.id)}
-                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 transition"
-                    >
-                      <Edit className="h-5 w-5" />
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleEdit(property)}
-                      className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-500 transition"
-                    >
-                      <Edit className="h-5 w-5" />
-                      Edit
-                    </button>
-                  )}
-                  <button
-                    onClick={() => handleDelete(property.id)}
-                    className="p-2 text-red-500 hover:text-red-600 transition-colors duration-300"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+        )}
 
-          {properties.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">
-                You haven't added any properties yet.
-              </p>
-              <button
-                onClick={() => navigate('/provider-dashboard/add-property')}
-                className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors duration-300"
-              >
-                Add Your First Property
-              </button>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

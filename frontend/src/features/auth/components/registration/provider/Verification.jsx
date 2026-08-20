@@ -1,71 +1,122 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ShieldCheck, FileText, User, Phone, AlertCircle } from 'lucide-react';
 
 const Verification = ({ formData, handleChange, errors }) => {
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-white">Verification & Agreement</h3>
+    <div className="space-y-6">
+      <div className="border-b border-zinc-800 pb-4">
+        <h3 className="text-xl font-bold text-white">Owner Identity & Verification</h3>
+        <p className="text-xs text-zinc-400 mt-1">Required for host onboarding and compliance verification</p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <label className="text-gray-200">Government ID Type</label>
-          <select
-            name="govtIdType"
-            value={formData.govtIdType}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-          >
-            <option value="">Select ID Type</option>
-            <option value="aadhar">Aadhar Card</option>
-            <option value="pan">PAN Card</option>
-            <option value="dl">Driving License</option>
-          </select>
-          {errors.govtIdType && <span className="text-red-500 text-sm">{errors.govtIdType}</span>}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        
+        {/* Government ID Type */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Government ID Type
+          </label>
+          <div className="relative">
+            <ShieldCheck className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <select
+              name="govtIdType"
+              value={formData.govtIdType}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+            >
+              <option value="">Select ID Type</option>
+              <option value="aadhar">Aadhaar Card</option>
+              <option value="pan">PAN Card</option>
+              <option value="dl">Driving License</option>
+              <option value="passport">Passport</option>
+            </select>
+          </div>
+          {errors.govtIdType && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.govtIdType}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">ID Number</label>
-          <input
-            type="text"
-            name="govtIdNumber"
-            value={formData.govtIdNumber}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your ID number"
-          />
-          {errors.govtIdNumber && <span className="text-red-500 text-sm">{errors.govtIdNumber}</span>}
+        {/* ID Number */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Government ID Number
+          </label>
+          <div className="relative">
+            <FileText className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="text"
+              name="govtIdNumber"
+              value={formData.govtIdNumber}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="e.g. 1234 5678 9012"
+            />
+          </div>
+          {errors.govtIdNumber && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.govtIdNumber}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Emergency Contact Name</label>
-          <input
-            type="text"
-            name="emergencyContactName"
-            value={formData.emergencyContactName}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter emergency contact name"
-          />
-          {errors.emergencyContactName && <span className="text-red-500 text-sm">{errors.emergencyContactName}</span>}
+        {/* Emergency Contact Name */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Secondary / Emergency Contact Name
+          </label>
+          <div className="relative">
+            <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="text"
+              name="emergencyContactName"
+              value={formData.emergencyContactName}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="e.g. Property Co-owner / Manager"
+            />
+          </div>
+          {errors.emergencyContactName && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.emergencyContactName}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Emergency Contact Number</label>
-          <input
-            type="tel"
-            name="emergencyContactNumber"
-            value={formData.emergencyContactNumber}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter emergency contact number"
-          />
-          {errors.emergencyContactNumber && <span className="text-red-500 text-sm">{errors.emergencyContactNumber}</span>}
+        {/* Emergency Contact Phone */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Secondary Contact Phone
+          </label>
+          <div className="relative">
+            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="tel"
+              name="emergencyContactNumber"
+              value={formData.emergencyContactNumber}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="9876543210"
+            />
+          </div>
+          {errors.emergencyContactNumber && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.emergencyContactNumber}</span>
+            </p>
+          )}
         </div>
+
       </div>
 
-      {/* Terms Agreement */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
+      {/* Terms Agreement Box */}
+      <div className="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+        <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
             name="termsAgreed"
@@ -76,14 +127,20 @@ const Verification = ({ formData, handleChange, errors }) => {
                 value: e.target.checked
               }
             })}
-            className="w-4 h-4 text-orange-500 bg-black/50 border-gray-700 rounded focus:ring-orange-500"
+            className="mt-1 h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-orange-500 focus:ring-orange-500"
           />
-          <label className="text-gray-200">
-            I agree to the <a href="/terms" className="text-orange-500 hover:text-orange-600">Terms and Conditions</a>
-            and <a href="/privacy" className="text-orange-500 hover:text-orange-600">Privacy Policy</a>
-          </label>
-        </div>
-        {errors.termsAgreed && <span className="text-red-500 text-sm">{errors.termsAgreed}</span>}
+          <span className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+            I verify that I own or legally manage the listed properties and agree to the{" "}
+            <span className="text-orange-400 font-semibold underline">Host Terms & Conditions</span> and{" "}
+            <span className="text-orange-400 font-semibold underline">Compliance Policy</span>.
+          </span>
+        </label>
+        {errors.termsAgreed && (
+          <p className="mt-2 text-xs text-red-400 flex items-center gap-1">
+            <AlertCircle className="h-3 w-3 inline" />
+            <span>{errors.termsAgreed}</span>
+          </p>
+        )}
       </div>
     </div>
   );
@@ -102,3 +159,4 @@ Verification.propTypes = {
 };
 
 export default Verification;
+

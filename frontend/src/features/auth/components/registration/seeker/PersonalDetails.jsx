@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { User, Mail, Lock, Phone, Calendar, MapPin, AlertCircle } from 'lucide-react';
 
 const PersonalDetails = ({ formData, handleChange, errors }) => {
   const [maxDate] = useState(() => {
@@ -9,129 +10,230 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
   });
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-white">Personal Details</h3>
+    <div className="space-y-6">
+      <div className="border-b border-zinc-800 pb-4">
+        <h3 className="text-xl font-bold text-white">Personal Information</h3>
+        <p className="text-xs text-zinc-400 mt-1">Please provide your legal contact and identification details</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <label className="text-gray-200">Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your full name"
-          />
-          {errors.fullName && <span className="text-red-500 text-sm">{errors.fullName}</span>}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        
+        {/* Full Name */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Full Name
+          </label>
+          <div className="relative">
+            <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="e.g. John Doe"
+            />
+          </div>
+          {errors.fullName && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.fullName}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your email"
-          />
-          {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
+        {/* Email Address */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Email Address
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="john@example.com"
+            />
+          </div>
+          {errors.email && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.email}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your password"
-          />
-          {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
+        {/* Password */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Create Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="Min 6 characters"
+            />
+          </div>
+          {errors.password && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.password}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Confirm your password"
-          />
-          {errors.confirmPassword && <span className="text-red-500 text-sm">{errors.confirmPassword}</span>}
+        {/* Confirm Password */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="Re-enter password"
+            />
+          </div>
+          {errors.confirmPassword && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.confirmPassword}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Phone Number</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your phone number"
-          />
-          {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
+        {/* Phone Number */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Phone Number (10 Digits)
+          </label>
+          <div className="relative">
+            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="9876543210"
+            />
+          </div>
+          {errors.phone && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.phone}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Date of Birth</label>
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            max={maxDate}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-          />
-          {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth}</span>}
+        {/* Date of Birth */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Date of Birth (18+ only)
+          </label>
+          <div className="relative">
+            <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              max={maxDate}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+            />
+          </div>
+          {errors.dateOfBirth && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.dateOfBirth}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Gender</label>
+        {/* Gender */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Gender
+          </label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
+            className="w-full px-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-          {errors.gender && <span className="text-red-500 text-sm">{errors.gender}</span>}
+          {errors.gender && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.gender}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Current City</label>
-          <input
-            type="text"
-            name="currentCity"
-            value={formData.currentCity}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter your current city"
-          />
-          {errors.currentCity && <span className="text-red-500 text-sm">{errors.currentCity}</span>}
+        {/* Current City */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Current City
+          </label>
+          <div className="relative">
+            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="text"
+              name="currentCity"
+              value={formData.currentCity}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="e.g. Hyderabad"
+            />
+          </div>
+          {errors.currentCity && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.currentCity}</span>
+            </p>
+          )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-gray-200">Preferred Location</label>
-          <input
-            type="text"
-            name="preferredLocation"
-            value={formData.preferredLocation}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-black/50 border border-gray-700 text-white"
-            placeholder="Enter preferred location"
-          />
-          {errors.preferredLocation && <span className="text-red-500 text-sm">{errors.preferredLocation}</span>}
+        {/* Preferred Location */}
+        <div className="md:col-span-2">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+            Preferred Stay Location / Area
+          </label>
+          <div className="relative">
+            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <input
+              type="text"
+              name="preferredLocation"
+              value={formData.preferredLocation}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              placeholder="e.g. Gachibowli, Madhapur, Koramangala..."
+            />
+          </div>
+          {errors.preferredLocation && (
+            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle className="h-3 w-3 inline" />
+              <span>{errors.preferredLocation}</span>
+            </p>
+          )}
         </div>
+
       </div>
     </div>
   );
@@ -164,3 +266,4 @@ PersonalDetails.propTypes = {
 };
 
 export default PersonalDetails;
+

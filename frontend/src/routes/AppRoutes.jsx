@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
+import { Bookmark, MessageSquare, Search, PlusCircle, ArrowRight } from 'lucide-react';
 import LandingPage from '../features/landing/Hero';
 import Footer from '../components/common/Footer';
 import MultiStepRegistration from '../features/auth/components/SignUpForm';
@@ -53,8 +54,18 @@ const AppRoutes = () => {
           <MyBookings />
         </ProtectedRoute>
       } />
+      <Route path="/seeker/my-bookings" element={
+        <ProtectedRoute>
+          <MyBookings />
+        </ProtectedRoute>
+      } />
+      <Route path="/seeker/bookings" element={
+        <ProtectedRoute>
+          <MyBookings />
+        </ProtectedRoute>
+      } />
 
-      {/* PayPal Routes */}
+      {/* PayPal & Booking Redirection Routes */}
       <Route path="/seeker/paypal-success" element={
         <ProtectedRoute>
           <PayPalSuccess />
@@ -66,15 +77,35 @@ const AppRoutes = () => {
           <PayPalCancel />
         </ProtectedRoute>
       } />
+      <Route path="/seeker/cancel" element={
+        <ProtectedRoute>
+          <PayPalCancel />
+        </ProtectedRoute>
+      } />
+      <Route path="/seeker/booking-failed" element={
+        <ProtectedRoute>
+          <PayPalCancel />
+        </ProtectedRoute>
+      } />
 
       <Route path="/seeker-dashboard/saved-pgs" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-black">
-            <div className="container mx-auto px-4 py-8">
-              <div className="max-w-4xl mx-auto bg-black/80 p-8 rounded-xl shadow-xl border border-orange-600">
-                <h1 className="text-3xl font-bold text-white mb-6">Saved PGs</h1>
-                {/* Add your saved PGs content here */}
+          <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 flex items-center justify-center">
+            <div className="max-w-md w-full glass-panel p-8 rounded-3xl border border-zinc-800 text-center glow-orange-sm">
+              <div className="h-14 w-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mx-auto mb-4">
+                <Bookmark className="w-7 h-7" />
               </div>
+              <h1 className="text-2xl font-extrabold text-white mb-2">Saved Properties</h1>
+              <p className="text-xs text-zinc-400 mb-6">
+                You haven't bookmarked any PG stays yet. Explore verified listings and click the save button to keep track of your favorites.
+              </p>
+              <Link
+                to="/seeker-dashboard/find-pg"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs transition-all shadow-md shadow-orange-500/25"
+              >
+                <span>Browse Accommodations</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </ProtectedRoute>
@@ -88,12 +119,21 @@ const AppRoutes = () => {
 
       <Route path="/seeker-dashboard/messages" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-black">
-            <div className="container mx-auto px-4 py-8">
-              <div className="max-w-4xl mx-auto bg-black/80 p-8 rounded-xl shadow-xl border border-orange-600">
-                <h1 className="text-3xl font-bold text-white mb-6">Messages</h1>
-                {/* Add your messages content here */}
+          <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 flex items-center justify-center">
+            <div className="max-w-md w-full glass-panel p-8 rounded-3xl border border-zinc-800 text-center glow-orange-sm">
+              <div className="h-14 w-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mx-auto mb-4">
+                <MessageSquare className="w-7 h-7" />
               </div>
+              <h1 className="text-2xl font-extrabold text-white mb-2">Direct Host Inquiries</h1>
+              <p className="text-xs text-zinc-400 mb-6">
+                No active conversations yet. When you request a room or contact a host provider, chat threads will be organized here.
+              </p>
+              <Link
+                to="/seeker-dashboard/find-pg"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-orange-500/40 text-zinc-300 hover:text-white font-bold text-xs transition-all"
+              >
+                <span>Find Accommodations</span>
+              </Link>
             </div>
           </div>
         </ProtectedRoute>
@@ -181,29 +221,13 @@ const AppRoutes = () => {
       
       <Route path="/find-pg" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-black">
-            <div className="container mx-auto px-4 py-8">
-              <div className="max-w-4xl mx-auto bg-black/80 p-8 rounded-xl shadow-xl border border-orange-600">
-                <h1 className="text-3xl font-bold text-white mb-6">Find PG</h1>
-                
-                {/* Add your find PG content here */}
-              </div>
-            </div>
-          </div>
+          <FindPG />
         </ProtectedRoute>
       } />
       
       <Route path="/list-property" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-black">
-            <div className="container mx-auto px-4 py-8">
-              <div className="max-w-4xl mx-auto bg-black/80 p-8 rounded-xl shadow-xl border border-orange-600">
-                <h1 className="text-3xl font-bold text-white mb-6">List Your Property</h1>
-                
-                {/* Add your list property content here */}
-              </div>
-            </div>
-          </div>
+          <AddProperty />
         </ProtectedRoute>
       } />
     </Routes>
@@ -211,3 +235,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+

@@ -3,8 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { bookingApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../../../context/AuthContext';
-// Add ArrowLeft to the imports at the top
-import { Loader2, AlertCircle, CheckCircle, Clock, XCircle, ArrowLeft } from 'lucide-react';
+import { 
+  Loader2, 
+  AlertCircle, 
+  CheckCircle2, 
+  Clock, 
+  XCircle, 
+  ArrowLeft, 
+  Calendar, 
+  Users, 
+  DollarSign, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  CreditCard, 
+  Building,
+  Sparkles
+} from 'lucide-react';
+import { getSecureImageUrl } from '../../../utils/imageUtils';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -23,41 +39,31 @@ const MyBookings = () => {
         navigate('/login');
         return;
       }
-
-      console.log('Fetching bookings for user:', user.id);
       
       const response = await bookingApi.getSeekerBookings(user.id);
-      console.log('Bookings API response:', response);
       
       if (!response) {
         throw new Error('No response from server');
       }
 
       if (Array.isArray(response)) {
-        // If response is already an array, use it directly
         setBookings(response);
         return;
       }
 
-      // Ensure response.data exists and is an array
       const bookingsData = response?.data || [];
       
       if (!Array.isArray(bookingsData)) {
         throw new Error('Invalid response format');
       }
-
-      console.log('Raw bookings data:', bookingsData);
       
-      // Remove duplicate bookings for the same property
       const uniqueBookings = bookingsData.reduce((acc, current) => {
-        const exists = acc.find(item => item.propertyId === current.propertyId);
+        const exists = acc.find(item => item.propertyId === current.propertyId && item.id === current.id);
         if (!exists) {
           acc.push(current);
         }
         return acc;
       }, []);
-
-      console.log('Processed bookings:', uniqueBookings);
       
       setBookings(uniqueBookings);
     } catch (error) {
@@ -69,37 +75,39 @@ const MyBookings = () => {
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusBadge = (status) => {
     switch (status) {
       case 'CONFIRMED':
-        return 'text-green-500';
-      case 'PENDING':
-        return 'text-yellow-500';
-      case 'CANCELLED':
-        return 'text-red-500';
-      case 'COMPLETED':
-        return 'text-blue-500';
       case 'PAID':
-        return 'text-green-500';
-      default:
-        return 'text-gray-500';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'CONFIRMED':
-        return <CheckCircle className="w-5 h-5" />;
+        return {
+          bg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+          icon: CheckCircle2,
+          label: status
+        };
       case 'PENDING':
-        return <Clock className="w-5 h-5" />;
+        return {
+          bg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+          icon: Clock,
+          label: 'Pending Confirmation'
+        };
       case 'CANCELLED':
-        return <XCircle className="w-5 h-5" />;
+        return {
+          bg: 'bg-red-500/10 text-red-400 border-red-500/20',
+          icon: XCircle,
+          label: 'Cancelled'
+        };
       case 'COMPLETED':
-        return <CheckCircle className="w-5 h-5" />;
-      case 'PAID':
-        return <CheckCircle className="w-5 h-5" />;
+        return {
+          bg: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+          icon: CheckCircle2,
+          label: 'Completed Stay'
+        };
       default:
-        return <AlertCircle className="w-5 h-5" />;
+        return {
+          bg: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+          icon: AlertCircle,
+          label: status || 'Unknown'
+        };
     }
   };
 
@@ -112,176 +120,166 @@ const MyBookings = () => {
     return booking.paymentStatus || 'N/A';
   };
 
-  const getPaymentStatusColor = (booking) => {
-    const status = getPaymentStatusDisplay(booking);
-    switch (status) {
-      case 'PAID':
-        return 'text-green-500';
-      case 'PENDING':
-        return 'text-yellow-500';
-      case 'FAILED':
-        return 'text-red-500';
-      default:
-        return 'text-gray-500';
-    }
-  };
-
-  // Add this component at the top level of your component
-  const BackButton = () => (
-    <div className="container mx-auto px-4 py-4">
-      <button 
-        onClick={() => navigate('/seeker-dashboard')}
-        className="flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-colors"
-      >
-        <ArrowLeft className="w-6 h-6" />
-        <span>Back to Dashboard</span>
-      </button>
-    </div>
-  );
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-black">
-        <BackButton />
-        <div className="flex items-center justify-center flex-1">
-          <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-        </div>
+      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
+        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
+        <p className="text-sm font-semibold text-zinc-400">Loading your reservations...</p>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-black">
-        <BackButton />
-        <div className="flex items-center justify-center flex-1">
-          <div className="text-red-500 text-center">
-            <AlertCircle className="w-8 h-8 mx-auto mb-2" />
-            <p>{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (bookings.length === 0) {
-    return (
-      <div className="min-h-screen bg-black">
-        <BackButton />
-        <div className="flex items-center justify-center flex-1">
-          <div className="text-center">
-            <AlertCircle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-white mb-2">No Bookings Found</h2>
-            <p className="text-gray-400">You haven't made any bookings yet.</p>
-            <button
-              onClick={() => navigate('/seeker-dashboard/find-pg')}
-              className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition-colors"
-            >
-              Find a PG
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Remove the BackButton component and update all return statements to use a single structure
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 pt-6">
-        <div className="flex items-center mb-6">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+        
+        {/* Top Header */}
+        <div className="flex items-center gap-4 mb-8">
           <button 
             onClick={() => navigate('/seeker-dashboard')}
-            className="p-2 hover:bg-orange-500/10 rounded-full transition-colors"
+            className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
+            title="Back to Dashboard"
           >
-            <ArrowLeft className="w-6 h-6 text-orange-500" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-3xl font-bold text-white ml-4">My Bookings</h1>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              My Reservations
+            </h1>
+            <p className="text-xs text-zinc-400 mt-0.5">Track your past, active, and upcoming PG stays</p>
+          </div>
         </div>
 
-        <div className="min-h-[60vh]">
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+        {error ? (
+          <div className="glass-panel p-8 rounded-2xl border border-red-500/30 text-center max-w-md mx-auto">
+            <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-red-400 mb-4">{error}</p>
+            <button
+              onClick={fetchBookings}
+              className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        ) : bookings.length === 0 ? (
+          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto glow-orange-sm">
+            <div className="h-16 w-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mx-auto mb-4">
+              <Calendar className="w-8 h-8" />
             </div>
-          ) : error ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-red-500 text-center">
-                <AlertCircle className="w-8 h-8 mx-auto mb-2" />
-                <p>{error}</p>
-              </div>
-            </div>
-          ) : bookings.length === 0 ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <AlertCircle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold text-white mb-2">No Bookings Found</h2>
-                <p className="text-gray-400">You haven't made any bookings yet.</p>
-                <button
-                  onClick={() => navigate('/seeker-dashboard/find-pg')}
-                  className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition-colors"
-                >
-                  Find a PG
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {bookings.map((booking) => (
+            <h2 className="text-xl font-extrabold text-white mb-1.5">No Active Bookings</h2>
+            <p className="text-xs text-zinc-400 mb-6">You haven't reserved any PG accommodation yet. Browse our verified listings to book your stay!</p>
+            <button
+              onClick={() => navigate('/seeker-dashboard/find-pg')}
+              className="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all hover:-translate-y-0.5"
+            >
+              Explore Verified Accommodations
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {bookings.map((booking, bIdx) => {
+              const statusInfo = getStatusBadge(booking.status);
+              const StatusIcon = statusInfo.icon;
+              const paymentStatus = getPaymentStatusDisplay(booking);
+
+              return (
                 <div
-                  key={booking.id}
-                  className="bg-black/80 rounded-xl overflow-hidden border border-orange-600"
+                  key={booking.id || bIdx}
+                  className="rounded-3xl overflow-hidden glass-panel border border-zinc-800 hover:border-orange-500/40 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-orange-500/5 glow-orange-sm"
                 >
-                  {/* Property Image */}
-                  <div className="relative h-48">
+                  {/* Property Image Header */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
                     <img
-                      src={booking.property?.images?.[0] || '/placeholder-image.jpg'}
+                      src={getSecureImageUrl(booking.property?.images?.[0] || null, bIdx)}
                       alt={booking.property?.name || 'Property'}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-4 right-4">
-                      <div className={`flex items-center gap-2 px-3 py-1 rounded-full bg-black/80 ${getStatusColor(booking.status)}`}>
-                        {getStatusIcon(booking.status)}
-                        <span className="text-sm font-medium">{booking.status}</span>
-                      </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+                    
+                    {/* Status Pill Badge */}
+                    <div className="absolute top-3 right-3">
+                      <span className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border backdrop-blur-md ${statusInfo.bg}`}>
+                        <StatusIcon className="w-3.5 h-3.5" />
+                        <span>{statusInfo.label}</span>
+                      </span>
+                    </div>
+
+                    {/* Booking ID Pill */}
+                    <div className="absolute bottom-3 left-3">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-950/80 text-zinc-300 border border-zinc-800 backdrop-blur-md">
+                        REF #{booking.id?.slice?.(0, 8) || booking.id || 'N/A'}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Property Details */}
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold text-white mb-2">{booking.property?.name || 'Unnamed Property'}</h3>
-                    <div className="space-y-2 text-gray-300">
-                      <p>Check-in: {new Date(booking.checkInDate).toLocaleDateString()}</p>
-                      <p>Check-out: {new Date(booking.checkOutDate).toLocaleDateString()}</p>
-                      <p>Guests: {booking.numberOfGuests}</p>
-                      <p>Total Amount: ₹{booking.totalAmount}</p>
-                    </div>
+                  {/* Card Content Details */}
+                  <div className="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-white truncate mb-1">
+                        {booking.property?.name || 'Verified PG Stay'}
+                      </h3>
+                      
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-400 mb-4">
+                        <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                        <span className="truncate">{booking.property?.city || 'Location'}, {booking.property?.area || ''}</span>
+                      </div>
 
-                    {/* Owner Contact */}
-                    <div className="mt-4 pt-4 border-t border-orange-600">
-                      <h4 className="text-white font-medium mb-2">Owner Contact</h4>
-                      <div className="space-y-1 text-gray-300">
-                        <p>{booking.property?.ownerName || 'N/A'}</p>
-                        <p>{booking.property?.ownerPhone || 'N/A'}</p>
-                        <p>{booking.property?.ownerEmail || 'N/A'}</p>
+                      {/* Stay Schedule Specs */}
+                      <div className="space-y-2 py-3 border-y border-zinc-800/80 text-xs text-zinc-300">
+                        <div className="flex justify-between">
+                          <span className="text-zinc-500">Check-in Date:</span>
+                          <span className="font-semibold text-zinc-200">{new Date(booking.checkInDate).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-zinc-500">Check-out Date:</span>
+                          <span className="font-semibold text-zinc-200">{new Date(booking.checkOutDate).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-zinc-500">Occupants / Guests:</span>
+                          <span className="font-semibold text-zinc-200">{booking.numberOfGuests} Resident(s)</span>
+                        </div>
+                        <div className="flex justify-between items-baseline pt-1">
+                          <span className="text-zinc-500">Paid Total:</span>
+                          <span className="font-extrabold text-sm text-orange-400">₹{booking.totalAmount?.toLocaleString()}</span>
+                        </div>
+                      </div>
+
+                      {/* Owner Contact Information */}
+                      <div className="mt-4 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 text-xs">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block mb-1.5">Host Contact</span>
+                        <div className="space-y-1 text-zinc-300">
+                          <div className="font-semibold text-white">{booking.property?.ownerName || 'Host Manager'}</div>
+                          <div className="flex items-center gap-1.5 text-zinc-400">
+                            <Phone className="w-3 h-3 text-orange-500 shrink-0" />
+                            <span>{booking.property?.ownerPhone || 'N/A'}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-zinc-400">
+                            <Mail className="w-3 h-3 text-orange-500 shrink-0" />
+                            <span className="truncate">{booking.property?.ownerEmail || 'N/A'}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Payment Status */}
-                    <div className="mt-4 pt-4 border-t border-orange-600">
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-300">Payment Status:</span>
-                        <span className={`font-medium ${getPaymentStatusColor(booking)}`}>
-                          {getPaymentStatusDisplay(booking)}
-                        </span>
-                      </div>
+                    {/* Payment Status Pill Footer */}
+                    <div className="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                      <span className="text-zinc-500 font-medium">Payment Status:</span>
+                      <span className={`font-bold px-2 py-0.5 rounded-md ${
+                        paymentStatus === 'PAID' 
+                          ? 'bg-emerald-500/10 text-emerald-400' 
+                          : 'bg-amber-500/10 text-amber-400'
+                      }`}>
+                        {paymentStatus} ({booking.paymentMethod})
+                      </span>
                     </div>
+
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              );
+            })}
+          </div>
+        )}
+
       </div>
     </div>
   );

@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, Mail, Phone, MapPin, Building, IndianRupee } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Building, 
+  Calendar, 
+  ShieldCheck, 
+  Briefcase, 
+  GraduationCap, 
+  Edit3, 
+  Check, 
+  AlertCircle,
+  Sparkles
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { seekerService } from '../../../services/seekerService';
+import { toast } from 'react-hot-toast';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -26,13 +42,11 @@ export default function Profile() {
     termsAgreed: false,
     preferredLocation: '',
     occupationType: '',
-    // Student specific fields
     collegeName: '',
     courseName: '',
     yearOfStudy: '',
     collegeAddress: '',
     studentId: '',
-    // Professional specific fields
     companyName: '',
     jobRole: '',
     workExperience: '',
@@ -49,7 +63,7 @@ export default function Profile() {
     try {
       setLoading(true);
       const data = await seekerService.getSeekerProfile(user.id);
-      setProfileData(data);
+      setProfileData(data || {});
       setError(null);
     } catch (err) {
       setError('Failed to load profile data');
@@ -74,8 +88,10 @@ export default function Profile() {
       await seekerService.updateSeekerProfile(user.id, profileData);
       setIsEditing(false);
       setError(null);
+      toast.success('Profile updated successfully!');
     } catch (err) {
       setError('Failed to update profile');
+      toast.error('Failed to update profile');
       console.error('Error updating profile:', err);
     } finally {
       setLoading(false);
@@ -84,410 +100,450 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black p-6 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
+        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
+        <p className="text-sm font-semibold text-zinc-400">Loading your profile record...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        {/* Navigation Back */}
         <button
           onClick={() => navigate('/seeker-dashboard')}
-          className="flex items-center text-white hover:text-orange-500 transition-colors mb-6"
+          className="inline-flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all mb-6 text-xs font-semibold"
         >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Dashboard
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Dashboard</span>
         </button>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg mb-6">
-            {error}
+          <div className="glass-panel border-red-500/30 p-4 rounded-2xl mb-6 flex items-center gap-3 text-red-400 text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
           </div>
         )}
 
-        <div className="bg-black/80 border border-orange-600 rounded-xl p-8">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center">
-              <div className="w-20 h-20 bg-orange-600/20 rounded-full flex items-center justify-center">
-                <User className="w-10 h-10 text-orange-500" />
+        <div className="glass-panel border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl glow-orange-sm">
+          
+          {/* Header & Avatar Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-zinc-800/80">
+            <div className="flex items-center gap-4">
+              <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-extrabold text-2xl shadow-inner">
+                {profileData.fullName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
-              <div className="ml-6">
-                <h1 className="text-3xl font-bold text-white">{profileData.fullName}</h1>
-                <p className="text-gray-400">PG Seeker</p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    {profileData.fullName || 'Seeker Resident'}
+                  </h1>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Active Seeker
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-1">{profileData.email}</p>
               </div>
             </div>
+
             <button
               type="button"
               onClick={() => setIsEditing(!isEditing)}
-              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-zinc-900 border border-zinc-800 text-zinc-200 hover:text-white hover:border-orange-500/40 transition-all self-start sm:self-auto"
             >
-              {isEditing ? 'Cancel' : 'Edit Profile'}
+              <Edit3 className="w-3.5 h-3.5 text-orange-400" />
+              <span>{isEditing ? 'Cancel Editing' : 'Edit Profile'}</span>
             </button>
           </div>
 
+          {/* Form / Content View */}
           {isEditing ? (
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Personal Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Personal Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={profileData.fullName}
-                    onChange={handleInputChange}
-                    placeholder="Full Name"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    value={profileData.email}
-                    onChange={handleInputChange}
-                    placeholder="Email"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={profileData.phone}
-                    onChange={handleInputChange}
-                    placeholder="Phone"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={profileData.dateOfBirth}
-                    onChange={handleInputChange}
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                  <select
-                    name="gender"
-                    value={profileData.gender}
-                    onChange={handleInputChange}
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <input
-                    type="text"
-                    name="currentCity"
-                    value={profileData.currentCity}
-                    onChange={handleInputChange}
-                    placeholder="Current City"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
+            <form onSubmit={handleSubmit} className="space-y-8 mt-8">
+              
+              {/* Section 1: Personal Details */}
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span>Personal Details</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={profileData.fullName || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={profileData.email || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Phone Number</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={profileData.phone || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Date of Birth</label>
+                    <input
+                      type="date"
+                      name="dateOfBirth"
+                      value={profileData.dateOfBirth || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Gender</label>
+                    <select
+                      name="gender"
+                      value={profileData.gender || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Current City</label>
+                    <input
+                      type="text"
+                      name="currentCity"
+                      value={profileData.currentCity || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* College/Occupation Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">College/Occupation Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <select
-                    name="occupationType"
-                    value={profileData.occupationType}
-                    onChange={handleInputChange}
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  >
-                    <option value="">Select Occupation Type</option>
-                    <option value="student">Student</option>
-                    <option value="professional">Professional</option>
-                  </select>
+              {/* Section 2: Occupation Info */}
+              <div className="pt-6 border-t border-zinc-800">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <Briefcase className="w-4 h-4" />
+                  <span>College / Occupation Details</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Occupation Type</label>
+                    <select
+                      name="occupationType"
+                      value={profileData.occupationType || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    >
+                      <option value="">Select Occupation Type</option>
+                      <option value="student">Student</option>
+                      <option value="professional">Professional</option>
+                    </select>
+                  </div>
 
                   {profileData.occupationType === 'student' ? (
                     <>
-                      <input
-                        type="text"
-                        name="collegeName"
-                        value={profileData.collegeName}
-                        onChange={handleInputChange}
-                        placeholder="College Name"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="courseName"
-                        value={profileData.courseName}
-                        onChange={handleInputChange}
-                        placeholder="Course Name"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="yearOfStudy"
-                        value={profileData.yearOfStudy}
-                        onChange={handleInputChange}
-                        placeholder="Year of Study"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="collegeAddress"
-                        value={profileData.collegeAddress}
-                        onChange={handleInputChange}
-                        placeholder="College Address"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="studentId"
-                        value={profileData.studentId}
-                        onChange={handleInputChange}
-                        placeholder="Student ID"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">College Name</label>
+                        <input
+                          type="text"
+                          name="collegeName"
+                          value={profileData.collegeName || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Course / Major</label>
+                        <input
+                          type="text"
+                          name="courseName"
+                          value={profileData.courseName || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Year of Study</label>
+                        <input
+                          type="text"
+                          name="yearOfStudy"
+                          value={profileData.yearOfStudy || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Student Roll / ID</label>
+                        <input
+                          type="text"
+                          name="studentId"
+                          value={profileData.studentId || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
                     </>
                   ) : profileData.occupationType === 'professional' ? (
                     <>
-                      <input
-                        type="text"
-                        name="companyName"
-                        value={profileData.companyName}
-                        onChange={handleInputChange}
-                        placeholder="Company Name"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="jobRole"
-                        value={profileData.jobRole}
-                        onChange={handleInputChange}
-                        placeholder="Job Role"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="workExperience"
-                        value={profileData.workExperience}
-                        onChange={handleInputChange}
-                        placeholder="Work Experience (years)"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="officeAddress"
-                        value={profileData.officeAddress}
-                        onChange={handleInputChange}
-                        placeholder="Office Address"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
-                      <input
-                        type="text"
-                        name="workId"
-                        value={profileData.workId}
-                        onChange={handleInputChange}
-                        placeholder="Work ID"
-                        className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                      />
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Company Name</label>
+                        <input
+                          type="text"
+                          name="companyName"
+                          value={profileData.companyName || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Designation / Role</label>
+                        <input
+                          type="text"
+                          name="jobRole"
+                          value={profileData.jobRole || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Work Experience (Years)</label>
+                        <input
+                          type="text"
+                          name="workExperience"
+                          value={profileData.workExperience || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-zinc-400 mb-1">Employee / Work ID</label>
+                        <input
+                          type="text"
+                          name="workId"
+                          value={profileData.workId || ''}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
                     </>
                   ) : null}
                 </div>
               </div>
 
-              {/* Government ID Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Government ID Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <select
-                    name="govtIdType"
-                    value={profileData.govtIdType}
-                    onChange={handleInputChange}
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  >
-                    <option value="">Select ID Type</option>
-                    <option value="aadhar">Aadhar Card</option>
-                    <option value="pan">PAN Card</option>
-                    <option value="driving">Driving License</option>
-                    <option value="voter">Voter ID</option>
-                  </select>
-                  <input
-                    type="text"
-                    name="govtIdNumber"
-                    value={profileData.govtIdNumber}
-                    onChange={handleInputChange}
-                    placeholder="Government ID Number"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
+              {/* Section 3: Identity & Emergency Contacts */}
+              <div className="pt-6 border-t border-zinc-800">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Government ID & Emergency Contacts</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Government ID Type</label>
+                    <select
+                      name="govtIdType"
+                      value={profileData.govtIdType || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    >
+                      <option value="">Select ID Type</option>
+                      <option value="aadhar">Aadhaar Card</option>
+                      <option value="pan">PAN Card</option>
+                      <option value="driving">Driving License</option>
+                      <option value="passport">Passport</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">ID Number</label>
+                    <input
+                      type="text"
+                      name="govtIdNumber"
+                      value={profileData.govtIdNumber || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Emergency Contact Name</label>
+                    <input
+                      type="text"
+                      name="emergencyContactName"
+                      value={profileData.emergencyContactName || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-400 mb-1">Emergency Contact Number</label>
+                    <input
+                      type="text"
+                      name="emergencyContactNumber"
+                      value={profileData.emergencyContactNumber || ''}
+                      onChange={handleInputChange}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Emergency Contact Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Emergency Contact Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    name="emergencyContactName"
-                    value={profileData.emergencyContactName}
-                    onChange={handleInputChange}
-                    placeholder="Emergency Contact Name"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="emergencyContactNumber"
-                    value={profileData.emergencyContactNumber}
-                    onChange={handleInputChange}
-                    placeholder="Emergency Contact Number"
-                    className="bg-black/50 text-white border border-orange-600/50 rounded px-3 py-2"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <div className="flex justify-end">
+              {/* Save Action */}
+              <div className="pt-6 border-t border-zinc-800 flex justify-end">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
                   disabled={loading}
+                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all hover:-translate-y-0.5 disabled:opacity-50"
                 >
-                  {loading ? 'Saving...' : 'Save Changes'}
+                  Save Profile Changes
                 </button>
               </div>
+
             </form>
           ) : (
-            <div className="space-y-8">
-              {/* Personal Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Personal Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Full Name</p>
-                    <p className="text-white">{profileData.fullName}</p>
+            <div className="space-y-8 mt-8">
+              
+              {/* Personal Info Grid */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span>Personal Profile Details</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Full Name</span>
+                    <span className="text-sm font-semibold text-white">{profileData.fullName || 'Not provided'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Email</p>
-                    <p className="text-white">{profileData.email}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Email</span>
+                    <span className="text-sm font-semibold text-white truncate block">{profileData.email || 'Not provided'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Phone</p>
-                    <p className="text-white">{profileData.phone}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Contact Phone</span>
+                    <span className="text-sm font-semibold text-white">{profileData.phone || 'Not provided'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Date of Birth</p>
-                    <p className="text-white">{profileData.dateOfBirth}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Date of Birth</span>
+                    <span className="text-sm font-semibold text-white">{profileData.dateOfBirth || 'Not provided'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Gender</p>
-                    <p className="text-white">{profileData.gender}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Gender</span>
+                    <span className="text-sm font-semibold text-white capitalize">{profileData.gender || 'Not specified'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Current City</p>
-                    <p className="text-white">{profileData.currentCity}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Current Base City</span>
+                    <span className="text-sm font-semibold text-white">{profileData.currentCity || 'Not provided'}</span>
                   </div>
                 </div>
               </div>
 
-              {/* College/Occupation Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">College/Occupation Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Occupation Type</p>
-                    <p className="text-white">{profileData.occupationType}</p>
+              {/* Occupation Info Grid */}
+              <div className="pt-6 border-t border-zinc-800">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <Briefcase className="w-4 h-4" />
+                  <span>College / Employment Data</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Occupation Status</span>
+                    <span className="text-sm font-semibold text-white capitalize">{profileData.occupationType || 'Not specified'}</span>
                   </div>
 
                   {profileData.occupationType === 'student' ? (
                     <>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">College Name</p>
-                        <p className="text-white">{profileData.collegeName}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">College Institution</span>
+                        <span className="text-sm font-semibold text-white">{profileData.collegeName || 'N/A'}</span>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Course Name</p>
-                        <p className="text-white">{profileData.courseName}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Enrolled Course</span>
+                        <span className="text-sm font-semibold text-white">{profileData.courseName || 'N/A'}</span>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Year of Study</p>
-                        <p className="text-white">{profileData.yearOfStudy}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Year of Study</span>
+                        <span className="text-sm font-semibold text-white">{profileData.yearOfStudy || 'N/A'}</span>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">College Address</p>
-                        <p className="text-white">{profileData.collegeAddress}</p>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Student ID</p>
-                        <p className="text-white">{profileData.studentId}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Student Identifier</span>
+                        <span className="text-sm font-semibold text-white">{profileData.studentId || 'N/A'}</span>
                       </div>
                     </>
                   ) : profileData.occupationType === 'professional' ? (
                     <>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Company Name</p>
-                        <p className="text-white">{profileData.companyName}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Employer / Org</span>
+                        <span className="text-sm font-semibold text-white">{profileData.companyName || 'N/A'}</span>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Job Role</p>
-                        <p className="text-white">{profileData.jobRole}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Designation</span>
+                        <span className="text-sm font-semibold text-white">{profileData.jobRole || 'N/A'}</span>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Work Experience</p>
-                        <p className="text-white">{profileData.workExperience} years</p>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Office Address</p>
-                        <p className="text-white">{profileData.officeAddress}</p>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-gray-400">Work ID</p>
-                        <p className="text-white">{profileData.workId}</p>
+                      <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                        <span className="text-xs text-zinc-500 block mb-1">Experience</span>
+                        <span className="text-sm font-semibold text-white">{profileData.workExperience ? `${profileData.workExperience} years` : 'N/A'}</span>
                       </div>
                     </>
                   ) : null}
                 </div>
               </div>
 
-              {/* Government ID Information */}
-              <div className="border-b border-orange-600/30 pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Government ID Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <p className="text-gray-400">ID Type</p>
-                    <p className="text-white">{profileData.govtIdType}</p>
+              {/* Identity & Emergency Grid */}
+              <div className="pt-6 border-t border-zinc-800">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Compliance & Emergency Contacts</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">ID Document Type</span>
+                    <span className="text-sm font-semibold text-white uppercase">{profileData.govtIdType || 'N/A'}</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">ID Number</p>
-                    <p className="text-white">{profileData.govtIdNumber}</p>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">ID Document Number</span>
+                    <span className="text-sm font-semibold text-white">{profileData.govtIdNumber || 'N/A'}</span>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Emergency Person</span>
+                    <span className="text-sm font-semibold text-white">{profileData.emergencyContactName || 'N/A'}</span>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+                    <span className="text-xs text-zinc-500 block mb-1">Emergency Contact</span>
+                    <span className="text-sm font-semibold text-white">{profileData.emergencyContactNumber || 'N/A'}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Emergency Contact Information */}
-              <div className="pb-6">
-                <h2 className="text-xl font-semibold text-orange-500 mb-4">Emergency Contact Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Emergency Contact Name</p>
-                    <p className="text-white">{profileData.emergencyContactName}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-gray-400">Emergency Contact Number</p>
-                    <p className="text-white">{profileData.emergencyContactNumber}</p>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
   );
 }
+
