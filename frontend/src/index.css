@@ -2,74 +2,116 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+    --brand-orange: #FF6100;
+    --brand-black: #000000;
+    --font-helvetica: "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    /* New gray palette */
+    --gray-100: #a1a1aa; /* lighter gray for secondary text */
+    --gray-200: #888888; /* darker gray for muted text */
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   body {
-    font-family: var(--font-sans);
-    background-color: #09090b;
-    color: #f4f4f5;
+    font-family: var(--font-helvetica);
+    background-color: #000000;
+    color: #ffffff;
     overflow-x: hidden;
+    letter-spacing: -0.015em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    font-family: var(--font-helvetica);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #1f1f23;
   border-radius: 9999px;
-  border: 2px solid #09090b;
+  border: 1px solid #000000;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #f97316;
+  background: #FF6100;
 }
 
 /* Glowing Accent Utilities */
 .glow-orange {
-  box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 0 35px -5px rgba(255, 97, 0, 0.45);
 }
 
 .glow-orange-sm {
-  box-shadow: 0 0 15px -3px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 0 18px -3px rgba(255, 97, 0, 0.3);
 }
 
 .glow-orange-lg {
-  box-shadow: 0 0 40px -10px rgba(249, 115, 22, 0.45);
+  box-shadow: 0 0 60px -10px rgba(255, 97, 0, 0.55);
+}
+
+.border-orange-glow {
+  border-color: #FF6100;
+  box-shadow: 0 0 20px -3px rgba(255, 97, 0, 0.35);
+}
+
+/* Modern High-Contrast Neutral Surfaces */
+.surface-card {
+  background-color: #0d0d0f;
+  border: 1px solid #1c1c21;
+}
+
+.surface-card-hover {
+  background-color: #0d0d0f;
+  border: 1px solid #1c1c21;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.surface-card-hover:hover {
+  border-color: #FF6100;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(255, 97, 0, 0.2);
 }
 
 /* Glassmorphism Surface Utilities */
 .glass-panel {
-  background: rgba(24, 24, 27, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(39, 39, 42, 0.8);
+  background: rgba(13, 13, 15, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #222227;
 }
 
-.glass-panel-interactive {
-  background: rgba(24, 24, 27, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(39, 39, 42, 0.8);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Entertainment style scanline / grid texture */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-.glass-panel-interactive:hover {
-  border-color: rgba(249, 115, 22, 0.45);
-  box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.15);
-  transform: translateY(-2px);
+.bg-dot-pattern {
+  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+/* Utility text color classes */
+.text-primary {
+  color: var(--brand-orange);
+}
+
+.text-secondary {
+  color: var(--gray-200);
 }
