@@ -50,6 +50,11 @@ const BookingForm = ({ property, onClose }) => {
     if (!user) {
       navigate('/login');
     }
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
   }, [user, navigate]);
 
   if (!user) {
@@ -258,51 +263,51 @@ const BookingForm = ({ property, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
-      <div className="glass-panel p-6 sm:p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl relative my-8">
+    <div className="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="p-6 sm:p-8 rounded-sm max-w-lg w-full bg-[#121217] border border-[#1E1E26] shadow-2xl relative my-8 space-y-6">
         
         {/* Modal Header */}
-        <div className="flex justify-between items-center pb-5 mb-5 border-b border-zinc-800/80">
+        <div className="flex justify-between items-center pb-4 border-b border-[#1E1E26]">
           <div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-              Reserve Your Stay
+            <h2 className="text-xl font-bold text-white tracking-tight">
+              Reserve Accommodation
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">{property.name} • {property.city}</p>
+            <p className="text-xs text-[#7A7A85] mt-0.5">{property.name} • {property.city}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-orange-500/50 transition-colors"
+            className="p-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           
           {/* Room Availability Indicator Pill */}
-          <div className="p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+          <div className="p-3.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Home className="w-4 h-4 text-orange-500" />
-                <span className="text-xs font-bold text-white uppercase tracking-wider">
-                  Live Availability
+                <Home className="w-3.5 h-3.5 text-[#FF5A36]" />
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
+                  Live Unit Status
                 </span>
               </div>
-              <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
+              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${
                 availableRooms > 0 
-                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' 
-                  : 'bg-red-500/15 text-red-400 border border-red-500/30'
+                  ? 'bg-emerald-500 text-black' 
+                  : 'bg-red-500 text-white'
               }`}>
-                {availableRooms} / {property.rooms} Rooms Open
+                {availableRooms} / {property.rooms} Units Available
               </span>
             </div>
           </div>
 
           {/* Rooms to Book & Guests Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-                Rooms to Book
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                Units to Book
               </label>
               <input
                 type="number"
@@ -311,13 +316,13 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={availableRooms || 1}
-                className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 transition-all"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
                 Number of Guests
               </label>
               <input
@@ -327,106 +332,102 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={property.capacity || 10}
-                className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 transition-all"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
                 required
               />
             </div>
           </div>
 
           {/* Dates Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
                 Check-in Date
               </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="checkInDate"
-                  value={formData.checkInDate}
-                  onChange={handleInputChange}
-                  placeholder="DD/MM/YYYY"
-                  className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition-all"
-                  required
-                  maxLength="10"
-                />
-              </div>
+              <input
+                type="text"
+                name="checkInDate"
+                value={formData.checkInDate}
+                onChange={handleInputChange}
+                placeholder="DD/MM/YYYY"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                required
+                maxLength="10"
+              />
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
                 Check-out Date
               </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="checkOutDate"
-                  value={formData.checkOutDate}
-                  onChange={handleInputChange}
-                  placeholder="DD/MM/YYYY"
-                  className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition-all"
-                  required
-                  maxLength="10"
-                />
-              </div>
+              <input
+                type="text"
+                name="checkOutDate"
+                value={formData.checkOutDate}
+                onChange={handleInputChange}
+                placeholder="DD/MM/YYYY"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                required
+                maxLength="10"
+              />
             </div>
           </div>
 
           {/* Resident Email (Read-only) */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-              Confirm Email for Digital Receipt
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              Digital Invoice Recipient
             </label>
             <input
               type="email"
               value={user.email}
               readOnly
-              className="w-full px-3.5 py-2.5 bg-zinc-900/50 border border-zinc-800 rounded-xl text-xs text-zinc-400 cursor-not-allowed"
+              className="w-full px-3 py-2 bg-[#0B0B0E]/50 border border-[#1E1E26] rounded-sm text-xs text-[#7A7A85] cursor-not-allowed"
             />
           </div>
 
           {/* Payment Method Selector */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-              Payment Gateway
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              Checkout Infrastructure
             </label>
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-orange-500/10 border border-orange-500/30 text-white text-xs font-bold">
-              <CreditCard className="w-4 h-4 text-orange-400" />
-              <span>PayPal Encrypted Digital Escrow Checkout</span>
+            <div className="flex items-center gap-2.5 p-3 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-white text-xs font-semibold">
+              <CreditCard className="w-4 h-4 text-[#FF5A36]" />
+              <span>PayPal Encrypted Digital Gateway</span>
             </div>
           </div>
 
           {/* Price Calculation Summary Box */}
           {calculatedAmount.inr > 0 ? (
-            <div className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-              <div className="flex justify-between text-xs text-zinc-400">
-                <span>Duration Rate:</span>
-                <span className="text-zinc-200">{calculatedAmount.days} night(s) × ₹{property.rent?.toLocaleString()}</span>
+            <div className="p-4 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2">
+              <div className="flex justify-between text-xs text-[#9E9EA7]">
+                <span>Duration Tariff:</span>
+                <span className="text-white font-medium">{calculatedAmount.days} night(s) × ₹{property.rent?.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-xs text-zinc-400">
-                <span>Selected Rooms:</span>
-                <span className="text-zinc-200">{formData.roomsToBook} room(s)</span>
+              <div className="flex justify-between text-xs text-[#9E9EA7]">
+                <span>Units Reserved:</span>
+                <span className="text-white font-medium">{formData.roomsToBook} unit(s)</span>
               </div>
-              <div className="pt-2 border-t border-zinc-800 flex justify-between items-baseline">
-                <span className="text-xs font-bold uppercase tracking-wider text-white">Total Amount:</span>
+              <div className="pt-2 border-t border-[#1E1E26] flex justify-between items-baseline">
+                <span className="text-xs font-bold uppercase tracking-wider text-white">Calculated Amount:</span>
                 <div className="text-right">
-                  <span className="text-xl font-extrabold text-orange-400">
+                  <span className="text-lg font-bold text-[#FF5A36]">
                     ₹{calculatedAmount.inr.toLocaleString()}
                   </span>
-                  <span className="text-xs text-zinc-400 block">
+                  <span className="text-[11px] text-[#7A7A85] block">
                     (~${calculatedAmount.usd} USD)
                   </span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-center text-xs text-zinc-500">
-              Enter check-in & check-out dates (DD/MM/YYYY) to calculate total fare
+            <div className="p-3 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-center text-xs text-[#7A7A85]">
+              Specify check-in & check-out dates (DD/MM/YYYY) to calculate fare
             </div>
           )}
 
           {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 flex items-center gap-2">
+            <div className="p-3 rounded-sm bg-red-500/10 border border-red-500/25 text-xs text-red-400 flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -436,19 +437,16 @@ const BookingForm = ({ property, onClose }) => {
           <button
             type="submit"
             disabled={loading || calculatedAmount.inr <= 0 || formData.roomsToBook > availableRooms || availableRooms === 0}
-            className="w-full py-3.5 px-6 rounded-xl font-extrabold text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md shadow-orange-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+            className="w-full py-3 px-6 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-[#FF5A36] hover:bg-[#E54B28] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
-              <>
-                <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Redirecting to PayPal...</span>
-              </>
+              <span>Redirecting to Gateway...</span>
             ) : availableRooms === 0 ? (
-              'No Rooms Available'
+              'No Units Available'
             ) : calculatedAmount.inr > 0 ? (
-              `Pay ₹${calculatedAmount.inr.toLocaleString()} via PayPal`
+              `Proceed with ₹${calculatedAmount.inr.toLocaleString()} (PayPal)`
             ) : (
-              'Enter Dates to Confirm'
+              'Specify Dates to Proceed'
             )}
           </button>
 

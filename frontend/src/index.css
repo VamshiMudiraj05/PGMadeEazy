@@ -2,12 +2,20 @@
 
 @layer base {
   :root {
-    --brand-orange: #FF6100;
-    --brand-black: #000000;
-    --font-helvetica: "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    /* New gray palette */
-    --gray-100: #a1a1aa; /* lighter gray for secondary text */
-    --gray-200: #888888; /* darker gray for muted text */
+    --brand-accent: #FF5A36;
+    --brand-accent-hover: #E54B28;
+    --font-heading: "Inter Tight", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    
+    /* Editorial Theme Tokens */
+    --bg-main: #0B0B0E;
+    --bg-surface: #121217;
+    --bg-surface-elevated: #181820;
+    --border-subtle: #1E1E26;
+    --border-strong: #2A2A36;
+    --text-primary: #FAFAFA;
+    --text-secondary: #9E9EA7;
+    --text-muted: #666672;
   }
 
   * {
@@ -15,103 +23,90 @@
   }
 
   body {
-    font-family: var(--font-helvetica);
-    background-color: #000000;
-    color: #ffffff;
+    font-family: var(--font-body);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     overflow-x: hidden;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.012em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-helvetica);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
+    font-family: var(--font-heading);
+    letter-spacing: -0.035em;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #0B0B0E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f1f23;
-  border-radius: 9999px;
-  border: 1px solid #000000;
+  background: #22222A;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF6100;
+  background: #FF5A36;
 }
 
-/* Glowing Accent Utilities */
-.glow-orange {
-  box-shadow: 0 0 35px -5px rgba(255, 97, 0, 0.45);
+/* Typography Hierarchy Utilities */
+.font-display {
+  font-family: var(--font-heading);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
 }
 
-.glow-orange-sm {
-  box-shadow: 0 0 18px -3px rgba(255, 97, 0, 0.3);
+.font-editorial {
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
 }
 
-.glow-orange-lg {
-  box-shadow: 0 0 60px -10px rgba(255, 97, 0, 0.55);
+/* Micro-interactive utilities */
+.editorial-hover {
+  transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
-.border-orange-glow {
-  border-color: #FF6100;
-  box-shadow: 0 0 20px -3px rgba(255, 97, 0, 0.35);
+.editorial-hover:hover {
+  border-color: #383848;
 }
 
-/* Modern High-Contrast Neutral Surfaces */
-.surface-card {
-  background-color: #0d0d0f;
-  border: 1px solid #1c1c21;
+/* Subtle editorial line divider */
+.editorial-divider {
+  border-color: #1E1E26;
 }
 
-.surface-card-hover {
-  background-color: #0d0d0f;
-  border: 1px solid #1c1c21;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* Restrained Input Field */
+.input-editorial {
+  background-color: #121217;
+  border: 1px solid #22222A;
+  color: #FAFAFA;
+  border-radius: 6px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.surface-card-hover:hover {
-  border-color: #FF6100;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -10px rgba(255, 97, 0, 0.2);
+.input-editorial:focus {
+  outline: none;
+  border-color: #FF5A36;
+  background-color: #15151C;
 }
 
-/* Glassmorphism Surface Utilities */
-.glass-panel {
-  background: rgba(13, 13, 15, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid #222227;
+/* Subtle image reveal transition */
+.image-editorial-zoom {
+  overflow: hidden;
 }
 
-/* Entertainment style scanline / grid texture */
-.bg-grid-pattern {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+.image-editorial-zoom img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.bg-dot-pattern {
-  background-size: 24px 24px;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-}
-
-/* Utility text color classes */
-.text-primary {
-  color: var(--brand-orange);
-}
-
-.text-secondary {
-  color: var(--gray-200);
+.image-editorial-zoom:hover img {
+  transform: scale(1.03);
 }

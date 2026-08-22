@@ -98,21 +98,21 @@ const FindPG = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Loading verified accommodations...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading verified accommodations...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex items-center justify-center p-4">
-        <div className="glass-panel p-8 rounded-2xl border border-red-500/30 text-center max-w-md">
-          <p className="text-red-400 font-semibold mb-4">{error}</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex items-center justify-center p-4">
+        <div className="p-8 rounded-sm bg-[#121217] border border-red-500/30 text-center max-w-md space-y-4">
+          <p className="text-red-400 text-xs font-semibold">{error}</p>
           <button
             onClick={fetchApprovedProperties}
-            className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm hover:bg-orange-600 transition-colors"
+            className="px-5 py-2 rounded-sm bg-[#FF5A36] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#E54B28] transition-colors"
           >
             Retry Loading
           </button>
@@ -122,56 +122,56 @@ const FindPG = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
-      <div className="container mx-auto px-4 sm:px-6">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#1E1E26]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/seeker-dashboard')}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
               title="Return to Dashboard"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                   Verified Accommodations
                 </h1>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                  {filteredProperties.length} Available
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-[#181820] text-[#FF5A36] border border-[#22222A]">
+                  {filteredProperties.length} Units
                 </span>
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">Explore approved PGs, private rooms, and student hostels</p>
+              <p className="text-xs text-[#7A7A85] mt-0.5">Explore inspected PG residences, studio units, and student suites.</p>
             </div>
           </div>
 
           {(searchTerm || selectedCity || priceRange.min || priceRange.max) && (
             <button
               onClick={resetFilters}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-400 hover:text-orange-400 hover:border-orange-500/30 transition-all self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[#121217] border border-[#22222A] text-[11px] font-bold uppercase tracking-wider text-[#9E9EA7] hover:text-[#FF5A36] transition-colors self-start sm:self-auto"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3 h-3" />
               <span>Reset Filters</span>
             </button>
           )}
         </div>
 
-        {/* 🔍 Smart Filter Panel */}
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-zinc-800 mb-8 glow-orange-sm">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
+        {/* Filter Console */}
+        <div className="p-4 sm:p-5 rounded-sm bg-[#121217] border border-[#1E1E26]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
             
             {/* Search Input (5 Cols on lg) */}
             <div className="lg:col-span-5 relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-orange-500 pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A7A85] pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search by property name, landmark, area..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                className="w-full pl-9 pr-3.5 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               />
             </div>
 
@@ -180,7 +180,7 @@ const FindPG = () => {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
               >
                 <option value="">All Locations</option>
                 {cities.map(city => (
@@ -196,7 +196,7 @@ const FindPG = () => {
                 placeholder="Min Price (₹)"
                 value={priceRange.min}
                 onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
-                className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               />
             </div>
 
@@ -207,22 +207,24 @@ const FindPG = () => {
                 placeholder="Max Price (₹)"
                 value={priceRange.max}
                 onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
-                className="w-full px-3.5 py-2.5 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               />
             </div>
 
           </div>
         </div>
 
-        {/* 🏢 Property Catalog Grid */}
+        {/* Property Catalog Grid */}
         {filteredProperties.length === 0 ? (
-          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-lg mx-auto">
-            <Building className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">No Matching Properties Found</h3>
-            <p className="text-xs text-zinc-400 mb-6">Try broadening your search term or clearing the city and price budget filters.</p>
+          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-lg mx-auto space-y-4">
+            <Building className="w-8 h-8 text-[#7A7A85] mx-auto" />
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-white">No Matching Accommodations Found</h3>
+              <p className="text-xs text-[#9E9EA7]">Try adjusting your search criteria or clearing current filters.</p>
+            </div>
             <button
               onClick={resetFilters}
-              className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-all shadow-md shadow-orange-500/20"
+              className="px-4 py-2 rounded-sm bg-[#FF5A36] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#E54B28] transition-colors"
             >
               Clear All Filters
             </button>
@@ -233,10 +235,10 @@ const FindPG = () => {
               <div
                 key={property.id}
                 onClick={() => setSelectedProperty(property)}
-                className="group relative rounded-3xl overflow-hidden glass-panel border border-zinc-800 hover:border-orange-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-xl hover:shadow-orange-500/10 glow-orange-sm"
+                className="group rounded-sm overflow-hidden bg-[#121217] border border-[#1E1E26] hover:border-[#383848] transition-colors cursor-pointer flex flex-col justify-between"
               >
                 {/* Image Section */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#0B0B0E]">
                   <img
                     src={getSecureImageUrl(
                       property.images && property.images.length > 0
@@ -245,22 +247,22 @@ const FindPG = () => {
                       pIdx
                     )}
                     alt={`${property.name}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
 
                   {/* Top Badges */}
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-emerald-500/90 text-white shadow-md backdrop-blur-md">
-                      <ShieldCheck className="w-3.5 h-3.5" />
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-emerald-500 text-black">
+                      <ShieldCheck className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
-                    <span className="text-xs font-extrabold px-3 py-1 rounded-lg bg-zinc-950/80 text-orange-400 border border-orange-500/30 backdrop-blur-md shadow-md">
-                      ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-zinc-400 font-normal">/mo</span>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-sm bg-[#0B0B0E]/90 text-white border border-[#22222A]">
+                      ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-[#7A7A85] font-normal">/mo</span>
                     </span>
                   </div>
 
-                  {/* Image Navigation Carousel Buttons */}
+                  {/* Carousel Controls */}
                   {property.images && property.images.length > 1 && (
                     <>
                       <button
@@ -268,85 +270,72 @@ const FindPG = () => {
                           e.stopPropagation();
                           prevImage(property.id);
                         }}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-zinc-950/70 text-white hover:bg-orange-500 transition-colors opacity-0 group-hover:opacity-100"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-sm bg-[#0B0B0E]/80 text-white hover:bg-[#FF5A36] transition-colors opacity-0 group-hover:opacity-100"
                         aria-label="Previous photo"
                       >
-                        <ChevronLeft className="w-4 h-4" />
+                        <ChevronLeft className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           nextImage(property.id);
                         }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-zinc-950/70 text-white hover:bg-orange-500 transition-colors opacity-0 group-hover:opacity-100"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-sm bg-[#0B0B0E]/80 text-white hover:bg-[#FF5A36] transition-colors opacity-0 group-hover:opacity-100"
                         aria-label="Next photo"
                       >
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </button>
-                      {/* Dots */}
-                      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-                        {property.images.map((_, dotIdx) => (
-                          <div
-                            key={dotIdx}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${
-                              dotIdx === (currentImageIndex[property.id] || 0)
-                                ? 'w-4 bg-orange-500'
-                                : 'w-1.5 bg-white/40'
-                            }`}
-                          />
-                        ))}
-                      </div>
                     </>
                   )}
                 </div>
 
                 {/* Content Section */}
-                <div className="p-5 flex flex-col justify-between flex-grow">
-                  <div>
-                    <h2 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors truncate">
+                <div className="p-5 flex flex-col justify-between flex-grow space-y-4">
+                  <div className="space-y-2">
+                    <h2 className="text-base font-bold text-white group-hover:text-[#FF5A36] transition-colors truncate">
                       {property.name}
                     </h2>
                     
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 mt-1 mb-4">
-                      <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                    <div className="flex items-center gap-1.5 text-xs text-[#9E9EA7]">
+                      <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                       <span className="truncate">{property.city}, {property.area}</span>
                     </div>
 
-                    {/* Meta Specs Grid */}
-                    <div className="grid grid-cols-2 gap-2 py-3 border-y border-zinc-800/80 text-xs text-zinc-300">
+                    {/* Meta Specs */}
+                    <div className="grid grid-cols-2 gap-2 py-3 border-y border-[#1E1E26] text-xs text-[#FAFAFA]">
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-orange-500" />
-                        <span>{property.rooms} Total Rooms</span>
+                        <Users className="w-3.5 h-3.5 text-[#7A7A85]" />
+                        <span>{property.rooms} Total Units</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <Building className="w-3.5 h-3.5 text-orange-500" />
+                        <Building className="w-3.5 h-3.5 text-[#7A7A85]" />
                         <span className="truncate">{property.buildingType || 'PG Stay'}</span>
                       </div>
                     </div>
 
-                    {/* Owner Card Details */}
-                    <div className="mt-3 pt-1 text-xs text-zinc-400 space-y-1">
+                    {/* Owner Contacts */}
+                    <div className="text-xs text-[#7A7A85] space-y-1">
                       <div className="flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-orange-500/80" />
-                        <span className="text-zinc-200 font-medium truncate">{property.ownerName}</span>
+                        <User className="w-3.5 h-3.5 text-[#7A7A85]" />
+                        <span className="text-[#FAFAFA] font-medium truncate">{property.ownerName}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <Phone className="w-3.5 h-3.5 text-orange-500/80" />
+                        <Phone className="w-3.5 h-3.5 text-[#7A7A85]" />
                         <span>{property.ownerPhone}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Trigger Action Button */}
+                  {/* Trigger Action */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedProperty(property);
                     }}
-                    className="w-full mt-5 py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md shadow-orange-500/20 transition-all flex items-center justify-center gap-1.5"
+                    className="w-full py-2.5 px-4 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-[#181820] hover:bg-[#FF5A36] border border-[#22222A] hover:border-[#FF5A36] transition-colors flex items-center justify-center gap-1.5"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>View Property Details</span>
+                    <span>View Specifications</span>
                   </button>
                 </div>
               </div>
@@ -354,7 +343,7 @@ const FindPG = () => {
           </div>
         )}
 
-        {/* 🌟 Property Details Modal */}
+        {/* Property Details Modal */}
         {selectedProperty && (
           <PropertyDetails
             property={selectedProperty}

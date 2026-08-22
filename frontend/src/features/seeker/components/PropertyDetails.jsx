@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, 
   MapPin, 
   Users, 
-  DollarSign, 
   Building, 
   Phone, 
   Mail, 
-  Clock, 
   User, 
-  Home, 
-  Calendar, 
   ShieldCheck, 
   Wifi, 
   Utensils, 
@@ -26,8 +22,7 @@ import {
   ChevronLeft, 
   ChevronRight,
   Maximize2,
-  Sparkles,
-  Award
+  Sparkles
 } from 'lucide-react';
 import BookingForm from './BookingForm';
 import { useNavigate } from 'react-router-dom';
@@ -38,8 +33,20 @@ const PropertyDetails = ({ property, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showLightbox, setShowLightbox] = useState(false);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const modalContainerRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    if (modalContainerRef.current) {
+      modalContainerRef.current.scrollTop = 0;
+    }
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
 
   const propertyImages = (property.images && property.images.length > 0) ? property.images : [];
 
@@ -71,64 +78,63 @@ const PropertyDetails = ({ property, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-xl animate-in fade-in duration-200">
+    <div ref={modalContainerRef} className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-xs">
       <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">
         
-        <div className="w-full max-w-5xl glass-panel rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden relative">
+        <div className="w-full max-w-5xl rounded-sm bg-[#121217] border border-[#1E1E26] shadow-2xl overflow-hidden relative">
           
           {/* Header Bar */}
-          <div className="flex items-center justify-between p-6 border-b border-zinc-800/80 bg-zinc-950/80 sticky top-0 z-20 backdrop-blur-md">
+          <div className="flex items-center justify-between p-6 border-b border-[#1E1E26] bg-[#0B0B0E] sticky top-0 z-20">
             <div>
               <div className="flex items-center gap-2.5">
-                <h2 className="text-2xl font-extrabold text-white tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                   {property.name}
                 </h2>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Verified Host</span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-emerald-500 text-black">
+                  <ShieldCheck className="w-3 h-3" />
+                  <span>Audited Listing</span>
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-zinc-400 mt-1">
-                <MapPin className="w-3.5 h-3.5 text-orange-500" />
+              <div className="flex items-center gap-2 text-xs text-[#9E9EA7] mt-1">
+                <MapPin className="w-3.5 h-3.5 text-[#FF5A36]" />
                 <span>{property.city}, {property.area}</span>
-                <span className="text-zinc-600">•</span>
-                <span>Category: <strong className="text-zinc-200">{property.category || 'Paying Guest'}</strong></span>
+                <span className="text-[#383848]">•</span>
+                <span>Type: <strong className="text-white font-medium">{property.category || 'Paying Guest'}</strong></span>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all"
+              className="p-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          {/* 🖼️ Photo Mosaic Layout (Airbnb Style) */}
+          {/* Photo Gallery Grid */}
           <div className="p-6 pb-0">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-sm overflow-hidden bg-[#0B0B0E] border border-[#1E1E26]">
               
-              {/* Primary Main Photo (Spans 2 cols & 2 rows on md) */}
+              {/* Primary Large Photo */}
               <div
                 onClick={() => {
                   setCurrentImageIndex(0);
                   setShowLightbox(true);
                 }}
-                className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto h-72 md:h-96 group cursor-pointer overflow-hidden bg-zinc-900"
+                className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto h-72 md:h-96 group cursor-pointer overflow-hidden bg-[#0B0B0E]"
               >
                 <img
                   src={getSecureImageUrl(propertyImages[0] || null, 0)}
                   alt={`${property.name} Main View`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                <div className="absolute bottom-3 left-3 bg-zinc-950/80 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-semibold text-white border border-zinc-800">
-                  Primary View
+                <div className="absolute bottom-3 left-3 bg-[#0B0B0E]/90 px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-wider text-white border border-[#22222A]">
+                  Audited Primary Angle
                 </div>
               </div>
 
-              {/* 4 Secondary Grid Thumbnails */}
+              {/* Secondary Thumbnails */}
               {[1, 2, 3, 4].map((idx) => (
                 <div
                   key={idx}
@@ -136,19 +142,17 @@ const PropertyDetails = ({ property, onClose }) => {
                     setCurrentImageIndex(idx < propertyImages.length ? idx : 0);
                     setShowLightbox(true);
                   }}
-                  className="hidden md:block relative h-46 group cursor-pointer overflow-hidden bg-zinc-900"
+                  className="hidden md:block relative h-47 group cursor-pointer overflow-hidden bg-[#0B0B0E]"
                 >
                   <img
                     src={getSecureImageUrl(propertyImages[idx] || null, idx)}
                     alt={`${property.name} View ${idx + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                  
                   {idx === 4 && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-xs gap-1.5 hover:bg-black/70 transition-colors backdrop-blur-xs">
-                      <Maximize2 className="w-4 h-4 text-orange-400" />
-                      <span>View Lightbox</span>
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-xs gap-1.5 hover:bg-black/70 transition-colors">
+                      <Maximize2 className="w-3.5 h-3.5 text-[#FF5A36]" />
+                      <span>Full Gallery ({propertyImages.length})</span>
                     </div>
                   )}
                 </div>
@@ -157,102 +161,101 @@ const PropertyDetails = ({ property, onClose }) => {
             </div>
           </div>
 
-          {/* 📄 Content Grid (Left Details + Right Sticky Pricing Card) */}
+          {/* Content Layout */}
           <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column (8 Cols) */}
+            {/* Left Column (7 Cols) */}
             <div className="lg:col-span-7 space-y-6">
               
-              {/* Key Specs Card */}
-              <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Accommodation Highlights</span>
-                </h3>
+              {/* Key Specs */}
+              <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-4">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#FF5A36]">
+                  Specification Summary
+                </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
                   <div>
-                    <span className="text-zinc-500 block">Room Configuration</span>
-                    <span className="text-zinc-200 font-bold text-sm">{property.rooms} Rooms</span>
+                    <span className="text-[#7A7A85] block">Room Inventory</span>
+                    <span className="text-white font-bold text-sm">{property.rooms} Units</span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block">Structure Type</span>
-                    <span className="text-zinc-200 font-bold text-sm">{property.buildingType || 'PG Building'}</span>
+                    <span className="text-[#7A7A85] block">Structure Format</span>
+                    <span className="text-white font-bold text-sm">{property.buildingType || 'PG Building'}</span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block">Location Area</span>
-                    <span className="text-zinc-200 font-bold text-sm truncate block">{property.area}</span>
+                    <span className="text-[#7A7A85] block">Geographic District</span>
+                    <span className="text-white font-bold text-sm truncate block">{property.area}</span>
                   </div>
                 </div>
               </div>
 
               {/* Verified Amenities */}
-              <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
-                  Verified Inclusions & Amenities
+              <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                  Audited Inclusions & Amenities
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {property.amenities && property.amenities.length > 0 ? (
                     property.amenities.map((amenity, aIdx) => {
                       const IconComp = amenityIcons[amenity] || ShieldCheck;
                       return (
                         <div
                           key={aIdx}
-                          className="flex items-center gap-2.5 p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300"
+                          className="flex items-center gap-2 p-2.5 rounded-sm bg-[#121217] border border-[#1E1E26] text-xs font-semibold text-[#FAFAFA]"
                         >
-                          <IconComp className="w-4 h-4 text-orange-500 shrink-0" />
+                          <IconComp className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                           <span className="truncate">{amenity}</span>
                         </div>
                       );
                     })
                   ) : (
-                    <p className="text-xs text-zinc-500 col-span-full">All standard hostel amenities included.</p>
+                    <p className="text-xs text-[#7A7A85] col-span-full">All standard hostel amenities verified by audit team.</p>
                   )}
                 </div>
               </div>
 
-              {/* House Rules */}
-              <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
+              {/* Guidelines & Rules */}
+              <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
                   Host Guidelines & House Rules
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {property.rules && property.rules.length > 0 ? (
                     property.rules.map((rule, rIdx) => (
-                      <div key={rIdx} className="flex items-center gap-2 text-xs text-zinc-300">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <div key={rIdx} className="flex items-center gap-2 text-xs text-[#9E9EA7]">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                         <span>{rule}</span>
                       </div>
                     ))
                   ) : (
-                    <div className="flex items-center gap-2 text-xs text-zinc-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div className="flex items-center gap-2 text-xs text-[#9E9EA7]">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>Standard residential code of conduct applies</span>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Host Contact Information */}
-              <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-4">
-                  Verified Property Owner
+              {/* Host Contacts */}
+              <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                  Verified Property Host
                 </h3>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-12 w-12 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
-                    <User className="w-6 h-6" />
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-sm bg-[#181820] border border-[#22222A] flex items-center justify-center text-[#FF5A36]">
+                    <User className="w-4 h-4" />
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-white">{property.ownerName}</h4>
-                    <p className="text-xs text-zinc-400">Owner / Property Manager</p>
+                    <p className="text-xs text-[#7A7A85]">Authorized Host / Operator</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-300">
-                  <div className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
-                    <Phone className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#FAFAFA]">
+                  <div className="flex items-center gap-2 p-2.5 rounded-sm bg-[#121217] border border-[#1E1E26]">
+                    <Phone className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                     <span className="truncate">{property.ownerPhone}</span>
                   </div>
-                  <div className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
-                    <Mail className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                  <div className="flex items-center gap-2 p-2.5 rounded-sm bg-[#121217] border border-[#1E1E26]">
+                    <Mail className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                     <span className="truncate">{property.ownerEmail}</span>
                   </div>
                 </div>
@@ -260,54 +263,54 @@ const PropertyDetails = ({ property, onClose }) => {
 
             </div>
 
-            {/* Right Column: Sticky Booking / Price Breakdown (5 Cols) */}
+            {/* Right Column: Sticky Pricing Breakdown (5 Cols) */}
             <div className="lg:col-span-5 lg:sticky lg:top-24">
-              <div className="glass-panel p-6 rounded-3xl border border-zinc-800 glow-orange-sm space-y-6">
+              <div className="p-6 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-6">
                 
                 {/* Price Display */}
                 <div>
-                  <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-                    Monthly Rent
+                  <span className="text-[10px] font-bold text-[#7A7A85] uppercase tracking-widest block">
+                    Monthly Rent Tariff
                   </span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-3xl font-extrabold text-white">
+                    <span className="text-3xl font-bold text-white">
                       ₹{property.rent?.toLocaleString()}
                     </span>
-                    <span className="text-xs text-zinc-400">/ per resident</span>
+                    <span className="text-xs text-[#7A7A85]">/ resident month</span>
                   </div>
                 </div>
 
-                {/* Pricing & Deposit Breakdown */}
-                <div className="space-y-3 pt-4 border-t border-zinc-800 text-xs">
-                  <div className="flex justify-between text-zinc-400">
+                {/* Pricing Breakdown */}
+                <div className="space-y-2.5 pt-4 border-t border-[#1E1E26] text-xs">
+                  <div className="flex justify-between text-[#9E9EA7]">
                     <span>Monthly Accommodation Rent</span>
-                    <span className="text-zinc-200 font-semibold">₹{property.rent?.toLocaleString()}</span>
+                    <span className="text-white font-semibold">₹{property.rent?.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-zinc-400">
+                  <div className="flex justify-between text-[#9E9EA7]">
                     <span>Security Deposit (Refundable)</span>
-                    <span className="text-zinc-200 font-semibold">₹{property.deposit?.toLocaleString()}</span>
+                    <span className="text-white font-semibold">₹{property.deposit?.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-zinc-400">
-                    <span>Platform Brokerage Fee</span>
-                    <span className="text-emerald-400 font-bold uppercase">₹0 (Zero Free)</span>
+                  <div className="flex justify-between text-[#9E9EA7]">
+                    <span>Brokerage Markup</span>
+                    <span className="text-emerald-400 font-bold uppercase">₹0 (Zero Brokerage)</span>
                   </div>
                 </div>
 
                 {/* Trust Guarantee */}
-                <div className="p-3.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-xs text-orange-300 flex items-start gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                <div className="p-3 rounded-sm bg-[#121217] border border-[#1E1E26] text-xs text-[#9E9EA7] flex items-start gap-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A36] shrink-0 mt-0.5" />
                   <span>
-                    Secured by PG Made Eazy Digital Guarantee. Direct host connection with encrypted PayPal checkout.
+                    Secured by PG Made Eazy Digital Guarantee. Direct landlord reservation with encrypted PayPal checkout.
                   </span>
                 </div>
 
-                {/* Primary CTA Button */}
+                {/* Primary CTA */}
                 <button
                   onClick={() => setShowBookingForm(true)}
-                  className="w-full py-4 px-6 rounded-2xl font-extrabold text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-[#FF5A36] hover:bg-[#E54B28] transition-colors flex items-center justify-center gap-2"
                 >
-                  <Key className="w-4 h-4" />
-                  <span>Book This Room Now</span>
+                  <Key className="w-3.5 h-3.5" />
+                  <span>Reserve Room Online</span>
                 </button>
               </div>
             </div>
@@ -318,48 +321,48 @@ const PropertyDetails = ({ property, onClose }) => {
 
       </div>
 
-      {/* 🖼️ Full Lightbox Carousel Modal */}
+      {/* Lightbox Carousel */}
       {showLightbox && propertyImages.length > 0 && (
         <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-4">
           <button
             onClick={() => setShowLightbox(false)}
-            className="absolute top-4 right-4 p-3 rounded-full bg-zinc-900 text-white hover:bg-zinc-800"
+            className="absolute top-4 right-4 p-2 rounded-sm bg-[#121217] text-white hover:bg-[#181820]"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
           
           <div className="relative max-w-4xl max-h-[80vh] w-full flex items-center justify-center">
             <img
               src={getSecureImageUrl(propertyImages[currentImageIndex], currentImageIndex)}
               alt={`${property.name} Full View`}
-              className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[75vh] w-auto max-w-full rounded-sm object-contain"
             />
 
             {propertyImages.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 p-3 rounded-full bg-zinc-950/80 text-white hover:bg-orange-500 transition-colors"
+                  className="absolute left-2 p-2 rounded-sm bg-[#0B0B0E]/80 text-white hover:bg-[#FF5A36] transition-colors"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 p-3 rounded-full bg-zinc-950/80 text-white hover:bg-orange-500 transition-colors"
+                  className="absolute right-2 p-2 rounded-sm bg-[#0B0B0E]/80 text-white hover:bg-[#FF5A36] transition-colors"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </>
             )}
           </div>
 
-          <div className="mt-4 text-xs font-semibold text-zinc-400">
+          <div className="mt-4 text-xs font-semibold text-[#7A7A85]">
             Photo {currentImageIndex + 1} of {propertyImages.length}
           </div>
         </div>
       )}
 
-      {/* 💳 Booking Form Modal */}
+      {/* Booking Form Modal */}
       {showBookingForm && (
         <BookingForm
           property={property}

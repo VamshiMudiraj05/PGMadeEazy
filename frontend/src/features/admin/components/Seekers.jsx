@@ -42,9 +42,9 @@ const Seekers = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Loading registered seeker directory...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading resident directory...</p>
       </div>
     );
   }
@@ -52,13 +52,13 @@ const Seekers = () => {
   const renderOccupationDetails = (seeker) => {
     if (seeker.occupationType === 'student') {
       return (
-        <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 space-y-1">
+        <div className="p-2.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-0.5">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-400">
             <GraduationCap className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">{seeker.collegeName || 'Student (College not listed)'}</span>
+            <span className="truncate">{seeker.collegeName || 'Student'}</span>
           </div>
           {seeker.courseName && (
-            <div className="text-[11px] text-zinc-400 pl-5">
+            <div className="text-[11px] text-[#7A7A85] pl-5">
               {seeker.courseName} • Year {seeker.yearOfStudy || '1'}
             </div>
           )}
@@ -66,13 +66,13 @@ const Seekers = () => {
       );
     } else if (seeker.occupationType === 'professional') {
       return (
-        <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
+        <div className="p-2.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-0.5">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
             <Briefcase className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{seeker.companyName || 'Working Professional'}</span>
           </div>
           {seeker.jobRole && (
-            <div className="text-[11px] text-zinc-400 pl-5">
+            <div className="text-[11px] text-[#7A7A85] pl-5">
               {seeker.jobRole} • {seeker.workExperience || '1+ yrs exp'}
             </div>
           )}
@@ -83,49 +83,51 @@ const Seekers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Navigation & Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/admin-dashboard')}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Resident Seeker Directory ({seekers.length})
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400">Resident Registry</div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                Seeker Resident Roster ({seekers.length})
               </h1>
-              <p className="text-xs text-zinc-400 mt-0.5">Verified student and working professional resident accounts</p>
             </div>
           </div>
         </div>
 
         {error ? (
-          <div className="glass-panel p-8 rounded-2xl border border-red-500/30 text-center max-w-md mx-auto">
-            <p className="text-sm font-semibold text-red-400 mb-4">{error}</p>
+          <div className="p-8 rounded-sm bg-[#121217] border border-red-500/30 text-center max-w-md mx-auto space-y-4">
+            <p className="text-xs font-semibold text-red-400">{error}</p>
             <button
               onClick={fetchSeekers}
-              className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors"
+              className="px-4 py-2 rounded-sm bg-[#FF5A36] text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
               Retry Loading
             </button>
           </div>
         ) : seekers.length === 0 ? (
-          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto glow-orange-sm">
-            <Users className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-            <h2 className="text-xl font-extrabold text-white mb-1.5">No Seekers Registered</h2>
-            <p className="text-xs text-zinc-400 mb-6">
-              When residents sign up and complete their onboarding, their profiles will populate here.
-            </p>
+          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+            <Users className="w-8 h-8 text-[#7A7A85] mx-auto" />
+            <div className="space-y-1">
+              <h2 className="text-base font-bold text-white">No Registered Seekers</h2>
+              <p className="text-xs text-[#7A7A85]">
+                When residents sign up and complete their onboarding, their profiles will populate here.
+              </p>
+            </div>
             <button
               onClick={() => navigate('/admin-dashboard')}
-              className="px-6 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white font-bold text-xs transition-colors"
+              className="px-4 py-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              Back to Dashboard
+              Back to Operations Center
             </button>
           </div>
         ) : (
@@ -133,35 +135,35 @@ const Seekers = () => {
             {seekers.map((seeker) => (
               <div 
                 key={seeker.id} 
-                className="glass-panel p-6 rounded-3xl border border-zinc-800 hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-blue-500/5 glow-orange-sm"
+                className="p-6 rounded-sm bg-[#121217] border border-[#1E1E26] flex flex-col justify-between space-y-4"
               >
-                <div>
+                <div className="space-y-4">
                   {/* Seeker Profile Head */}
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-blue-500/25 shrink-0">
+                  <div className="flex items-start gap-3">
+                    <div className="h-10 w-10 rounded-sm bg-blue-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
                       {seeker.fullName?.charAt(0)?.toUpperCase() || 'S'}
                     </div>
-                    <div className="overflow-hidden">
+                    <div className="overflow-hidden space-y-0.5">
                       <div className="flex items-center gap-1.5">
-                        <h2 className="text-base font-bold text-white truncate">{seeker.fullName || 'Seeker'}</h2>
+                        <h2 className="text-sm font-bold text-white truncate">{seeker.fullName || 'Seeker'}</h2>
                         <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                       </div>
-                      <p className="text-xs text-zinc-500 font-mono mt-0.5">ID: {seeker.id}</p>
+                      <p className="text-[10px] text-[#7A7A85] font-mono">ID: {seeker.id}</p>
                     </div>
                   </div>
 
                   {/* Contact Information */}
-                  <div className="space-y-2.5 py-3 border-y border-zinc-800/80 text-xs">
-                    <div className="flex items-center gap-2 text-zinc-300">
-                      <Phone className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                  <div className="space-y-2 py-3 border-y border-[#1E1E26] text-xs">
+                    <div className="flex items-center gap-2 text-[#FAFAFA]">
+                      <Phone className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                       <span>{seeker.phone || 'N/A'}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-zinc-300">
-                      <Mail className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                    <div className="flex items-center gap-2 text-[#FAFAFA]">
+                      <Mail className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                       <span className="truncate">{seeker.email}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-zinc-300">
-                      <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                    <div className="flex items-center gap-2 text-[#FAFAFA]">
+                      <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                       <span className="truncate">
                         {seeker.currentCity}
                         {seeker.preferredLocation && seeker.preferredLocation !== seeker.currentCity && 
@@ -169,29 +171,29 @@ const Seekers = () => {
                       </span>
                     </div>
                     {seeker.dateOfBirth && (
-                      <div className="flex items-center gap-2 text-zinc-400">
-                        <Calendar className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                      <div className="flex items-center gap-2 text-[#7A7A85]">
+                        <Calendar className="w-3.5 h-3.5 text-[#7A7A85] shrink-0" />
                         <span>DOB: {seeker.dateOfBirth}</span>
                       </div>
                     )}
                   </div>
 
                   {/* Occupation Details */}
-                  <div className="mt-3.5">
+                  <div>
                     {renderOccupationDetails(seeker)}
                   </div>
                 </div>
 
                 {/* Identity Metadata Footer */}
-                <div className="mt-4 pt-3 space-y-1.5 text-xs">
-                  <div className="flex justify-between items-center text-zinc-400">
-                    <span>Govt ID Verified:</span>
-                    <span className="text-orange-400 uppercase font-semibold">{seeker.govtIdType || 'Aadhaar'}</span>
+                <div className="pt-2 space-y-1 text-xs">
+                  <div className="flex justify-between items-center text-[#7A7A85]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Govt ID:</span>
+                    <span className="text-[#FF5A36] uppercase font-bold text-[10px]">{seeker.govtIdType || 'Aadhaar'}</span>
                   </div>
                   {seeker.emergencyContactName && (
-                    <div className="flex justify-between items-center text-zinc-400">
-                      <span>Emergency Ref:</span>
-                      <span className="text-zinc-200 font-medium truncate max-w-[150px]">{seeker.emergencyContactName}</span>
+                    <div className="flex justify-between items-center text-[#7A7A85]">
+                      <span className="text-[10px] font-bold uppercase tracking-wider">Emergency Ref:</span>
+                      <span className="text-white font-medium truncate max-w-[150px]">{seeker.emergencyContactName}</span>
                     </div>
                   )}
                 </div>

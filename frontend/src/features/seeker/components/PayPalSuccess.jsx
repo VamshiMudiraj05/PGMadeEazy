@@ -113,47 +113,47 @@ Thank you for choosing PG Made Eazy!
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Verifying PayPal escrow payment...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Verifying gateway settlement...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex items-center justify-center p-4 text-zinc-100 selection:bg-orange-500 selection:text-white">
-        <div className="glass-panel p-8 sm:p-10 rounded-3xl max-w-md w-full border border-red-500/30 text-center shadow-2xl glow-orange-sm">
-          <div className="h-16 w-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mx-auto mb-4">
-            <XCircle className="w-9 h-9" />
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex items-center justify-center p-4 text-[#FAFAFA]">
+        <div className="p-8 sm:p-10 rounded-sm max-w-md w-full bg-[#121217] border border-red-500/30 text-center shadow-2xl space-y-6">
+          <div className="h-12 w-12 rounded-sm bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mx-auto">
+            <CheckCircle2 className="w-6 h-6 rotate-45" />
           </div>
-          <h2 className="text-2xl font-extrabold text-white tracking-tight mb-2">Payment Verification Failed</h2>
-          <p className="text-xs text-red-400 mb-6 leading-relaxed bg-red-500/10 p-3 rounded-xl border border-red-500/20">
-            {error}
-          </p>
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold text-white tracking-tight">Payment Verification Failed</h2>
+            <p className="text-xs text-red-400 leading-relaxed bg-[#0B0B0E] p-3 rounded-sm border border-red-500/20">
+              {error}
+            </p>
+          </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <button
               onClick={() => navigate('/seeker-dashboard/find-pg')}
-              className="w-full py-3.5 px-6 rounded-xl font-extrabold text-xs bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-md shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-sm font-bold text-xs uppercase tracking-wider bg-[#FF5A36] hover:bg-[#E54B28] text-white transition-colors"
             >
-              <RefreshCw className="w-4 h-4" />
-              <span>Try Booking Again</span>
+              Try Reserving Again
             </button>
             
             <button
               onClick={() => navigate('/seeker-dashboard/bookings')}
-              className="w-full py-3 px-6 rounded-xl font-bold text-xs bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/40 transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-sm font-bold text-xs uppercase tracking-wider bg-[#181820] border border-[#22222A] text-white hover:bg-[#22222A] transition-colors"
             >
-              <Calendar className="w-4 h-4 text-orange-500" />
-              <span>View My Reservations</span>
+              View My Reservations
             </button>
 
             <button
               onClick={() => navigate('/contact')}
-              className="w-full py-2.5 px-6 text-zinc-400 hover:text-zinc-200 font-semibold text-xs transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-2 text-[#7A7A85] hover:text-white font-semibold text-xs transition-colors"
             >
-              <span>Need Help? Contact Support</span>
+              Contact Support Desk
             </button>
           </div>
         </div>
@@ -163,68 +163,68 @@ Thank you for choosing PG Made Eazy!
 
   if (receipt) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 flex items-center justify-center selection:bg-orange-500 selection:text-white">
-        <div className="glass-panel p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl glow-orange-sm relative">
+      <div className="min-h-screen bg-[#0B0B0E] text-[#FAFAFA] py-12 px-4 flex items-center justify-center">
+        <div className="p-8 rounded-sm max-w-lg w-full bg-[#121217] border border-[#1E1E26] shadow-2xl relative space-y-6">
           
           {/* Success Banner */}
-          <div className="text-center mb-6">
-            <div className="h-16 w-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto mb-3 shadow-lg">
-              <CheckCircle2 className="w-9 h-9" />
+          <div className="text-center space-y-2">
+            <div className="h-12 w-12 rounded-sm bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 inline-block mb-1">
-              Payment Verified
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+              Transaction Settled
             </span>
-            <h2 className="text-2xl font-extrabold text-white tracking-tight">Stay Reservation Confirmed!</h2>
-            <p className="text-xs text-zinc-400 mt-1">Your payment has been processed and host notified.</p>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Stay Reservation Confirmed</h2>
+            <p className="text-xs text-[#7A7A85]">Your digital escrow payment has been processed and host notified.</p>
           </div>
 
           {/* Digital Receipt Card */}
-          <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-3 mb-6 text-xs">
-            <div className="flex justify-between items-center text-zinc-400">
+          <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2.5 text-xs">
+            <div className="flex justify-between items-center text-[#7A7A85]">
               <span>Booking Reference:</span>
-              <span className="font-mono text-zinc-200 font-bold">{receipt.bookingId}</span>
+              <span className="font-mono text-white font-bold">{receipt.bookingId}</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-400">
+            <div className="flex justify-between items-center text-[#7A7A85]">
               <span>Accommodation:</span>
-              <span className="text-zinc-200 font-semibold">{receipt.propertyName}</span>
+              <span className="text-white font-medium">{receipt.propertyName}</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-400">
+            <div className="flex justify-between items-center text-[#7A7A85]">
               <span>Check-in Date:</span>
-              <span className="text-zinc-200">{receipt.checkInDate}</span>
+              <span className="text-white font-medium">{receipt.checkInDate}</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-400">
+            <div className="flex justify-between items-center text-[#7A7A85]">
               <span>Check-out Date:</span>
-              <span className="text-zinc-200">{receipt.checkOutDate}</span>
+              <span className="text-white font-medium">{receipt.checkOutDate}</span>
             </div>
-            <div className="flex justify-between items-center text-zinc-400">
-              <span>Total Occupants:</span>
-              <span className="text-zinc-200">{receipt.numberOfGuests} Resident(s)</span>
+            <div className="flex justify-between items-center text-[#7A7A85]">
+              <span>Occupants:</span>
+              <span className="text-white font-medium">{receipt.numberOfGuests} Resident(s)</span>
             </div>
-            <div className="pt-2 border-t border-zinc-800 flex justify-between items-baseline">
+            <div className="pt-2 border-t border-[#1E1E26] flex justify-between items-baseline">
               <span className="font-bold text-white uppercase tracking-wider">Total Paid:</span>
-              <span className="text-lg font-extrabold text-orange-400">${receipt.totalAmount} USD</span>
+              <span className="text-lg font-bold text-[#FF5A36]">${receipt.totalAmount} USD</span>
             </div>
-            <div className="flex justify-between items-center text-[10px] text-zinc-500 pt-1">
-              <span>PayPal Transaction ID:</span>
+            <div className="flex justify-between items-center text-[10px] text-[#7A7A85] pt-1">
+              <span>Gateway Transaction ID:</span>
               <span className="font-mono">{receipt.paymentId}</span>
             </div>
           </div>
 
           {/* Action CTAs */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <button
               onClick={handleDownloadReceipt}
-              className="w-full py-3.5 px-6 rounded-xl font-extrabold text-xs text-white bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+              className="w-full py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
             >
-              <Download className="w-4 h-4" />
-              <span>Download Digital Receipt (.txt)</span>
+              <Download className="w-3.5 h-3.5" />
+              <span>Download Tax Invoice (.txt)</span>
             </button>
             
             <button
               onClick={() => navigate('/seeker-dashboard/bookings')}
-              className="w-full py-3.5 px-6 rounded-xl font-bold text-xs bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/40 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 px-4 rounded-sm font-bold text-xs uppercase tracking-wider bg-[#181820] border border-[#22222A] text-white hover:bg-[#22222A] transition-colors flex items-center justify-center gap-2"
             >
-              <ArrowLeft className="w-4 h-4 text-orange-500" />
+              <ArrowLeft className="w-3.5 h-3.5 text-[#FF5A36]" />
               <span>Go to My Reservations</span>
             </button>
           </div>

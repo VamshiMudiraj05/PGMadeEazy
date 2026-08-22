@@ -11,19 +11,17 @@ import {
   Headphones, 
   Search, 
   ArrowRight, 
-  Sparkles, 
+  ArrowUpRight,
   Compass, 
   CalendarCheck, 
-  HeartHandshake,
-  CheckCircle2,
   X
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 
 const menuItems = [
-  { icon: Search, label: 'Find PG Accommodations', sublabel: 'Explore verified student & professional stays', path: '/seeker-dashboard/find-pg', gradient: 'from-orange-500/20 to-amber-500/10', border: 'hover:border-orange-500/50' },
-  { icon: CalendarCheck, label: 'My Bookings', sublabel: 'Manage your active reservations & payment receipts', path: '/seeker-dashboard/bookings', gradient: 'from-blue-500/20 to-indigo-500/10', border: 'hover:border-blue-500/50' },
-  { icon: User, label: 'Profile & Documents', sublabel: 'Update contact details, occupation, and verification', path: '/seeker-dashboard/profile', gradient: 'from-purple-500/20 to-pink-500/10', border: 'hover:border-purple-500/50' },
+  { icon: Search, label: 'Search & Directory', sublabel: 'Explore verified student & professional accommodations', path: '/seeker-dashboard/find-pg' },
+  { icon: CalendarCheck, label: 'Active Reservations', sublabel: 'Manage confirmed stays & digital tax invoices', path: '/seeker-dashboard/bookings' },
+  { icon: User, label: 'Profile & Credentials', sublabel: 'Review contact details, occupation, and identity badges', path: '/seeker-dashboard/profile' },
 ];
 
 const SeekerDashboard = () => {
@@ -39,33 +37,33 @@ const SeekerDashboard = () => {
   };
 
   return (
-    <div className="relative bg-zinc-950 min-h-[calc(100vh-140px)] flex overflow-hidden text-zinc-100 selection:bg-orange-500 selection:text-white">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] min-h-[calc(100vh-140px)] flex overflow-hidden">
       
-      {/* 🧭 Off-canvas Mobile / Desktop Sidebar Drawer */}
+      {/* Off-canvas Navigation Drawer */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity"
             onClick={() => setIsSidebarOpen(false)}
           />
-          <div className="relative z-50 w-72 bg-zinc-950/95 border-r border-zinc-800/80 p-6 flex flex-col justify-between shadow-2xl backdrop-blur-2xl animate-in slide-in-from-left duration-200">
-            <div>
-              <div className="flex items-center justify-between pb-6 mb-6 border-b border-zinc-800">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-8 w-8 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
-                    <Compass className="h-4 w-4" />
+          <div className="relative z-50 w-72 bg-[#121217] border-r border-[#1E1E26] p-6 flex flex-col justify-between shadow-2xl">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-[#1E1E26]">
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-sm bg-[#FF5A36] text-white flex items-center justify-center text-xs font-bold">
+                    P
                   </div>
-                  <span className="font-extrabold text-white text-base">Seeker Portal</span>
+                  <span className="font-bold text-white text-sm">Resident Desk</span>
                 </div>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900"
+                  className="p-1 rounded-sm text-[#7A7A85] hover:text-white"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 {menuItems.map((item, index) => (
                   <button
                     key={index}
@@ -73,9 +71,9 @@ const SeekerDashboard = () => {
                       navigate(item.path);
                       setIsSidebarOpen(false);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-sm font-semibold transition-all"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-[#9E9EA7] hover:text-white hover:bg-[#181820] text-xs font-semibold uppercase tracking-wider transition-colors text-left"
                   >
-                    <item.icon className="w-4 h-4 text-orange-400" />
+                    <item.icon className="w-4 h-4 text-[#FF5A36]" />
                     <span>{item.label}</span>
                   </button>
                 ))}
@@ -84,7 +82,7 @@ const SeekerDashboard = () => {
 
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-sm font-semibold transition-all"
+              className="w-full flex items-center gap-2 px-3 py-2.5 rounded-sm text-red-400 hover:bg-red-500/10 text-xs font-bold uppercase tracking-wider transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
@@ -94,120 +92,115 @@ const SeekerDashboard = () => {
       )}
 
       {/* Main Dashboard Canvas */}
-      <div className="flex-1 relative p-4 sm:p-8 max-w-6xl mx-auto w-full">
+      <div className="flex-1 p-6 sm:p-10 max-w-6xl mx-auto w-full space-y-10">
         
-        {/* Top Header Bar */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
+        {/* Top Control Bar */}
+        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
+          <div className="flex items-center gap-4">
             <button
               onClick={toggleSidebar}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all shadow-sm"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
               aria-label="Toggle Portal Menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                Resident Portal
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A36]">Seeker Hub</div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                Welcome back, {user?.name || 'Resident'}
               </h1>
-              <p className="text-xs text-zinc-400">Discover properties, track stays, and manage receipts</p>
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Seeker Account Verified</span>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-sm bg-[#121217] border border-[#1E1E26] text-[#9E9EA7]">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span>Audited Resident Profile</span>
           </div>
         </div>
 
-        {/* 🌟 Welcome Banner */}
-        <div className="relative overflow-hidden p-6 sm:p-8 rounded-3xl glass-panel border border-zinc-800 mb-8 glow-orange-sm">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/10 blur-3xl pointer-events-none rounded-full" />
-          
-          <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-3 border border-orange-500/20">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Welcome Back</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
-              Hello, {user?.name || 'Resident'}!
+        {/* Art-Directed Action Console Banner */}
+        <div className="p-8 sm:p-10 rounded-sm bg-[#121217] border border-[#1E1E26] flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="space-y-3 max-w-xl">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A36]">
+              Accommodations Directory
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              Discover verified spaces with 0% brokerage markup.
             </h2>
-            <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-              Ready to find your next home away from home? Explore our newly approved verified listings with zero brokerage and digital escrow protection.
+            <p className="text-xs sm:text-sm text-[#9E9EA7] leading-relaxed">
+              Every property on our directory features verified photo galleries, transparent deposit schedules, and direct landlord contact lines.
             </p>
+          </div>
+
+          <div className="shrink-0">
             <button
               onClick={() => navigate('/seeker-dashboard/find-pg')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md shadow-orange-500/25 transition-all hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-[#FF5A36] hover:bg-[#E54B28] transition-colors"
             >
-              <Search className="w-4 h-4" />
-              <span>Explore Verified PGs</span>
+              <Search className="w-3.5 h-3.5" />
+              <span>Explore Stays</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>
 
-        {/* 🚀 Quick Action Feature Tiles */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Feature Modules Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {menuItems.map((item, index) => (
             <div
               key={index}
               onClick={() => navigate(item.path)}
-              className={`group p-6 rounded-3xl glass-panel border border-zinc-800 ${item.border} cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 flex flex-col justify-between`}
+              className="group p-6 rounded-sm bg-[#121217] border border-[#1E1E26] hover:border-[#383848] cursor-pointer transition-all flex flex-col justify-between space-y-6"
             >
-              <div>
-                <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${item.gradient} border border-white/10 flex items-center justify-center text-orange-400 group-hover:scale-110 transition-transform mb-5`}>
-                  <item.icon className="w-6 h-6" />
+              <div className="space-y-3">
+                <div className="h-9 w-9 rounded-sm bg-[#181820] border border-[#22222A] flex items-center justify-center text-[#FF5A36]">
+                  <item.icon className="w-4 h-4" />
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors mb-1.5">
+                <h3 className="text-base font-bold text-white group-hover:text-[#FF5A36] transition-colors">
                   {item.label}
                 </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
+                <p className="text-xs text-[#9E9EA7] leading-relaxed">
                   {item.sublabel}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center gap-1.5 text-xs font-semibold text-orange-400">
-                <span>Access Portal</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              <div className="pt-4 border-t border-[#1E1E26] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#FAFAFA]">
+                <span>Access Module</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#FF5A36] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
             </div>
           ))}
         </div>
 
-        {/* 💡 Quick Resident Advice & Security Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/80">
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h4 className="font-bold text-sm text-white">100% Verified Hosts</h4>
+        {/* Trust Badges Bar */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-[#1E1E26]">
+          <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Audited Compliance</span>
             </div>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Every accommodation is audited by our compliance team with verified identity & ownership records.
+            <p className="text-xs text-[#7A7A85] leading-relaxed">
+              Every accommodation is audited by our verification team with confirmed legal documentation.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/80">
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400">
-                <CreditCard className="w-5 h-5" />
-              </div>
-              <h4 className="font-bold text-sm text-white">Encrypted Digital Escrow</h4>
+          <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white">
+              <CreditCard className="w-4 h-4 text-[#FF5A36]" />
+              <span>Digital Transaction Logs</span>
             </div>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Transparent payments via PayPal with instant digital invoices and zero hidden brokerage fees.
+            <p className="text-xs text-[#7A7A85] leading-relaxed">
+              Transparent digital receipts with full audit trails and zero hidden brokerage commissions.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/80">
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
-                <Headphones className="w-5 h-5" />
-              </div>
-              <h4 className="font-bold text-sm text-white">24/7 Dedicated Support</h4>
+          <div className="p-5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white">
+              <Headphones className="w-4 h-4 text-[#7A7A85]" />
+              <span>Dedicated Support Desk</span>
             </div>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Need assistance with an active booking or host communication? Our help desk is always available.
+            <p className="text-xs text-[#7A7A85] leading-relaxed">
+              Need assistance with an active booking or host communication? Our help desk is active daily.
             </p>
           </div>
         </div>

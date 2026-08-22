@@ -86,25 +86,25 @@ const ProviderDashboard = () => {
     switch (status) {
       case 'PENDING':
         return {
-          bg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+          bg: 'bg-amber-500 text-black',
           icon: Clock,
-          label: 'Pending Review'
+          label: 'Pending'
         };
       case 'APPROVED':
         return {
-          bg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+          bg: 'bg-emerald-500 text-black',
           icon: CheckCircle2,
-          label: 'Approved & Live'
+          label: 'Approved'
         };
       case 'REJECTED':
         return {
-          bg: 'bg-red-500/10 text-red-400 border-red-500/20',
+          bg: 'bg-red-500 text-white',
           icon: XCircle,
           label: 'Changes Required'
         };
       default:
         return {
-          bg: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+          bg: 'bg-[#181820] text-[#7A7A85]',
           icon: AlertCircle,
           label: status || 'Draft'
         };
@@ -122,50 +122,50 @@ const ProviderDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Loading your property manager records...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading manager records...</p>
       </div>
     );
   }
 
   return (
-    <div className="relative bg-zinc-950 min-h-[calc(100vh-140px)] flex overflow-hidden text-zinc-100 selection:bg-orange-500 selection:text-white">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] min-h-[calc(100vh-140px)] flex overflow-hidden">
       
-      {/* 🧭 Off-canvas Host Sidebar Drawer */}
+      {/* Off-canvas Host Sidebar Drawer */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity"
             onClick={() => setIsSidebarOpen(false)}
           />
           <div 
             ref={sidebarRef}
-            className="relative z-50 w-72 bg-zinc-950/95 border-r border-zinc-800/80 p-6 flex flex-col justify-between shadow-2xl backdrop-blur-2xl animate-in slide-in-from-left duration-200"
+            className="relative z-50 w-72 bg-[#121217] border-r border-[#1E1E26] p-6 flex flex-col justify-between shadow-2xl"
           >
-            <div>
-              <div className="flex items-center justify-between pb-6 mb-6 border-b border-zinc-800">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-8 w-8 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
-                    <Building className="h-4 w-4" />
+            <div className="space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-[#1E1E26]">
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-sm bg-[#FF5A36] text-white flex items-center justify-center text-xs font-bold">
+                    H
                   </div>
-                  <span className="font-extrabold text-white text-base">Host Manager</span>
+                  <span className="font-bold text-white text-sm">Host Desk</span>
                 </div>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900"
+                  className="p-1 rounded-sm text-[#7A7A85] hover:text-white"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 {menuItems.map((item, index) => (
                   item.isLogout ? (
                     <button
                       key={index}
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-sm font-semibold transition-all"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-red-400 hover:bg-red-500/10 text-xs font-bold uppercase tracking-wider transition-colors text-left"
                     >
                       <item.icon className="w-4 h-4" />
                       <span>{item.label}</span>
@@ -175,9 +175,9 @@ const ProviderDashboard = () => {
                       key={index}
                       to={item.path}
                       onClick={() => setIsSidebarOpen(false)}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-sm font-semibold transition-all"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-[#9E9EA7] hover:text-white hover:bg-[#181820] text-xs font-semibold uppercase tracking-wider transition-colors"
                     >
-                      <item.icon className="w-4 h-4 text-orange-400" />
+                      <item.icon className="w-4 h-4 text-[#FF5A36]" />
                       <span>{item.label}</span>
                     </Link>
                   )
@@ -185,134 +185,122 @@ const ProviderDashboard = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-xs">
-              <span className="text-zinc-400 block mb-0.5">Logged in as Host</span>
-              <span className="text-white font-bold truncate block">{user?.email}</span>
+            <div className="p-3.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-xs space-y-0.5">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A7A85] block">Authorized Host</span>
+              <span className="text-white font-medium truncate block">{user?.email}</span>
             </div>
           </div>
         </div>
       )}
 
       {/* Main Workspace Canvas */}
-      <div className="flex-1 relative p-4 sm:p-8 max-w-6xl mx-auto w-full">
+      <div className="flex-1 p-6 sm:p-10 max-w-6xl mx-auto w-full space-y-8">
         
         {/* Top Header Bar */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
           <div className="flex items-center gap-3">
             <button
               id="hamburger-button"
               onClick={toggleSidebar}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all shadow-sm"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
               aria-label="Toggle Host Menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A36]">Provider Hub</div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Host Property Dashboard
               </h1>
-              <p className="text-xs text-zinc-400">Manage listings, track tenant occupancy, and view revenue</p>
             </div>
           </div>
 
           <button
             onClick={() => navigate('/provider-dashboard/add-property')}
-            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-md shadow-orange-500/20 transition-all hover:-translate-y-0.5"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-sm font-bold text-xs uppercase tracking-wider bg-[#FF5A36] hover:bg-[#E54B28] text-white transition-colors"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>List New Property</span>
           </button>
         </div>
 
-        {/* 📊 Key Metrics Overview Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="p-5 rounded-2xl glass-panel border border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-400 block mb-1">Total Properties</span>
+        {/* Key Metrics Overview Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-5 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A7A85] block">Total Properties</span>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-extrabold text-white">{totalProps}</span>
-              <Building className="w-5 h-5 text-orange-500/60" />
+              <span className="text-2xl sm:text-3xl font-bold text-white">{totalProps}</span>
+              <Building className="w-4 h-4 text-[#7A7A85]" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel border border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-400 block mb-1">Live & Approved</span>
+          <div className="p-5 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 block">Live & Approved</span>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-extrabold text-emerald-400">{approvedProps}</span>
-              <CheckCircle2 className="w-5 h-5 text-emerald-500/60" />
+              <span className="text-2xl sm:text-3xl font-bold text-emerald-400">{approvedProps}</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel border border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-400 block mb-1">Pending Audit</span>
+          <div className="p-5 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 block">Pending Audit</span>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-extrabold text-amber-400">{pendingProps}</span>
-              <Clock className="w-5 h-5 text-amber-500/60" />
+              <span className="text-2xl sm:text-3xl font-bold text-amber-400">{pendingProps}</span>
+              <Clock className="w-4 h-4 text-amber-400" />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel border border-zinc-800">
-            <span className="text-xs font-semibold text-zinc-400 block mb-1">Needs Attention</span>
+          <div className="p-5 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-red-400 block">Needs Revision</span>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-extrabold text-red-400">{rejectedProps}</span>
-              <XCircle className="w-5 h-5 text-red-500/60" />
+              <span className="text-2xl sm:text-3xl font-bold text-red-400">{rejectedProps}</span>
+              <XCircle className="w-4 h-4 text-red-400" />
             </div>
           </div>
         </div>
 
-        {/* ℹ️ Property Approval Guide Banner */}
-        <div className="p-6 rounded-3xl glass-panel border border-zinc-800 mb-8 glow-orange-sm">
-          <div className="flex items-start gap-4">
-            <div className="h-10 w-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
-              <Info className="w-5 h-5" />
+        {/* Verification Info Banner */}
+        <div className="p-6 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="h-8 w-8 rounded-sm bg-[#181820] border border-[#22222A] flex items-center justify-center text-[#FF5A36] shrink-0">
+              <Info className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-white mb-1">Listing Verification Process</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                All accommodations listed on PG Made Eazy undergo a quick quality audit within 24-48 hours before becoming visible to verified students and working professionals.
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-white">Listing Verification Timeline</h3>
+              <p className="text-xs text-[#9E9EA7] leading-relaxed">
+                All accommodations listed on PG Made Eazy undergo a compliance review within 24-48 hours before becoming visible to verified seekers.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-zinc-300">
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                  <span>Pending review after submission</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  <span>Immediate visibility upon approval</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />
-                  <span>Zero listing fee / 100% direct booking</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* 🏢 Listed Properties Catalog Grid */}
+        {/* Listed Properties Catalog Grid */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white tracking-tight">
-              Your Listed Properties ({properties.length})
+          <div className="flex items-center justify-between pb-3 border-b border-[#1E1E26]">
+            <h2 className="text-base font-bold text-white">
+              Listed Properties ({properties.length})
             </h2>
             <Link
               to="/provider-dashboard/my-properties"
-              className="text-xs font-semibold text-orange-400 hover:text-orange-300 flex items-center gap-1"
+              className="text-xs font-semibold text-[#FF5A36] hover:text-[#E54B28] flex items-center gap-1 uppercase tracking-wider"
             >
-              <span>Manage All</span>
+              <span>Manage Directory</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           {properties.length === 0 ? (
-            <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto">
-              <Building className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-white mb-1">No Properties Listed Yet</h3>
-              <p className="text-xs text-zinc-400 mb-6">List your PG stay or hostel to start receiving verified resident bookings.</p>
+            <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+              <Building className="w-8 h-8 text-[#7A7A85] mx-auto" />
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-white">No Properties Listed Yet</h3>
+                <p className="text-xs text-[#9E9EA7]">List your accommodation to start receiving resident bookings.</p>
+              </div>
               <button
                 onClick={() => navigate('/provider-dashboard/add-property')}
-                className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-all shadow-md shadow-orange-500/20"
+                className="px-4 py-2 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white font-bold text-xs uppercase tracking-wider transition-colors"
               >
-                + Add Your First Property
+                + List Property
               </button>
             </div>
           ) : (
@@ -324,20 +312,20 @@ const ProviderDashboard = () => {
                 return (
                   <div
                     key={property.id || pIdx}
-                    className="rounded-3xl overflow-hidden glass-panel border border-zinc-800 hover:border-orange-500/40 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-orange-500/5 glow-orange-sm"
+                    className="rounded-sm overflow-hidden bg-[#121217] border border-[#1E1E26] hover:border-[#383848] transition-colors flex flex-col justify-between"
                   >
                     {/* Thumbnail Section */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-[#0B0B0E]">
                       <img
                         src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                         alt={property.name}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
                       
                       {/* Status Badge */}
                       <div className="absolute top-3 right-3">
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border backdrop-blur-md ${statusInfo.bg}`}>
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${statusInfo.bg}`}>
                           <StatusIcon className="w-3 h-3" />
                           <span>{statusInfo.label}</span>
                         </span>
@@ -345,45 +333,43 @@ const ProviderDashboard = () => {
 
                       {/* Rent Badge */}
                       <div className="absolute bottom-3 left-3">
-                        <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-zinc-950/80 text-orange-400 border border-orange-500/30 backdrop-blur-md">
-                          ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-zinc-400 font-normal">/mo</span>
+                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-sm bg-[#0B0B0E]/90 text-white border border-[#22222A]">
+                          ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-[#7A7A85] font-normal">/mo</span>
                         </span>
                       </div>
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-5 flex-grow flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-base font-bold text-white truncate mb-1">
+                    <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
+                      <div className="space-y-2">
+                        <h3 className="text-base font-bold text-white truncate">
                           {property.name}
                         </h3>
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-400 mb-3">
-                          <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                        <div className="flex items-center gap-1.5 text-xs text-[#7A7A85]">
+                          <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
                           <span className="truncate">{property.city}, {property.area}</span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-zinc-800/80 text-xs text-zinc-300">
+                        <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-[#1E1E26] text-xs text-[#FAFAFA]">
                           <div>
-                            <span className="text-zinc-500 block text-[10px]">Total Rooms</span>
+                            <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Inventory</span>
                             <span className="font-semibold">{property.rooms} Rooms</span>
                           </div>
                           <div>
-                            <span className="text-zinc-500 block text-[10px]">Structure</span>
+                            <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Structure</span>
                             <span className="font-semibold truncate block">{property.buildingType || 'PG Stay'}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Card Actions */}
-                      <div className="mt-4 flex items-center gap-2">
-                        <button
-                          onClick={() => handleEdit(property.id)}
-                          className="flex-1 py-2 px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 hover:text-white hover:border-orange-500/40 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
-                        >
-                          <Edit3 className="w-3.5 h-3.5 text-orange-400" />
-                          <span>Edit Details</span>
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => handleEdit(property.id)}
+                        className="w-full py-2 px-3 rounded-sm bg-[#181820] border border-[#22222A] hover:border-[#FF5A36] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
+                      >
+                        <Edit3 className="w-3.5 h-3.5 text-[#FF5A36]" />
+                        <span>Edit Listing Details</span>
+                      </button>
                     </div>
                   </div>
                 );

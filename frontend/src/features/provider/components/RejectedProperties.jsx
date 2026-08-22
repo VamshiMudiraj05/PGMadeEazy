@@ -43,47 +43,49 @@ const RejectedProperties = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Loading audit records...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading audit records...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Navigation & Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Compliance & Audits</div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Rejected Listing Reviews
               </h1>
-              <p className="text-xs text-zinc-400 mt-0.5">Review admin compliance feedback and update listings for re-approval</p>
             </div>
           </div>
         </div>
 
         {properties.length === 0 ? (
-          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto glow-orange-sm">
-            <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-3" />
-            <h2 className="text-xl font-extrabold text-white mb-1.5">Zero Rejected Listings!</h2>
-            <p className="text-xs text-zinc-400 mb-6">
-              All your submitted properties comply with platform standards and are either active or currently under review.
-            </p>
+          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+            <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+            <div className="space-y-1">
+              <h2 className="text-base font-bold text-white">Zero Flagged Listings</h2>
+              <p className="text-xs text-[#7A7A85]">
+                All your submitted properties comply with platform guidelines and are active or in queue.
+              </p>
+            </div>
             <button
               onClick={() => navigate('/provider-dashboard/my-properties')}
-              className="px-6 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors shadow-md shadow-orange-500/20"
+              className="px-4 py-2 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              Go to My Properties
+              Go to Properties Catalog
             </button>
           </div>
         ) : (
@@ -91,70 +93,70 @@ const RejectedProperties = () => {
             {properties.map((property, pIdx) => (
               <div
                 key={property.id || pIdx}
-                className="rounded-3xl overflow-hidden glass-panel border border-red-500/30 hover:border-red-500/60 transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-red-500/10"
+                className="rounded-sm overflow-hidden bg-[#121217] border border-red-500/30 flex flex-col justify-between"
               >
                 {/* Photo Header */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#0B0B0E]">
                   <img
                     src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                     alt={property.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
                   
                   <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border bg-red-500/10 text-red-400 border-red-500/20 backdrop-blur-md">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-red-500 text-white">
                       <XCircle className="w-3 h-3" />
-                      <span>Rejection Audit</span>
+                      <span>Changes Required</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Card Content */}
-                <div className="p-5 flex-grow flex flex-col justify-between">
-                  <div>
+                <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
                     {/* Admin Reason Callout */}
-                    <div className="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/25 mb-4">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-red-400 mb-1">
+                    <div className="p-3 rounded-sm bg-[#0B0B0E] border border-red-500/30 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-400">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                        <span>Admin Auditor Note:</span>
+                        <span>Compliance Note:</span>
                       </div>
-                      <p className="text-xs text-zinc-300 leading-relaxed">
+                      <p className="text-xs text-[#FAFAFA] leading-relaxed">
                         {property.rejectionReason || 'Photos or property details required refinement. Please update and re-submit.'}
                       </p>
                     </div>
 
-                    <h3 className="text-base font-bold text-white truncate mb-1">
-                      {property.name}
-                    </h3>
-                    
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 mb-3">
-                      <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                      <span className="truncate">{property.city}, {property.area}</span>
+                    <div className="space-y-1">
+                      <h3 className="text-base font-bold text-white truncate">
+                        {property.name}
+                      </h3>
+                      
+                      <div className="flex items-center gap-1.5 text-xs text-[#7A7A85]">
+                        <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
+                        <span className="truncate">{property.city}, {property.area}</span>
+                      </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-zinc-800/80 text-xs text-zinc-300">
+                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-[#1E1E26] text-xs text-[#FAFAFA]">
                       <div>
-                        <span className="text-zinc-500 block text-[10px]">Monthly Rent</span>
-                        <span className="font-semibold text-orange-400">₹{property.rent?.toLocaleString()}</span>
+                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
+                        <span className="font-semibold text-[#FF5A36]">₹{property.rent?.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-zinc-500 block text-[10px]">Rooms</span>
+                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Inventory</span>
                         <span className="font-semibold">{property.rooms} Rooms</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center gap-2">
-                    <button
-                      onClick={() => navigate(`/provider/edit-property/${property.id}`)}
-                      className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/20"
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                      <span>Update & Resubmit Listing</span>
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => navigate(`/provider/edit-property/${property.id}`)}
+                    className="w-full py-2.5 px-4 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Update & Resubmit</span>
+                  </button>
 
                 </div>
               </div>

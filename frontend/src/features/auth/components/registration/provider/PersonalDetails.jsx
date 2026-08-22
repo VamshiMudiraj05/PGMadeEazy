@@ -11,167 +11,167 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-zinc-800 pb-4">
-        <h3 className="text-xl font-bold text-white">Provider Personal Details</h3>
-        <p className="text-xs text-zinc-400 mt-1">Please provide host verification contact details</p>
+      <div className="border-b border-[#1E1E26] pb-4">
+        <h3 className="text-xl font-bold text-white tracking-tight">Provider Personal Details</h3>
+        <p className="text-xs text-[#7A7A85] mt-1">Please provide host verification contact details.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         {/* Full Name */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Full Name (As per Govt ID)
           </label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="text"
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="e.g. Ramesh Chandra"
             />
           </div>
           {errors.fullName && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.fullName}</span>
             </p>
           )}
         </div>
 
         {/* Email Address */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Business / Personal Email
           </label>
           <div className="relative">
-            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="ramesh@example.com"
             />
           </div>
           {errors.email && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.email}</span>
             </p>
           )}
         </div>
 
         {/* Password */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="Min 6 characters"
             />
           </div>
           {errors.password && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.password}</span>
             </p>
           )}
         </div>
 
         {/* Confirm Password */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Confirm Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="Re-enter password"
             />
           </div>
           {errors.confirmPassword && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.confirmPassword}</span>
             </p>
           )}
         </div>
 
         {/* Phone */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Contact Phone Number
           </label>
           <div className="relative">
-            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="9876543210"
             />
           </div>
           {errors.phone && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.phone}</span>
             </p>
           )}
         </div>
 
         {/* Date of Birth */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Date of Birth
           </label>
           <div className="relative">
-            <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="date"
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleChange}
               max={maxDate}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
             />
           </div>
           {errors.dateOfBirth && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.dateOfBirth}</span>
             </p>
           )}
         </div>
 
         {/* Gender */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Gender
           </label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+            className="w-full px-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -179,32 +179,32 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
             <option value="other">Other</option>
           </select>
           {errors.gender && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.gender}</span>
             </p>
           )}
         </div>
 
         {/* Current City */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
             Current City / Base
           </label>
           <div className="relative">
-            <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500 pointer-events-none" />
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#7A7A85] pointer-events-none" />
             <input
               type="text"
               name="currentCity"
               value={formData.currentCity}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-zinc-900/90 border border-zinc-800 rounded-xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
               placeholder="e.g. Hyderabad"
             />
           </div>
           {errors.currentCity && (
-            <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-              <AlertCircle className="h-3 w-3 inline" />
+            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3 inline shrink-0" />
               <span>{errors.currentCity}</span>
             </p>
           )}

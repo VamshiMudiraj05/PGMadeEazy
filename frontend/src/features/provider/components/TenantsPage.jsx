@@ -52,67 +52,69 @@ const TenantsPage = () => {
     switch (status?.toUpperCase()) {
       case 'CONFIRMED':
       case 'PAID':
-        return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        return 'bg-emerald-500 text-black';
       case 'PENDING':
-        return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        return 'bg-amber-500 text-black';
       default:
-        return 'bg-red-500/10 text-red-400 border-red-500/20';
+        return 'bg-red-500 text-white';
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-zinc-950 flex flex-col items-center justify-center gap-4 text-zinc-100">
-        <div className="h-12 w-12 border-3 border-orange-500 border-t-transparent rounded-full animate-spin glow-orange-sm" />
-        <p className="text-sm font-semibold text-zinc-400">Loading resident tenant records...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
+        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading resident records...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 selection:bg-orange-500 selection:text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Top Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-orange-500/50 transition-all"
+              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF5A36]">Occupancy Roster</div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Current Resident Directory
               </h1>
-              <p className="text-xs text-zinc-400 mt-0.5">Verified occupants staying across your listed properties</p>
             </div>
           </div>
         </div>
 
         {error ? (
-          <div className="glass-panel p-8 rounded-2xl border border-red-500/30 text-center max-w-md mx-auto">
-            <p className="text-sm font-semibold text-red-400 mb-4">{error}</p>
+          <div className="p-8 rounded-sm bg-[#121217] border border-red-500/30 text-center max-w-md mx-auto space-y-4">
+            <p className="text-xs font-semibold text-red-400">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors"
+              className="px-4 py-2 rounded-sm bg-[#FF5A36] text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              Reload Data
+              Reload Directory
             </button>
           </div>
         ) : tenants.length === 0 ? (
-          <div className="glass-panel p-12 rounded-3xl border border-zinc-800 text-center max-w-md mx-auto glow-orange-sm">
-            <Users className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-            <h2 className="text-xl font-extrabold text-white mb-1.5">No Active Tenants Found</h2>
-            <p className="text-xs text-zinc-400 mb-6">
-              When seekers reserve your rooms and complete their deposits, their profiles and contact info will appear here.
-            </p>
+          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+            <Users className="w-8 h-8 text-[#7A7A85] mx-auto" />
+            <div className="space-y-1">
+              <h2 className="text-base font-bold text-white">No Active Residents</h2>
+              <p className="text-xs text-[#7A7A85]">
+                When seekers complete reservations and security settlements, their profiles will appear here.
+              </p>
+            </div>
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="px-6 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white font-bold text-xs transition-colors"
+              className="px-4 py-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              Return to Dashboard
+              Return to Hub
             </button>
           </div>
         ) : (
@@ -120,26 +122,26 @@ const TenantsPage = () => {
             {tenants.map((tenant, idx) => (
               <div 
                 key={tenant._id || idx} 
-                className="glass-panel p-6 rounded-3xl border border-zinc-800 hover:border-orange-500/40 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-orange-500/5 glow-orange-sm"
+                className="rounded-sm bg-[#121217] border border-[#1E1E26] p-5 flex flex-col justify-between space-y-4"
               >
-                <div>
+                <div className="space-y-4">
                   {/* Seeker Profile Head */}
-                  <div className="flex items-start gap-3.5 mb-4">
-                    <div className="h-12 w-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 font-extrabold text-base shrink-0">
+                  <div className="flex items-start gap-3">
+                    <div className="h-10 w-10 rounded-sm bg-[#181820] border border-[#22222A] flex items-center justify-center text-[#FF5A36] font-bold text-sm shrink-0">
                       {tenant.seeker?.name?.charAt(0)?.toUpperCase() || 'R'}
                     </div>
-                    <div className="overflow-hidden">
+                    <div className="overflow-hidden space-y-0.5">
                       <div className="flex items-center gap-1.5">
-                        <h3 className="text-base font-bold text-white truncate">{tenant.seeker?.name || 'Resident Seeker'}</h3>
+                        <h3 className="text-sm font-bold text-white truncate">{tenant.seeker?.name || 'Resident Seeker'}</h3>
                         <UserCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       </div>
-                      <p className="text-xs text-zinc-400 truncate flex items-center gap-1.5 mt-0.5">
-                        <Mail className="w-3 h-3 text-orange-500 shrink-0" />
+                      <p className="text-xs text-[#7A7A85] truncate flex items-center gap-1.5">
+                        <Mail className="w-3 h-3 text-[#FF5A36] shrink-0" />
                         <span className="truncate">{tenant.seeker?.email}</span>
                       </p>
                       {tenant.seeker?.phone && (
-                        <p className="text-xs text-zinc-400 flex items-center gap-1.5 mt-0.5">
-                          <Phone className="w-3 h-3 text-orange-500 shrink-0" />
+                        <p className="text-xs text-[#7A7A85] flex items-center gap-1.5">
+                          <Phone className="w-3 h-3 text-[#FF5A36] shrink-0" />
                           <span>{tenant.seeker?.phone}</span>
                         </p>
                       )}
@@ -147,10 +149,10 @@ const TenantsPage = () => {
                   </div>
 
                   {/* Accommodation Specs */}
-                  <div className="space-y-2.5 py-3 border-y border-zinc-800/80 text-xs">
-                    <div className="flex items-center justify-between text-zinc-300">
-                      <span className="text-zinc-400 flex items-center gap-1.5">
-                        <Building className="w-3.5 h-3.5 text-orange-500" />
+                  <div className="space-y-2 py-3 border-y border-[#1E1E26] text-xs">
+                    <div className="flex items-center justify-between text-[#7A7A85]">
+                      <span className="flex items-center gap-1.5">
+                        <Building className="w-3.5 h-3.5 text-[#FF5A36]" />
                         <span>Property:</span>
                       </span>
                       <span className="font-semibold text-white truncate max-w-[160px]">
@@ -158,12 +160,12 @@ const TenantsPage = () => {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between text-zinc-300">
-                      <span className="text-zinc-400 flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-orange-500" />
-                        <span>Duration:</span>
+                    <div className="flex items-center justify-between text-[#7A7A85]">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-[#FF5A36]" />
+                        <span>Schedule:</span>
                       </span>
-                      <span className="font-mono text-zinc-200">
+                      <span className="font-mono text-white font-medium">
                         {new Date(tenant.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(tenant.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                     </div>
@@ -171,16 +173,16 @@ const TenantsPage = () => {
                 </div>
 
                 {/* Status Bar Footer */}
-                <div className="mt-4 pt-3 space-y-2 text-xs">
-                  <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Booking Reservation:</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${getStatusBadge(tenant.status)}`}>
+                <div className="pt-2 border-t border-[#1E1E26] space-y-2 text-xs">
+                  <div className="flex justify-between items-center text-[#7A7A85]">
+                    <span>Reservation:</span>
+                    <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider ${getStatusBadge(tenant.status)}`}>
                       {tenant.status || 'ACTIVE'}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-zinc-400">Escrow Payment:</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${getStatusBadge(tenant.paymentStatus)}`}>
+                  <div className="flex justify-between items-center text-[#7A7A85]">
+                    <span>Gateway Escrow:</span>
+                    <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider ${getStatusBadge(tenant.paymentStatus)}`}>
                       {tenant.paymentStatus || 'PAID'}
                     </span>
                   </div>
