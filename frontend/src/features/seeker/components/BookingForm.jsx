@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Users, CreditCard, Mail, Home, AlertCircle, CheckCircle2, ShieldCheck, Sparkles, DollarSign } from 'lucide-react';
+import { X, CreditCard, Home, AlertCircle } from 'lucide-react';
 import { bookingApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -46,12 +46,21 @@ const BookingForm = ({ property, onClose }) => {
     }
   };
 
+  const modalRef = React.useRef(null);
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
     }
     const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
+    
+    // Ensure viewport and modal scroll are reset so the user is immediately focused on the modal
+    if (modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
     return () => {
       document.body.style.overflow = originalStyle;
     };
@@ -119,68 +128,72 @@ const BookingForm = ({ property, onClose }) => {
     if (numDay < 1 || numDay > 31) return false;
     if (numYear < 2024 || numYear > 2100) return false;
 
-    const daysInMonth = new Date(numYear, numMonth, 0).getDate();
-    if (numDay > daysInMonth) return false;
+    const testDate = new Date(numYear, numMonth - 1, numDay);
+    if (testDate.getFullYear() !== numYear || 
+        testDate.getMonth() !== numMonth - 1 || 
+        testDate.getDate() !== numDay) {
+      return false;
+    }
 
     return true;
+  };
+
+  const formatDateForAPI = (dateString) => {
+    if (!dateString) return null;
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     
-    if ((name === 'checkInDate' || name === 'checkOutDate')) {
-      if (!value || value.length < formData[name].length) {
-        const newFormData = { ...formData, [name]: value };
-        setFormData(newFormData);
-        return;
+    if (name === 'checkInDate' || name === 'checkOutDate') {
+      let cleaned = value.replace(/[^\d/]/g, '');
+      if (cleaned.length === 2 && !cleaned.includes('/')) {
+        cleaned = cleaned + '/';
+      } else if (cleaned.length === 5 && cleaned.split('/').length === 2) {
+        cleaned = cleaned + '/';
       }
+      
+      const newFormData = {
+        ...formData,
+        [name]: cleaned
+      };
+      setFormData(newFormData);
 
-      const cleaned = value.replace(/\D/g, '');
-      if (cleaned.length <= 8) {
-        let formatted = cleaned;
-        if (cleaned.length > 4) {
-          formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4)}`;
-        } else if (cleaned.length > 2) {
-          formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
+      if (cleaned.length === 10) {
+        if (!validateDateFormat(cleaned)) {
+          setError(`Invalid date format. Use DD/MM/YYYY`);
+          return;
         }
-        
-        const newFormData = { ...formData, [name]: formatted };
-        setFormData(newFormData);
 
-        if (validateDateFormat(formatted)) {
-          const checkInDate = name === 'checkInDate' ? formatted : formData.checkInDate;
-          const checkOutDate = name === 'checkOutDate' ? formatted : formData.checkOutDate;
+        const otherDate = name === 'checkInDate' ? formData.checkOutDate : formData.checkInDate;
+        if (otherDate && otherDate.length === 10 && validateDateFormat(otherDate)) {
+          const checkIn = name === 'checkInDate' ? cleaned : formData.checkInDate;
+          const checkOut = name === 'checkOutDate' ? cleaned : formData.checkOutDate;
           
-          if (validateDateFormat(checkInDate) && validateDateFormat(checkOutDate)) {
-            fetchAvailableRooms(checkInDate, checkOutDate);
-            const amounts = calculateAmounts(checkInDate, checkOutDate, formData.roomsToBook);
-            setCalculatedAmount(amounts);
-          }
+          const amounts = calculateAmounts(checkIn, checkOut, formData.roomsToBook);
+          setCalculatedAmount(amounts);
+          fetchAvailableRooms(checkIn, checkOut);
         }
       }
-      return;
+    } else if (name === 'roomsToBook') {
+      const rooms = Math.max(1, Math.min(availableRooms, parseInt(value) || 1));
+      setFormData(prev => ({
+        ...prev,
+        [name]: rooms
+      }));
+      
+      if (formData.checkInDate && formData.checkOutDate) {
+        const amounts = calculateAmounts(formData.checkInDate, formData.checkOutDate, rooms);
+        setCalculatedAmount(amounts);
+      }
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
     }
-
-    const newFormData = { ...formData, [name]: value };
-    setFormData(newFormData);
-
-    if (name === 'roomsToBook') {
-      const amounts = calculateAmounts(formData.checkInDate, formData.checkOutDate, value);
-      setCalculatedAmount(amounts);
-    }
-  };
-
-  const formatDateForAPI = (dateString) => {
-    if (!dateString) return '';
-    const [day, month, year] = dateString.split('/');
-    return `${year}-${month}-${day}`;
-  };
-
-  const handlePaymentMethodChange = (method) => {
-    const newFormData = { ...formData, paymentMethod: method };
-    setFormData(newFormData);
-    const amounts = calculateAmounts(newFormData.checkInDate, newFormData.checkOutDate, newFormData.roomsToBook);
-    setCalculatedAmount(amounts);
   };
 
   const handleSubmit = async (e) => {
@@ -189,8 +202,24 @@ const BookingForm = ({ property, onClose }) => {
     setError(null);
 
     try {
-      if (calculatedAmount.inr <= 0) {
-        throw new Error("Please choose valid check-in and check-out dates");
+      if (!validateDateFormat(formData.checkInDate)) {
+        throw new Error('Please enter a valid check-in date in DD/MM/YYYY format');
+      }
+      if (!validateDateFormat(formData.checkOutDate)) {
+        throw new Error('Please enter a valid check-out date in DD/MM/YYYY format');
+      }
+
+      const checkInDate = parseDate(formData.checkInDate);
+      const checkOutDate = parseDate(formData.checkOutDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (checkInDate < today) {
+        throw new Error('Check-in date cannot be in the past');
+      }
+
+      if (checkOutDate <= checkInDate) {
+        throw new Error('Check-out date must be after check-in date');
       }
 
       const bookingData = {
@@ -199,52 +228,46 @@ const BookingForm = ({ property, onClose }) => {
         email: user.email,
         checkInDate: formatDateForAPI(formData.checkInDate),
         checkOutDate: formatDateForAPI(formData.checkOutDate),
-        numberOfGuests: formData.numberOfGuests,
-        roomsToBook: formData.roomsToBook,
+        numberOfGuests: parseInt(formData.numberOfGuests, 10),
+        roomsToBook: parseInt(formData.roomsToBook, 10),
         totalAmount: calculatedAmount.inr,
         paymentMethod: formData.paymentMethod,
-        status: formData.paymentMethod === 'CASH' ? 'PENDING' : 'CONFIRMED',
-        paymentStatus: formData.paymentMethod === 'CASH' ? 'PENDING' : 'PAID'
+        status: formData.paymentMethod === 'PAYPAL' ? 'PENDING' : 'CONFIRMED',
+        paymentStatus: formData.paymentMethod === 'PAYPAL' ? 'PENDING' : 'PAID'
       };
 
       const response = await bookingApi.createBooking(bookingData);
-      
-      if (!response || !response.data) {
-        throw new Error('Invalid booking response');
-      }
-
-      const booking = response.data;
+      const booking = response.data || response;
 
       if (formData.paymentMethod === 'PAYPAL') {
         const pendingBookingData = {
           ...booking,
           propertyName: property.name,
-          totalAmount: calculatedAmount.usd
+          totalAmount: calculatedAmount.usd,
+          checkInDate: formData.checkInDate,
+          checkOutDate: formData.checkOutDate,
+          numberOfGuests: formData.numberOfGuests
         };
         localStorage.setItem('pendingBooking', JSON.stringify(pendingBookingData));
-        
-        try {
-          const paymentResponse = await bookingApi.createPayPalPayment({
-            bookingId: booking.id,
-            amount: calculatedAmount.usd,
-            currency: 'USD',
-            description: `Booking for ${property.name} (${calculatedAmount.days} days)`,
-            returnUrl: `${window.location.origin}/seeker/paypal-success`,
-            cancelUrl: `${window.location.origin}/seeker/paypal-cancel`
-          });
 
-          if (!paymentResponse || !paymentResponse.data || !paymentResponse.data.approvalUrl) {
-            throw new Error('Invalid PayPal payment gateway response');
-          }
+        const paymentPayload = {
+          bookingId: booking.id,
+          amount: calculatedAmount.usd,
+          currency: 'USD',
+          description: `Booking for ${property.name} (${calculatedAmount.days} days)`,
+          returnUrl: `${window.location.origin}/seeker/paypal-success`,
+          cancelUrl: `${window.location.origin}/seeker/paypal-cancel`
+        };
 
-          window.location.href = paymentResponse.data.approvalUrl;
-        } catch (payPalErr) {
-          // If PayPal creation fails, cancel the newly created pending booking
-          if (booking.id) {
-            bookingApi.updateBookingStatus(booking.id, 'CANCELLED').catch(() => {});
-          }
-          localStorage.removeItem('pendingBooking');
-          throw payPalErr;
+        const paymentResponse = await bookingApi.createPayPalPayment(paymentPayload);
+        const approvalUrl = paymentResponse.data?.approvalUrl || 
+                            paymentResponse.data?.redirectUrl || 
+                            paymentResponse.approvalUrl;
+
+        if (approvalUrl) {
+          window.location.href = approvalUrl;
+        } else {
+          throw new Error('Could not obtain PayPal approval URL');
         }
       } else {
         await bookingApi.updateBookingStatus(booking.id, 'PAID');
@@ -255,48 +278,53 @@ const BookingForm = ({ property, onClose }) => {
       }
     } catch (error) {
       console.error('Booking error:', error);
-      setError(error.response?.data?.message || error.message || 'Failed to create booking');
-      toast.error(error.response?.data?.message || error.message || 'Failed to create booking');
+      const errMsg = error.response?.data?.message || error.response?.data || error.message || 'Failed to create booking';
+      setError(typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg));
+      toast.error(typeof errMsg === 'string' ? errMsg : 'Failed to create booking');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="p-6 sm:p-8 rounded-sm max-w-lg w-full bg-[#121217] border border-[#1E1E26] shadow-2xl relative my-8 space-y-6">
+    <div 
+      ref={modalRef}
+      className="fixed inset-0 bg-black/90 backdrop-blur-md z-[120] flex items-center justify-center p-3 sm:p-4 overflow-y-auto select-none"
+    >
+      <div className="p-5 sm:p-6 rounded-2xl max-w-lg w-full bg-[#141414] border border-white/10 shadow-2xl relative my-auto max-h-[92vh] flex flex-col space-y-4 overflow-hidden">
         
         {/* Modal Header */}
-        <div className="flex justify-between items-center pb-4 border-b border-[#1E1E26]">
+        <div className="flex justify-between items-center pb-3.5 border-b border-white/10 shrink-0">
           <div>
-            <h2 className="text-xl font-bold text-white tracking-tight">
+            <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
               Reserve Accommodation
             </h2>
-            <p className="text-xs text-[#7A7A85] mt-0.5">{property.name} • {property.city}</p>
+            <p className="text-xs text-neutral-400 mt-0.5">{property.name} • {property.city}</p>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
+            className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-1 space-y-4 custom-scrollbar">
           
           {/* Room Availability Indicator Pill */}
-          <div className="p-3.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26]">
+          <div className="p-3 rounded-xl bg-black/60 border border-white/10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Home className="w-3.5 h-3.5 text-[#FF5A36]" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                  Live Unit Status
+                <Home className="w-3.5 h-3.5 text-[#E50914]" />
+                <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider">
+                  LIVE UNIT STATUS
                 </span>
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${
+              <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
                 availableRooms > 0 
-                  ? 'bg-emerald-500 text-black' 
-                  : 'bg-red-500 text-white'
+                  ? 'bg-emerald-500 text-black shadow-md' 
+                  : 'bg-red-600 text-white'
               }`}>
                 {availableRooms} / {property.rooms} Units Available
               </span>
@@ -304,9 +332,9 @@ const BookingForm = ({ property, onClose }) => {
           </div>
 
           {/* Rooms to Book & Guests Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
                 Units to Book
               </label>
               <input
@@ -316,13 +344,13 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={availableRooms || 1}
-                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 required
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+            <div className="space-y-1">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
                 Number of Guests
               </label>
               <input
@@ -332,16 +360,16 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={property.capacity || 10}
-                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 required
               />
             </div>
           </div>
 
           {/* Dates Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
                 Check-in Date
               </label>
               <input
@@ -350,14 +378,14 @@ const BookingForm = ({ property, onClose }) => {
                 value={formData.checkInDate}
                 onChange={handleInputChange}
                 placeholder="DD/MM/YYYY"
-                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 required
                 maxLength="10"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+            <div className="space-y-1">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
                 Check-out Date
               </label>
               <input
@@ -366,7 +394,7 @@ const BookingForm = ({ property, onClose }) => {
                 value={formData.checkOutDate}
                 onChange={handleInputChange}
                 placeholder="DD/MM/YYYY"
-                className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 required
                 maxLength="10"
               />
@@ -374,61 +402,61 @@ const BookingForm = ({ property, onClose }) => {
           </div>
 
           {/* Resident Email (Read-only) */}
-          <div className="space-y-1.5">
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+          <div className="space-y-1">
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
               Digital Invoice Recipient
             </label>
             <input
               type="email"
               value={user.email}
               readOnly
-              className="w-full px-3 py-2 bg-[#0B0B0E]/50 border border-[#1E1E26] rounded-sm text-xs text-[#7A7A85] cursor-not-allowed"
+              className="w-full px-3.5 py-2.5 bg-black/30 border border-white/10 rounded-lg text-xs text-neutral-400 cursor-not-allowed"
             />
           </div>
 
           {/* Payment Method Selector */}
-          <div className="space-y-1.5">
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+          <div className="space-y-1">
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
               Checkout Infrastructure
             </label>
-            <div className="flex items-center gap-2.5 p-3 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-white text-xs font-semibold">
-              <CreditCard className="w-4 h-4 text-[#FF5A36]" />
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-black/60 border border-white/10 text-white text-xs font-semibold">
+              <CreditCard className="w-4 h-4 text-[#E50914]" />
               <span>PayPal Encrypted Digital Gateway</span>
             </div>
           </div>
 
           {/* Price Calculation Summary Box */}
           {calculatedAmount.inr > 0 ? (
-            <div className="p-4 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] space-y-2">
-              <div className="flex justify-between text-xs text-[#9E9EA7]">
+            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 space-y-1.5">
+              <div className="flex justify-between text-xs text-neutral-400">
                 <span>Duration Tariff:</span>
                 <span className="text-white font-medium">{calculatedAmount.days} night(s) × ₹{property.rent?.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-xs text-[#9E9EA7]">
+              <div className="flex justify-between text-xs text-neutral-400">
                 <span>Units Reserved:</span>
                 <span className="text-white font-medium">{formData.roomsToBook} unit(s)</span>
               </div>
-              <div className="pt-2 border-t border-[#1E1E26] flex justify-between items-baseline">
+              <div className="pt-1.5 border-t border-white/10 flex justify-between items-baseline">
                 <span className="text-xs font-bold uppercase tracking-wider text-white">Calculated Amount:</span>
                 <div className="text-right">
-                  <span className="text-lg font-bold text-[#FF5A36]">
+                  <span className="text-base sm:text-lg font-extrabold text-[#E50914]">
                     ₹{calculatedAmount.inr.toLocaleString()}
                   </span>
-                  <span className="text-[11px] text-[#7A7A85] block">
+                  <span className="text-[10px] text-neutral-400 block">
                     (~${calculatedAmount.usd} USD)
                   </span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-3 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-center text-xs text-[#7A7A85]">
+            <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-center text-xs text-neutral-400">
               Specify check-in & check-out dates (DD/MM/YYYY) to calculate fare
             </div>
           )}
 
           {error && (
-            <div className="p-3 rounded-sm bg-red-500/10 border border-red-500/25 text-xs text-red-400 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-[#E50914]" />
               <span>{error}</span>
             </div>
           )}
@@ -437,7 +465,7 @@ const BookingForm = ({ property, onClose }) => {
           <button
             type="submit"
             disabled={loading || calculatedAmount.inr <= 0 || formData.roomsToBook > availableRooms || availableRooms === 0}
-            className="w-full py-3 px-6 rounded-sm font-bold text-xs uppercase tracking-wider text-white bg-[#FF5A36] hover:bg-[#E54B28] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 px-6 rounded-lg font-bold text-xs uppercase tracking-wider text-white bg-[#E50914] hover:bg-[#b80710] shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
           >
             {loading ? (
               <span>Redirecting to Gateway...</span>
@@ -449,7 +477,6 @@ const BookingForm = ({ property, onClose }) => {
               'Specify Dates to Proceed'
             )}
           </button>
-
         </form>
       </div>
     </div>

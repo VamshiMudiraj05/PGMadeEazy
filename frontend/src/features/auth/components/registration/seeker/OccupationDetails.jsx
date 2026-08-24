@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
-import { GraduationCap, Briefcase, Building, BookOpen, MapPin, Award, AlertCircle } from 'lucide-react';
+import { GraduationCap, Briefcase, AlertCircle } from 'lucide-react';
 
 const OccupationDetails = ({ formData, handleChange, errors }) => {
   return (
     <div className="space-y-6">
-      <div className="border-b border-[#1E1E26] pb-4">
-        <h3 className="text-xl font-bold text-white tracking-tight">Occupation & Education</h3>
-        <p className="text-xs text-[#7A7A85] mt-1">Select your profile category to customize your PG application.</p>
+      <div className="border-b border-white/10 pb-4">
+        <h3 className="text-xl font-extrabold text-white tracking-tight">Occupation & Education</h3>
+        <p className="text-xs text-neutral-400 mt-1">Select your profile category to customize your PG application.</p>
       </div>
 
       <div className="space-y-6">
         {/* Occupation Type Selector */}
         <div className="space-y-3">
-          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+          <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
             Select Your Current Status
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -21,18 +21,18 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
               onClick={() => handleChange({
                 target: { name: 'occupationType', value: 'student' }
               })}
-              className={`p-5 rounded-sm border transition-colors flex items-center gap-4 text-left ${
+              className={`p-5 rounded-xl border transition-all flex items-center gap-4 text-left cursor-pointer ${
                 formData.occupationType === 'student'
-                  ? 'border-[#FF5A36] bg-[#121217] text-white'
-                  : 'border-[#1E1E26] bg-[#0B0B0E] text-[#9E9EA7] hover:border-[#383848] hover:text-white'
+                  ? 'border-[#E50914] bg-red-600/10 text-white shadow-[0_0_20px_rgba(229,9,20,0.2)]'
+                  : 'border-white/15 bg-black/60 text-neutral-400 hover:border-red-600/40 hover:text-white'
               }`}
             >
-              <div className={`p-2.5 rounded-sm ${formData.occupationType === 'student' ? 'bg-[#FF5A36] text-white' : 'bg-[#181820] text-[#7A7A85]'}`}>
+              <div className={`p-3 rounded-lg ${formData.occupationType === 'student' ? 'bg-[#E50914] text-white shadow-[0_0_10px_#E50914]' : 'bg-white/5 text-neutral-400'}`}>
                 <GraduationCap className="h-5 w-5" />
               </div>
               <div>
                 <div className="font-bold text-sm text-white">Student</div>
-                <div className="text-xs text-[#7A7A85] mt-0.5">Enrolled in college / university</div>
+                <div className="text-xs text-neutral-400 mt-0.5">Enrolled in college / university</div>
               </div>
             </button>
 
@@ -41,24 +41,24 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
               onClick={() => handleChange({
                 target: { name: 'occupationType', value: 'professional' }
               })}
-              className={`p-5 rounded-sm border transition-colors flex items-center gap-4 text-left ${
+              className={`p-5 rounded-xl border transition-all flex items-center gap-4 text-left cursor-pointer ${
                 formData.occupationType === 'professional'
-                  ? 'border-[#FF5A36] bg-[#121217] text-white'
-                  : 'border-[#1E1E26] bg-[#0B0B0E] text-[#9E9EA7] hover:border-[#383848] hover:text-white'
+                  ? 'border-[#E50914] bg-red-600/10 text-white shadow-[0_0_20px_rgba(229,9,20,0.2)]'
+                  : 'border-white/15 bg-black/60 text-neutral-400 hover:border-red-600/40 hover:text-white'
               }`}
             >
-              <div className={`p-2.5 rounded-sm ${formData.occupationType === 'professional' ? 'bg-[#FF5A36] text-white' : 'bg-[#181820] text-[#7A7A85]'}`}>
+              <div className={`p-3 rounded-lg ${formData.occupationType === 'professional' ? 'bg-[#E50914] text-white shadow-[0_0_10px_#E50914]' : 'bg-white/5 text-neutral-400'}`}>
                 <Briefcase className="h-5 w-5" />
               </div>
               <div>
                 <div className="font-bold text-sm text-white">Working Professional</div>
-                <div className="text-xs text-[#7A7A85] mt-0.5">Employed in corporate / startup</div>
+                <div className="text-xs text-neutral-400 mt-0.5">Employed in corporate / startup</div>
               </div>
             </button>
           </div>
           {errors.occupationType && (
-            <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-              <AlertCircle className="h-3 w-3 inline shrink-0" />
+            <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
               <span>{errors.occupationType}</span>
             </p>
           )}
@@ -66,9 +66,9 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
 
         {/* Student Specific Fields */}
         {formData.occupationType === 'student' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-sm bg-[#0B0B0E] border border-[#1E1E26]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-xl bg-black/60 border border-white/10">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 College / University Name
               </label>
               <input
@@ -76,19 +76,19 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="collegeName"
                 value={formData.collegeName}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. IIT Hyderabad, BITS Pilani"
               />
               {errors.collegeName && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.collegeName}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Course / Major
               </label>
               <input
@@ -96,44 +96,44 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="courseName"
                 value={formData.courseName}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. B.Tech Computer Science"
               />
               {errors.courseName && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.courseName}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Current Year of Study
               </label>
               <select
                 name="yearOfStudy"
                 value={formData.yearOfStudy}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
               >
-                <option value="">Select Year</option>
-                <option value="1">1st Year (Freshman)</option>
-                <option value="2">2nd Year (Sophomore)</option>
-                <option value="3">3rd Year (Junior)</option>
-                <option value="4">4th Year (Senior)</option>
-                <option value="5">5th Year (Postgrad / Dual)</option>
+                <option value="" className="bg-[#141414]">Select Year</option>
+                <option value="1" className="bg-[#141414]">1st Year (Freshman)</option>
+                <option value="2" className="bg-[#141414]">2nd Year (Sophomore)</option>
+                <option value="3" className="bg-[#141414]">3rd Year (Junior)</option>
+                <option value="4" className="bg-[#141414]">4th Year (Senior)</option>
+                <option value="5" className="bg-[#141414]">5th Year (Postgrad / Dual)</option>
               </select>
               {errors.yearOfStudy && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.yearOfStudy}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Student ID / Roll No. (Optional)
               </label>
               <input
@@ -141,13 +141,13 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="studentId"
                 value={formData.studentId}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. 21CS049"
               />
             </div>
 
             <div className="md:col-span-2 space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 College Campus Address
               </label>
               <textarea
@@ -155,12 +155,12 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 value={formData.collegeAddress}
                 onChange={handleChange}
                 rows="3"
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors resize-none"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all resize-none"
                 placeholder="Enter college campus address..."
               />
               {errors.collegeAddress && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.collegeAddress}</span>
                 </p>
               )}
@@ -170,9 +170,9 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
 
         {/* Professional Specific Fields */}
         {formData.occupationType === 'professional' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-sm bg-[#0B0B0E] border border-[#1E1E26]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-xl bg-black/60 border border-white/10">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Company / Organization
               </label>
               <input
@@ -180,19 +180,19 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. Microsoft, Infosys, Deloitte"
               />
               {errors.companyName && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.companyName}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Designation / Job Role
               </label>
               <input
@@ -200,43 +200,43 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="jobRole"
                 value={formData.jobRole}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. Frontend Developer"
               />
               {errors.jobRole && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.jobRole}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Total Experience
               </label>
               <select
                 name="workExperience"
                 value={formData.workExperience}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
               >
-                <option value="">Select Experience</option>
-                <option value="0">Fresher (0 - 1 Years)</option>
-                <option value="1">1 - 2 Years</option>
-                <option value="3">3 - 5 Years</option>
-                <option value="5">5+ Years</option>
+                <option value="" className="bg-[#141414]">Select Experience</option>
+                <option value="0" className="bg-[#141414]">Fresher (0 - 1 Years)</option>
+                <option value="1" className="bg-[#141414]">1 - 2 Years</option>
+                <option value="3" className="bg-[#141414]">3 - 5 Years</option>
+                <option value="5" className="bg-[#141414]">5+ Years</option>
               </select>
               {errors.workExperience && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.workExperience}</span>
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Employee / Work ID (Optional)
               </label>
               <input
@@ -244,13 +244,13 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="workId"
                 value={formData.workId}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 placeholder="e.g. EMP-9921"
               />
             </div>
 
             <div className="md:col-span-2 space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                 Office / Work Address
               </label>
               <textarea
@@ -258,12 +258,12 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 value={formData.officeAddress}
                 onChange={handleChange}
                 rows="3"
-                className="w-full px-3.5 py-2.5 bg-[#121217] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors resize-none"
+                className="w-full px-4 py-3 bg-[#141414] border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all resize-none"
                 placeholder="Enter office building address..."
               />
               {errors.officeAddress && (
-                <p className="text-[11px] text-red-400 flex items-center gap-1 mt-1">
-                  <AlertCircle className="h-3 w-3 inline shrink-0" />
+                <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
+                  <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
                   <span>{errors.officeAddress}</span>
                 </p>
               )}
@@ -305,4 +305,5 @@ OccupationDetails.propTypes = {
 };
 
 export default OccupationDetails;
+
 

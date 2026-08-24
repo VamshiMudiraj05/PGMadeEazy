@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { ArrowLeft, ArrowRight, Check, Home, Building, Sparkles, UserCircle2, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Home, Building, Sparkles, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import Cookies from "js-cookie";
 
@@ -256,11 +256,11 @@ const MultiStepRegistration = () => {
       case 1:
         return (
           <div className="space-y-6">
-            <div className="space-y-1 pb-4 border-b border-[#1E1E26]">
-              <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <div className="space-y-1 pb-4 border-b border-white/10">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                 Select Account Protocol
               </h3>
-              <p className="text-xs text-[#7A7A85]">
+              <p className="text-xs text-neutral-400">
                 Choose your registration profile to access customized tooling.
               </p>
             </div>
@@ -269,44 +269,44 @@ const MultiStepRegistration = () => {
               <button
                 type="button"
                 onClick={() => handleUserTypeChange("seeker")}
-                className="group p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] hover:border-[#383848] transition-all flex flex-col justify-between text-left space-y-6"
+                className="group p-6 sm:p-8 rounded-2xl bg-black/60 border border-white/15 hover:border-red-600/50 hover:bg-[#141414] transition-all flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-lg"
               >
                 <div className="space-y-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[#181820] border border-[#22222A] text-[#FF5A36]">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-600/15 border border-red-600/30 text-[#E50914] group-hover:bg-[#E50914] group-hover:text-white transition-all">
                     <Home className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-[#FF5A36] transition-colors">
+                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors">
                     Resident / Seeker
                   </h4>
-                  <p className="text-xs text-[#9E9EA7] leading-relaxed">
+                  <p className="text-xs text-neutral-400 leading-relaxed">
                     Search and reserve paying guest accommodations, private studios, and verified student suites.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-[#1E1E26] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#FAFAFA]">
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
                   <span>Register as Seeker</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-[#FF5A36]" />
+                  <ArrowRight className="h-4 w-4 text-[#E50914] group-hover:translate-x-1 transition-transform" />
                 </div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleUserTypeChange("provider")}
-                className="group p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] hover:border-[#383848] transition-all flex flex-col justify-between text-left space-y-6"
+                className="group p-6 sm:p-8 rounded-2xl bg-black/60 border border-white/15 hover:border-red-600/50 hover:bg-[#141414] transition-all flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-lg"
               >
                 <div className="space-y-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[#181820] border border-[#22222A] text-white">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-600/15 border border-red-600/30 text-[#E50914] group-hover:bg-[#E50914] group-hover:text-white transition-all">
                     <Building className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-[#FF5A36] transition-colors">
+                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors">
                     Host / Property Operator
                   </h4>
-                  <p className="text-xs text-[#9E9EA7] leading-relaxed">
+                  <p className="text-xs text-neutral-400 leading-relaxed">
                     Publish building listings, manage tenant leases, and track digital payments.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-[#1E1E26] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#FAFAFA]">
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
                   <span>Register as Host</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-[#FF5A36]" />
+                  <ArrowRight className="h-4 w-4 text-[#E50914] group-hover:translate-x-1 transition-transform" />
                 </div>
               </button>
             </div>
@@ -334,24 +334,29 @@ const MultiStepRegistration = () => {
   };
 
   return (
-    <div className="bg-[#0B0B0E] text-[#FAFAFA] min-h-[calc(100vh-140px)] flex items-center justify-center py-16 px-4 sm:px-8">
-      <div className="w-full max-w-3xl">
+    <div className="bg-[#050505] text-white min-h-[calc(100vh-80px)] flex items-center justify-center py-16 px-4 sm:px-8 relative overflow-hidden select-none">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-1/4 left-1/10 w-[550px] h-[550px] bg-red-600/10 rounded-full blur-[180px] pointer-events-none -z-10" />
+      <div className="absolute bottom-10 right-1/10 w-[500px] h-[500px] bg-red-950/15 rounded-full blur-[170px] pointer-events-none -z-10" />
+
+      <div className="w-full max-w-3xl relative z-10">
         
         {/* Main Wizard Card */}
-        <div className="p-8 sm:p-12 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-8">
+        <div className="p-8 sm:p-12 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-2xl space-y-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50914] to-transparent opacity-80" />
           
           {/* Header & Step Progress Bar */}
           {userType && (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#7A7A85]">
-                <span className="text-[#FF5A36]">
+              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-neutral-400">
+                <span className="text-[#E50914]">
                   Step {step} of {totalSteps}
                 </span>
                 <span>{calculateProgress()}% Complete</span>
               </div>
-              <div className="h-1 w-full bg-[#1E1E26] rounded-xs overflow-hidden">
+              <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/10">
                 <div
-                  className="h-full bg-[#FF5A36] transition-all duration-300 rounded-xs"
+                  className="h-full bg-[#E50914] shadow-[0_0_10px_#E50914] transition-all duration-300 rounded-full"
                   style={{ width: `${calculateProgress()}%` }}
                 />
               </div>
@@ -365,16 +370,16 @@ const MultiStepRegistration = () => {
             {/* Error / Success Toast Message */}
             {message && (
               <div
-                className={`p-3 rounded-sm text-xs font-medium flex items-center gap-2 border ${
+                className={`p-3.5 rounded-lg text-xs font-medium flex items-center gap-2.5 border backdrop-blur-md transition-all ${
                   message.includes("successful")
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"
-                    : "bg-red-500/10 text-red-400 border-red-500/25"
+                    ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
+                    : "bg-red-500/10 text-red-300 border-red-500/30"
                 }`}
               >
                 {message.includes("successful") ? (
-                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <AlertCircle className="h-4 w-4 shrink-0 text-[#E50914]" />
                 )}
                 <span>{message}</span>
               </div>
@@ -382,11 +387,11 @@ const MultiStepRegistration = () => {
 
             {/* Navigation Buttons */}
             {step > 1 && (
-              <div className="flex items-center justify-between pt-6 border-t border-[#1E1E26]">
+              <div className="flex items-center justify-between pt-6 border-t border-white/10">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[#22222A] text-[#9E9EA7] hover:text-white bg-[#0B0B0E] text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-neutral-300 hover:text-white bg-black/60 hover:bg-black/90 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Previous</span>
@@ -396,7 +401,7 @@ const MultiStepRegistration = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white text-xs font-bold uppercase tracking-wider transition-colors ml-auto"
+                    className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all ml-auto cursor-pointer"
                   >
                     <span>Next Step</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -405,7 +410,7 @@ const MultiStepRegistration = () => {
                   <button
                     type="button"
                     onClick={handleRegister}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-sm bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition-colors ml-auto"
+                    className="flex items-center gap-2 px-7 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all ml-auto cursor-pointer"
                   >
                     <span>Complete Registration</span>
                     <Check className="w-3.5 h-3.5" />
@@ -416,12 +421,12 @@ const MultiStepRegistration = () => {
 
             {/* Login Link if Step 1 */}
             {step === 1 && (
-              <div className="text-center pt-4 border-t border-[#1E1E26]">
-                <p className="text-xs text-[#7A7A85]">
+              <div className="text-center pt-4 border-t border-white/10">
+                <p className="text-xs text-neutral-400">
                   Already have an account?{' '}
                   <Link
                     to="/login"
-                    className="font-bold text-[#FF5A36] hover:text-[#E54B28] transition-colors"
+                    className="font-bold text-[#E50914] hover:text-red-400 transition-colors"
                   >
                     Sign in here
                   </Link>

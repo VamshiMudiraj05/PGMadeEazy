@@ -4,8 +4,6 @@ import {
   Building2, 
   ArrowLeft, 
   MapPin, 
-  Users, 
-  DollarSign, 
   XCircle, 
   AlertTriangle,
   Edit3,
@@ -43,29 +41,32 @@ const RejectedProperties = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
-        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading audit records...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white">
+        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
+        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading audit records...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8">
+    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
         {/* Navigation & Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
+        <div className="flex items-center justify-between pb-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
+              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Compliance & Audits</div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#E50914]">COMPLIANCE & AUDITS</div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Rejected Listing Reviews
               </h1>
             </div>
@@ -73,17 +74,17 @@ const RejectedProperties = () => {
         </div>
 
         {properties.length === 0 ? (
-          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+          <div className="p-12 rounded-2xl bg-[#141414] border border-white/10 text-center max-w-md mx-auto space-y-4 shadow-xl">
             <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
             <div className="space-y-1">
               <h2 className="text-base font-bold text-white">Zero Flagged Listings</h2>
-              <p className="text-xs text-[#7A7A85]">
+              <p className="text-xs text-neutral-400">
                 All your submitted properties comply with platform guidelines and are active or in queue.
               </p>
             </div>
             <button
               onClick={() => navigate('/provider-dashboard/my-properties')}
-              className="px-4 py-2 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white font-bold text-xs uppercase tracking-wider transition-colors"
+              className="w-full py-3 px-4 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
             >
               Go to Properties Catalog
             </button>
@@ -93,20 +94,20 @@ const RejectedProperties = () => {
             {properties.map((property, pIdx) => (
               <div
                 key={property.id || pIdx}
-                className="rounded-sm overflow-hidden bg-[#121217] border border-red-500/30 flex flex-col justify-between"
+                className="rounded-2xl overflow-hidden bg-[#141414] border border-white/10 hover:border-red-600/50 transition-all duration-300 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-600/10"
               >
                 {/* Photo Header */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-[#0B0B0E]">
+                <div className="relative aspect-[16/10] overflow-hidden bg-black">
                   <img
                     src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                     alt={property.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-80" />
                   
                   <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-red-500 text-white">
-                      <XCircle className="w-3 h-3" />
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-red-600 text-white shadow-md">
+                      <XCircle className="w-3.5 h-3.5" />
                       <span>Changes Required</span>
                     </span>
                   </div>
@@ -116,12 +117,12 @@ const RejectedProperties = () => {
                 <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                   <div className="space-y-3">
                     {/* Admin Reason Callout */}
-                    <div className="p-3 rounded-sm bg-[#0B0B0E] border border-red-500/30 space-y-1">
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-400">
+                    <div className="p-3.5 rounded-xl bg-black/60 border border-red-500/20 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-500">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                         <span>Compliance Note:</span>
                       </div>
-                      <p className="text-xs text-[#FAFAFA] leading-relaxed">
+                      <p className="text-xs text-white leading-relaxed">
                         {property.rejectionReason || 'Photos or property details required refinement. Please update and re-submit.'}
                       </p>
                     </div>
@@ -131,19 +132,19 @@ const RejectedProperties = () => {
                         {property.name}
                       </h3>
                       
-                      <div className="flex items-center gap-1.5 text-xs text-[#7A7A85]">
-                        <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
+                      <div className="flex items-center gap-1.5 text-xs text-neutral-400">
+                        <MapPin className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
                         <span className="truncate">{property.city}, {property.area}</span>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-[#1E1E26] text-xs text-[#FAFAFA]">
+                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-white/10 text-xs text-white">
                       <div>
-                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
-                        <span className="font-semibold text-[#FF5A36]">₹{property.rent?.toLocaleString()}</span>
+                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
+                        <span className="font-extrabold text-[#E50914]">₹{property.rent?.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Inventory</span>
+                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Inventory</span>
                         <span className="font-semibold">{property.rooms} Rooms</span>
                       </div>
                     </div>
@@ -152,7 +153,7 @@ const RejectedProperties = () => {
                   {/* Actions */}
                   <button
                     onClick={() => navigate(`/provider/edit-property/${property.id}`)}
-                    className="w-full py-2.5 px-4 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
+                    className="w-full py-2.5 px-4 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                     <span>Update & Resubmit</span>

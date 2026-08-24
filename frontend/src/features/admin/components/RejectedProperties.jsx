@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Building2, 
   ArrowLeft, 
   MapPin, 
-  Users, 
-  DollarSign, 
   XCircle, 
   AlertTriangle,
   User,
-  Phone,
   Mail,
   CheckCircle2
 } from 'lucide-react';
@@ -40,29 +36,32 @@ const AdminRejectedProperties = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#0B0B0E] flex flex-col items-center justify-center gap-3 text-[#FAFAFA]">
-        <div className="h-6 w-6 border-2 border-[#FF5A36] border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A85]">Loading audit archives...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white select-none">
+        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
+        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading audit archives...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8">
+    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/4 right-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
         {/* Navigation & Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
+        <div className="flex items-center justify-between pb-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/admin-dashboard')}
-              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
+              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Compliance Archives</div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#E50914]">COMPLIANCE ARCHIVES</div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Rejected Accommodations ({properties.length})
               </h1>
             </div>
@@ -70,17 +69,17 @@ const AdminRejectedProperties = () => {
         </div>
 
         {properties.length === 0 ? (
-          <div className="p-12 rounded-sm bg-[#121217] border border-[#1E1E26] text-center max-w-md mx-auto space-y-4">
+          <div className="p-12 rounded-2xl bg-[#141414] border border-white/10 text-center max-w-md mx-auto space-y-4 shadow-xl">
             <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
             <div className="space-y-1">
               <h2 className="text-base font-bold text-white">No Rejected Accommodations</h2>
-              <p className="text-xs text-[#7A7A85]">
+              <p className="text-xs text-neutral-400">
                 All submitted listings meet quality guidelines and zero accommodations are currently in the rejected state.
               </p>
             </div>
             <button
               onClick={() => navigate('/admin-dashboard')}
-              className="px-4 py-2 rounded-sm bg-[#181820] border border-[#22222A] text-[#9E9EA7] hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
+              className="w-full py-3 px-4 bg-white/5 border border-white/10 text-neutral-400 hover:text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
             >
               Back to Operations Center
             </button>
@@ -90,20 +89,20 @@ const AdminRejectedProperties = () => {
             {properties.map((property, pIdx) => (
               <div
                 key={property.id || pIdx}
-                className="rounded-sm overflow-hidden bg-[#121217] border border-red-500/30 flex flex-col justify-between"
+                className="rounded-2xl overflow-hidden bg-[#141414] border border-red-500/30 flex flex-col justify-between shadow-xl hover:border-red-600/50 hover:shadow-2xl hover:shadow-red-600/10 transition-all duration-300"
               >
                 {/* Photo Thumbnail */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-[#0B0B0E]">
+                <div className="relative aspect-[16/10] overflow-hidden bg-black">
                   <img
                     src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                     alt={property.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover grayscale-[30%]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-80" />
                   
                   <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm bg-red-500 text-white">
-                      <XCircle className="w-3 h-3" />
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-red-600 text-white shadow-md">
+                      <XCircle className="w-3.5 h-3.5" />
                       <span>Rejected</span>
                     </span>
                   </div>
@@ -113,12 +112,12 @@ const AdminRejectedProperties = () => {
                 <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                   <div className="space-y-3">
                     {/* Rejection Audit Reason Banner */}
-                    <div className="p-3 rounded-sm bg-[#0B0B0E] border border-red-500/30 space-y-1">
+                    <div className="p-3.5 rounded-xl bg-red-950/20 border border-red-500/30 space-y-1">
                       <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-400">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                         <span>Audit Finding:</span>
                       </div>
-                      <p className="text-xs text-[#FAFAFA] leading-relaxed">
+                      <p className="text-xs text-neutral-200 leading-relaxed">
                         {property.rejectionReason || 'No specific reason provided in audit record.'}
                       </p>
                     </div>
@@ -128,32 +127,32 @@ const AdminRejectedProperties = () => {
                         {property.name}
                       </h3>
                       
-                      <div className="flex items-center gap-1.5 text-xs text-[#7A7A85]">
-                        <MapPin className="w-3.5 h-3.5 text-[#FF5A36] shrink-0" />
+                      <div className="flex items-center gap-1.5 text-xs text-neutral-400">
+                        <MapPin className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
                         <span className="truncate">{property.city}, {property.area}</span>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-[#1E1E26] text-xs text-[#FAFAFA]">
+                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-white/10 text-xs text-white">
                       <div>
-                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
-                        <span className="font-semibold text-[#FF5A36]">₹{property.rent?.toLocaleString()}</span>
+                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
+                        <span className="font-extrabold text-[#E50914]">₹{property.rent?.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-[#7A7A85] block text-[10px] uppercase tracking-wider">Inventory</span>
+                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Inventory</span>
                         <span className="font-semibold">{property.rooms} Rooms</span>
                       </div>
                     </div>
 
                     {/* Owner Details */}
-                    <div className="p-2.5 rounded-sm bg-[#0B0B0E] border border-[#1E1E26] text-xs space-y-0.5">
+                    <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs space-y-0.5">
                       <div className="flex items-center gap-1.5 text-white font-medium truncate">
-                        <User className="w-3 h-3 text-[#FF5A36]" />
+                        <User className="w-3.5 h-3.5 text-[#E50914]" />
                         <span>{property.ownerName}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[#7A7A85] text-[11px]">
+                      <div className="flex items-center gap-1.5 text-neutral-400 text-[11px] pl-5">
                         <Mail className="w-3 h-3" />
-                        <span>{property.ownerEmail}</span>
+                        <span className="truncate">{property.ownerEmail}</span>
                       </div>
                     </div>
                   </div>

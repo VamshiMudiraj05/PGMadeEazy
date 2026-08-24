@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, MessageSquare, Send, Building2, Clock, Check } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, Clock, Sparkles } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 export default function Contact() {
@@ -69,19 +69,25 @@ export default function Contact() {
   ];
 
   return (
-    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16">
+    <div className="bg-[#050505] text-white min-h-screen py-16 lg:py-24 relative overflow-hidden select-none">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-1/5 left-1/4 w-[550px] h-[550px] bg-red-600/10 rounded-full blur-[180px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-1/6 w-[450px] h-[450px] bg-red-950/15 rounded-full blur-[160px] pointer-events-none -z-10" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16 relative z-10">
         
-        {/* Editorial Section Header */}
+        {/* Section Header */}
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF5A36]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A36]" />
-            <span>Direct Support Desk</span>
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/80 backdrop-blur-2xl border border-red-600/40 text-[11px] font-mono uppercase tracking-widest text-white shadow-[0_0_20px_rgba(229,9,20,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-[#E50914] animate-ping" />
+            <span className="text-[#E50914] font-bold">DIRECT SUPPORT DESK</span>
+            <span className="text-white/30">|</span>
+            <span>24/7 ASSISTANCE</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
             Get in touch with our team.
           </h1>
-          <p className="text-base sm:text-lg text-[#9E9EA7] leading-relaxed">
+          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed">
             Have questions regarding booking verification, host compliance audit, or digital transaction records? Our team responds within 30 minutes during active desk hours.
           </p>
         </div>
@@ -89,16 +95,18 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Contact Form (7 Cols) */}
-          <div className="lg:col-span-7 p-8 sm:p-10 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-8">
-            <div className="space-y-1 pb-6 border-b border-[#1E1E26]">
-              <h2 className="text-xl font-bold text-white tracking-tight">Send a Direct Inquiry</h2>
-              <p className="text-xs text-[#7A7A85]">Fill out the parameters below and our desk will coordinate with you directly.</p>
+          <div className="lg:col-span-7 p-8 sm:p-10 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-2xl space-y-8 shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50914] to-transparent opacity-80" />
+            
+            <div className="space-y-1 pb-6 border-b border-white/10">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Send a Direct Inquiry</h2>
+              <p className="text-xs text-neutral-400">Fill out the parameters below and our desk will coordinate with you directly.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                  <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                     Your Name
                   </label>
                   <input
@@ -108,13 +116,13 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                    className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                     placeholder="e.g. Rahul Verma"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                  <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                     Email Address
                   </label>
                   <input
@@ -124,14 +132,14 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                    className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                     placeholder="rahul@example.com"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="subject" className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label htmlFor="subject" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Subject / Topic
                 </label>
                 <input
@@ -141,13 +149,13 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                   placeholder="Booking query, host verification compliance, or payment check"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label htmlFor="message" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Your Message
                 </label>
                 <textarea
@@ -157,7 +165,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows="5"
-                  className="w-full px-3.5 py-2.5 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs sm:text-sm text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all resize-none"
                   placeholder="Please describe how we can assist you with your booking or host listing..."
                 />
               </div>
@@ -165,7 +173,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <span>Dispatching Message...</span>
@@ -186,37 +194,39 @@ export default function Contact() {
             {contactInfo.map((info, index) => (
               <div
                 key={index}
-                className="p-6 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-2"
+                className="p-6 rounded-2xl bg-[#141414]/90 border border-white/10 hover:border-red-600/40 backdrop-blur-xl space-y-2 transition-all shadow-md"
               >
-                <div className="flex items-center gap-2 text-[#FF5A36]">
-                  <info.icon className="w-4 h-4" />
+                <div className="flex items-center gap-2.5 text-[#E50914]">
+                  <div className="p-2 rounded-lg bg-red-600/15 border border-red-600/30">
+                    <info.icon className="w-4 h-4 text-[#E50914]" />
+                  </div>
                   <span className="text-xs font-bold uppercase tracking-wider text-white">{info.title}</span>
                 </div>
-                <div className="space-y-1 text-xs text-[#9E9EA7] pt-1">
+                <div className="space-y-1 text-xs text-neutral-400 pt-2">
                   {info.details.map((detail, dIdx) => (
-                    <p key={dIdx} className="font-medium text-[#FAFAFA]">{detail}</p>
+                    <p key={dIdx} className="font-medium text-white">{detail}</p>
                   ))}
                 </div>
               </div>
             ))}
 
             {/* Operating Hours */}
-            <div className="p-6 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#FF5A36]">
+            <div className="p-6 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-xl space-y-4 shadow-md">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#E50914]">
                 <Clock className="w-4 h-4" />
                 <span>Operating Window (IST)</span>
               </div>
-              <div className="space-y-2 text-xs divide-y divide-[#1E1E26]">
+              <div className="space-y-2 text-xs divide-y divide-white/10">
                 <div className="flex justify-between pb-2">
-                  <span className="text-[#7A7A85]">Monday - Friday:</span>
+                  <span className="text-neutral-400">Monday - Friday:</span>
                   <span className="text-white font-semibold">8:00 AM – 10:00 PM</span>
                 </div>
                 <div className="flex justify-between pt-2 pb-2">
-                  <span className="text-[#7A7A85]">Saturday - Sunday:</span>
+                  <span className="text-neutral-400">Saturday - Sunday:</span>
                   <span className="text-white font-semibold">9:00 AM – 8:00 PM</span>
                 </div>
                 <div className="flex items-center gap-2 pt-3 text-emerald-400 text-xs font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
                   <span>Emergency Hotline: 24/7 Monitored</span>
                 </div>
               </div>
@@ -230,4 +240,5 @@ export default function Contact() {
     </div>
   );
 }
+
  

@@ -90,22 +90,25 @@ const AppRoutes = () => {
 
       <Route path="/seeker-dashboard/saved-pgs" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 flex items-center justify-center">
-            <div className="max-w-md w-full glass-panel p-8 rounded-3xl border border-zinc-800 text-center glow-orange-sm">
-              <div className="h-14 w-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mx-auto mb-4">
+          <div className="min-h-screen bg-[#050505] py-12 px-4 sm:px-6 flex items-center justify-center relative select-none">
+            <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-red-600/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+            <div className="max-w-md w-full p-8 rounded-2xl bg-[#141414] border border-white/10 text-center shadow-2xl space-y-4">
+              <div className="h-14 w-14 rounded-2xl bg-red-600/10 border border-red-600/30 flex items-center justify-center text-[#E50914] mx-auto mb-2 shadow-[0_0_15px_rgba(229,9,20,0.2)]">
                 <Bookmark className="w-7 h-7" />
               </div>
-              <h1 className="text-2xl font-extrabold text-white mb-2">Saved Properties</h1>
-              <p className="text-xs text-zinc-400 mb-6">
+              <h1 className="text-2xl font-extrabold text-white">Saved Properties</h1>
+              <p className="text-xs text-neutral-400">
                 You haven't bookmarked any PG stays yet. Explore verified listings and click the save button to keep track of your favorites.
               </p>
-              <Link
-                to="/seeker-dashboard/find-pg"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs transition-all shadow-md shadow-orange-500/25"
-              >
-                <span>Browse Accommodations</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="pt-2">
+                <Link
+                  to="/seeker-dashboard/find-pg"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E50914] hover:bg-[#B80710] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(229,9,20,0.4)] cursor-pointer"
+                >
+                  <span>Browse Accommodations</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </ProtectedRoute>
@@ -119,21 +122,24 @@ const AppRoutes = () => {
 
       <Route path="/seeker-dashboard/messages" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 flex items-center justify-center">
-            <div className="max-w-md w-full glass-panel p-8 rounded-3xl border border-zinc-800 text-center glow-orange-sm">
-              <div className="h-14 w-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mx-auto mb-4">
+          <div className="min-h-screen bg-[#050505] py-12 px-4 sm:px-6 flex items-center justify-center relative select-none">
+            <div className="absolute top-1/3 right-1/3 w-[400px] h-[400px] bg-red-600/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+            <div className="max-w-md w-full p-8 rounded-2xl bg-[#141414] border border-white/10 text-center shadow-2xl space-y-4">
+              <div className="h-14 w-14 rounded-2xl bg-red-600/10 border border-red-600/30 flex items-center justify-center text-[#E50914] mx-auto mb-2 shadow-[0_0_15px_rgba(229,9,20,0.2)]">
                 <MessageSquare className="w-7 h-7" />
               </div>
-              <h1 className="text-2xl font-extrabold text-white mb-2">Direct Host Inquiries</h1>
-              <p className="text-xs text-zinc-400 mb-6">
+              <h1 className="text-2xl font-extrabold text-white">Direct Host Inquiries</h1>
+              <p className="text-xs text-neutral-400">
                 No active conversations yet. When you request a room or contact a host provider, chat threads will be organized here.
               </p>
-              <Link
-                to="/seeker-dashboard/find-pg"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-orange-500/40 text-zinc-300 hover:text-white font-bold text-xs transition-all"
-              >
-                <span>Find Accommodations</span>
-              </Link>
+              <div className="pt-2">
+                <Link
+                  to="/seeker-dashboard/find-pg"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-red-600/40 text-neutral-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                >
+                  <span>Find Accommodations</span>
+                </Link>
+              </div>
             </div>
           </div>
         </ProtectedRoute>

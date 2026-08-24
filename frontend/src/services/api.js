@@ -319,6 +319,13 @@ export const bookingApi = {
     }
   },
 
+  initiatePayment: async (paymentData) => {
+    if (typeof paymentData === 'string') {
+      return await api.post('/api/bookings/payments/paypal', { bookingId: paymentData });
+    }
+    return await api.post('/api/bookings/payments/paypal', paymentData);
+  },
+
   executePayPalPayment: async (paymentId, PayerID) => {
     try {
       console.log('Executing PayPal payment:', { paymentId, PayerID });

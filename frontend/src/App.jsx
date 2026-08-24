@@ -9,7 +9,7 @@ function App() {
   return (
     <AuthProvider>
       <ScrollToTop />
-      <div className="min-h-screen bg-[#0B0B0E] text-[#FAFAFA] flex flex-col justify-between selection:bg-[#FF5A36] selection:text-white">
+      <div className="min-h-screen bg-[#050505] text-white flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
         <Header />
         <main className="flex-grow">
           <AppRoutes />

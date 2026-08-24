@@ -10,10 +10,7 @@ import {
   Sparkles, 
   ShieldCheck, 
   Check, 
-  AlertCircle,
-  Plus,
-  Home,
-  Info
+  AlertCircle
 } from 'lucide-react';
 import { propertyApi } from '../../../services/api';
 import { useAuth } from '../../../context/AuthContext';
@@ -264,30 +261,33 @@ export default function AddProperty() {
   };
 
   return (
-    <div className="bg-[#0B0B0E] text-[#FAFAFA] py-10 min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 space-y-8">
+    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
         {/* Navigation Bar */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#1E1E26]">
+        <div className="flex items-center justify-between pb-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/provider-dashboard')}
-              className="p-2 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#FF5A36] transition-colors"
+              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 List New Accommodation
               </h1>
-              <p className="text-xs text-[#7A7A85] mt-0.5">Submit your verified PG residence or co-living property for compliance audit.</p>
+              <p className="text-xs text-neutral-400 mt-0.5">Submit your verified PG residence or co-living property for compliance audit.</p>
             </div>
           </div>
         </div>
 
         {errors.global && (
-          <div className="p-4 rounded-sm bg-[#121217] border border-red-500/30 text-xs text-red-400 flex items-center gap-2 font-semibold">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="p-4 rounded-xl bg-red-600/15 border border-red-600/30 text-xs text-red-400 flex items-center gap-2 font-semibold shadow-lg">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#E50914]" />
             <span>{errors.global}</span>
           </div>
         )}
@@ -295,79 +295,79 @@ export default function AddProperty() {
         <form onSubmit={handleSubmit} className="space-y-8">
           
           {/* Section 1: Basic Information */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <Building className="w-3.5 h-3.5" />
-                <span>1. Property Identification</span>
+                <span>1. PROPERTY IDENTIFICATION</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Listing Title / Accommodation Name *
                 </label>
                 <input
                   type="text"
                   value={formData.basicInfo.name}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'name')}
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                   placeholder="e.g. Skyline Luxury Executive PG"
                 />
-                {errors.basicInfo?.name && <p className="text-[11px] text-red-400 mt-0.5">{errors.basicInfo.name}</p>}
+                {errors.basicInfo?.name && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.name}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Structure Category *
                 </label>
                 <select
                   value={formData.basicInfo.buildingType || ''}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'buildingType')}
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
                 >
-                  <option value="">Select structure type</option>
-                  <option value="Independent House">Independent House</option>
-                  <option value="Apartment / Flat">Apartment / Flat</option>
-                  <option value="Dedicated PG Building">Dedicated PG Building</option>
-                  <option value="Hostel Complex">Hostel Complex</option>
+                  <option value="" className="bg-[#141414]">Select structure type</option>
+                  <option value="Independent House" className="bg-[#141414]">Independent House</option>
+                  <option value="Apartment / Flat" className="bg-[#141414]">Apartment / Flat</option>
+                  <option value="Dedicated PG Building" className="bg-[#141414]">Dedicated PG Building</option>
+                  <option value="Hostel Complex" className="bg-[#141414]">Hostel Complex</option>
                 </select>
-                {errors.basicInfo?.buildingType && <p className="text-[11px] text-red-400 mt-0.5">{errors.basicInfo.buildingType}</p>}
+                {errors.basicInfo?.buildingType && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.buildingType}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Resident Target Category *
                 </label>
                 <select
                   value={formData.basicInfo.category || ''}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'category')}
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors cursor-pointer"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
                 >
-                  <option value="">Select resident category</option>
-                  <option value="Men / Boys Only">Men / Boys Only</option>
-                  <option value="Women / Girls Only">Women / Girls Only</option>
-                  <option value="Co-Living (Unisex)">Co-Living (Unisex)</option>
-                  <option value="Working Professionals Only">Working Professionals Only</option>
+                  <option value="" className="bg-[#141414]">Select resident category</option>
+                  <option value="Men / Boys Only" className="bg-[#141414]">Men / Boys Only</option>
+                  <option value="Women / Girls Only" className="bg-[#141414]">Women / Girls Only</option>
+                  <option value="Co-Living (Unisex)" className="bg-[#141414]">Co-Living (Unisex)</option>
+                  <option value="Working Professionals Only" className="bg-[#141414]">Working Professionals Only</option>
                 </select>
-                {errors.basicInfo?.category && <p className="text-[11px] text-red-400 mt-0.5">{errors.basicInfo.category}</p>}
+                {errors.basicInfo?.category && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.category}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Host Legal Name *
                 </label>
                 <input
                   type="text"
                   value={formData.basicInfo.ownerName}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'ownerName')}
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Host Contact Line *
                 </label>
                 <input
@@ -375,158 +375,158 @@ export default function AddProperty() {
                   value={formData.basicInfo.ownerPhone}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'ownerPhone')}
                   placeholder="9876543210"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.basicInfo?.ownerPhone && <p className="text-[11px] text-red-400 mt-0.5">{errors.basicInfo.ownerPhone}</p>}
+                {errors.basicInfo?.ownerPhone && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.ownerPhone}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
                   Host Email Record
                 </label>
                 <input
                   type="email"
                   value={formData.basicInfo.ownerEmail}
                   readOnly
-                  className="w-full px-3 py-2 bg-[#0B0B0E]/50 border border-[#1E1E26] rounded-sm text-xs text-[#7A7A85] cursor-not-allowed"
+                  className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-xs text-neutral-400 cursor-not-allowed"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 2: Location Details */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5" />
-                <span>2. Geographical Location</span>
+                <span>2. GEOGRAPHICAL LOCATION</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">City / Metropolitan *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">City / Metropolitan *</label>
                 <input
                   type="text"
                   value={formData.location.city}
                   onChange={(e) => handleInputChange(e, 'location', 'city')}
                   placeholder="e.g. Hyderabad"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.location?.city && <p className="text-[11px] text-red-400 mt-0.5">{errors.location.city}</p>}
+                {errors.location?.city && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.city}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">District / Locality *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">District / Locality *</label>
                 <input
                   type="text"
                   value={formData.location.area}
                   onChange={(e) => handleInputChange(e, 'location', 'area')}
                   placeholder="e.g. Madhapur, Hitec City"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.location?.area && <p className="text-[11px] text-red-400 mt-0.5">{errors.location.area}</p>}
+                {errors.location?.area && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.area}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Postal Code *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Postal Code *</label>
                 <input
                   type="text"
                   value={formData.location.pincode}
                   onChange={(e) => handleInputChange(e, 'location', 'pincode')}
                   placeholder="500081"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.location?.pincode && <p className="text-[11px] text-red-400 mt-0.5">{errors.location.pincode}</p>}
+                {errors.location?.pincode && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.pincode}</p>}
               </div>
 
               <div className="sm:col-span-2 lg:col-span-3 space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Complete Street Address *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Complete Street Address *</label>
                 <input
                   type="text"
                   value={formData.location.address}
                   onChange={(e) => handleInputChange(e, 'location', 'address')}
                   placeholder="Street name, plot number, landmark, nearby metro station"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white placeholder-[#555560] focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.location?.address && <p className="text-[11px] text-red-400 mt-0.5">{errors.location.address}</p>}
+                {errors.location?.address && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.address}</p>}
               </div>
             </div>
           </div>
 
           {/* Section 3: Capacity & Pricing */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <DollarSign className="w-3.5 h-3.5" />
-                <span>3. Inventory & Rental Tariff</span>
+                <span>3. INVENTORY & RENTAL TARIFF</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Total Room Units *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Total Room Units *</label>
                 <input
                   type="number"
                   value={formData.propertyDetails.rooms}
                   onChange={(e) => handleInputChange(e, 'propertyDetails', 'rooms')}
                   placeholder="e.g. 8"
                   min="1"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.propertyDetails?.rooms && <p className="text-[11px] text-red-400 mt-0.5">{errors.propertyDetails.rooms}</p>}
+                {errors.propertyDetails?.rooms && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.propertyDetails.rooms}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Floor Area (Sq. Ft.) *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Floor Area (Sq. Ft.) *</label>
                 <input
                   type="number"
                   value={formData.propertyDetails.area}
                   onChange={(e) => handleInputChange(e, 'propertyDetails', 'area')}
                   placeholder="e.g. 2400"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.propertyDetails?.area && <p className="text-[11px] text-red-400 mt-0.5">{errors.propertyDetails.area}</p>}
+                {errors.propertyDetails?.area && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.propertyDetails.area}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Monthly Rent (₹) *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Monthly Rent (₹) *</label>
                 <input
                   type="number"
                   value={formData.pricing.rent}
                   onChange={(e) => handleInputChange(e, 'pricing', 'rent')}
                   placeholder="e.g. 8500"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.pricing?.rent && <p className="text-[11px] text-red-400 mt-0.5">{errors.pricing.rent}</p>}
+                {errors.pricing?.rent && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.pricing.rent}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#9E9EA7]">Security Deposit (₹) *</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Security Deposit (₹) *</label>
                 <input
                   type="number"
                   value={formData.pricing.deposit}
                   onChange={(e) => handleInputChange(e, 'pricing', 'deposit')}
                   placeholder="e.g. 15000"
-                  className="w-full px-3 py-2 bg-[#0B0B0E] border border-[#22222A] rounded-sm text-xs text-white focus:outline-none focus:border-[#FF5A36] transition-colors"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
                 />
-                {errors.pricing?.deposit && <p className="text-[11px] text-red-400 mt-0.5">{errors.pricing.deposit}</p>}
+                {errors.pricing?.deposit && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.pricing.deposit}</p>}
               </div>
             </div>
           </div>
 
           {/* Section 4: Photo Dropzone */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="flex items-center justify-between border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <UploadCloud className="w-3.5 h-3.5" />
-                <span>4. Photography Gallery</span>
+                <span>4. PHOTOGRAPHY GALLERY</span>
               </h2>
-              <span className="text-xs text-[#7A7A85]">{previewImages.length} photo(s) selected</span>
+              <span className="text-xs text-neutral-400 font-medium">{previewImages.length} photo(s) selected</span>
             </div>
 
             {/* Dropzone Container */}
-            <div className="relative border border-dashed border-[#22222A] hover:border-[#FF5A36] rounded-sm p-8 text-center bg-[#0B0B0E] transition-colors">
+            <div className="relative border border-dashed border-white/15 hover:border-[#E50914] rounded-xl p-8 text-center bg-black/60 transition-colors">
               <input
                 type="file"
                 multiple
@@ -535,11 +535,11 @@ export default function AddProperty() {
                 className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 id="imageUpload"
               />
-              <UploadCloud className="w-8 h-8 text-[#FF5A36] mx-auto mb-2 pointer-events-none" />
+              <UploadCloud className="w-8 h-8 text-[#E50914] mx-auto mb-2 pointer-events-none" />
               <p className="text-xs font-bold text-white pointer-events-none uppercase tracking-wider">
                 Select high resolution photography
               </p>
-              <p className="text-[11px] text-[#7A7A85] mt-1 pointer-events-none">
+              <p className="text-[11px] text-neutral-400 mt-1 pointer-events-none">
                 JPG, PNG, or WEBP up to 5MB each. Clear accommodation photos increase reservation velocity by 300%.
               </p>
             </div>
@@ -548,15 +548,15 @@ export default function AddProperty() {
             {previewImages.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
                 {previewImages.map((url, index) => (
-                  <div key={index} className="relative aspect-[4/3] rounded-sm overflow-hidden border border-[#1E1E26] group bg-[#0B0B0E]">
+                  <div key={index} className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group bg-black">
                     <img src={url} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => removeFile(index)}
-                      className="absolute top-1 right-1 p-1 rounded-xs bg-black/80 text-red-400 hover:bg-red-500 hover:text-white transition-colors"
+                      className="absolute top-1.5 right-1.5 p-1 rounded-lg bg-black/80 text-red-400 hover:bg-red-600 hover:text-white transition-all cursor-pointer"
                       title="Remove image"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 ))}
@@ -565,15 +565,15 @@ export default function AddProperty() {
           </div>
 
           {/* Section 5: Inclusions & Amenities */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>5. Verified Amenities</span>
+                <span>5. VERIFIED AMENITIES</span>
               </h2>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {AMENITIES_OPTIONS.map((amenity) => {
                 const isSelected = formData.amenities.includes(amenity);
                 return (
@@ -581,13 +581,13 @@ export default function AddProperty() {
                     key={amenity}
                     type="button"
                     onClick={() => handleAmenityToggle(amenity)}
-                    className={`px-3 py-1.5 rounded-sm text-xs font-semibold uppercase tracking-wider transition-colors flex items-center gap-1.5 ${
+                    className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#FF5A36] text-white'
-                        : 'bg-[#0B0B0E] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#383848]'
+                        ? 'bg-[#E50914] text-white shadow-md'
+                        : 'bg-black/60 border border-white/10 text-neutral-400 hover:text-white hover:border-[#E50914]'
                     }`}
                   >
-                    {isSelected && <Check className="w-3 h-3" />}
+                    {isSelected && <Check className="w-3.5 h-3.5" />}
                     <span>{amenity}</span>
                   </button>
                 );
@@ -596,15 +596,15 @@ export default function AddProperty() {
           </div>
 
           {/* Section 6: House Rules */}
-          <div className="p-6 sm:p-8 rounded-sm bg-[#121217] border border-[#1E1E26] space-y-6">
-            <div className="border-b border-[#1E1E26] pb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#FF5A36] flex items-center gap-2">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
+            <div className="border-b border-white/10 pb-3">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>6. Resident Code & Rules</span>
+                <span>6. RESIDENT CODE & RULES</span>
               </h2>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {RULES_OPTIONS.map((rule) => {
                 const isSelected = formData.rules.includes(rule);
                 return (
@@ -612,13 +612,13 @@ export default function AddProperty() {
                     key={rule}
                     type="button"
                     onClick={() => handleRuleToggle(rule)}
-                    className={`px-3 py-1.5 rounded-sm text-xs font-semibold uppercase tracking-wider transition-colors flex items-center gap-1.5 ${
+                    className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#FF5A36] text-white'
-                        : 'bg-[#0B0B0E] border border-[#22222A] text-[#9E9EA7] hover:text-white hover:border-[#383848]'
+                        ? 'bg-[#E50914] text-white shadow-md'
+                        : 'bg-black/60 border border-white/10 text-neutral-400 hover:text-white hover:border-[#E50914]'
                     }`}
                   >
-                    {isSelected && <Check className="w-3 h-3" />}
+                    {isSelected && <Check className="w-3.5 h-3.5" />}
                     <span>{rule}</span>
                   </button>
                 );
@@ -631,14 +631,14 @@ export default function AddProperty() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-5 py-2.5 rounded-sm bg-[#121217] border border-[#22222A] text-[#9E9EA7] hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
+              className="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2.5 rounded-sm bg-[#FF5A36] hover:bg-[#E54B28] text-white font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-50"
+              className="px-6 py-2.5 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer disabled:opacity-50"
             >
               {isLoading ? 'Submitting Property...' : 'Publish Listing'}
             </button>
@@ -649,4 +649,5 @@ export default function AddProperty() {
     </div>
   );
 }
+
 
