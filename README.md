@@ -10,6 +10,12 @@
 [![PayPal Escrow](https://img.shields.io/badge/PayPal-Checkout%20Escrow-00457C?logo=paypal&logoColor=white)](https://developer.paypal.com/)
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 
+> [!TIP]
+> ### 💳 PayPal Payment Testing Credentials (Sandbox)
+> If you want to test payments, use the following dummy PayPal sandbox account:
+> - **Email / User ID:** `sb-hwvog33914053@personal.example.com`
+> - **Password:** `NV6c-2s@`
+
 **PG Made Eazy** is an end-to-end, full-stack web platform designed to streamline student and working professional accommodation discovery, host listing management, and administrative safety compliance audits. Built with a sleek **Dark Obsidian & Warm Orange** design system, the application delivers zero-brokerage direct connections, verified room photo mosaics, and encrypted PayPal digital escrow checkout.
 
 ---
