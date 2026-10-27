@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Check, 
@@ -16,6 +16,35 @@ import {
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
 import { getSecureImageUrl } from '../../../utils/imageUtils';
+
+// Reusable Split-Flap Character Component
+function FlapChar({ char, size = "16px" }) {
+  const displayChar = char === " " ? "\u00A0" : char.toUpperCase();
+  const isSpecial = char === "+" || char === "-" || char === "/" || char === ":" || char === ".";
+
+  return (
+    <span 
+      className={`c ${isSpecial ? "op" : ""}`}
+      style={{ "--cw": size }}
+      aria-hidden="true"
+    >
+      <i className="u">{displayChar}</i>
+      <i className="l">{displayChar}</i>
+    </span>
+  );
+}
+
+// Reusable Split-Flap Word/String Component
+function FlapWord({ text, size = "16px", colorClass = "text-[#f2f2f2]" }) {
+  const chars = String(text).toUpperCase().split("");
+  return (
+    <span className={`fl ${colorClass}`}>
+      {chars.map((ch, idx) => (
+        <FlapChar key={idx} char={ch} size={size} />
+      ))}
+    </span>
+  );
+}
 
 const PropertyApproval = () => {
   const navigate = useNavigate();
@@ -62,25 +91,26 @@ const PropertyApproval = () => {
         setShowRejectDialog(true);
       }
     } catch (error) {
-      console.error('Error handling approval:', error);
-      toast.error(`Failed to ${action} property`);
+      console.error('Approval action error:', error);
+      toast.error(error.response?.data?.message || `Failed to ${action} property`);
     }
   };
 
   const handleRejectSubmit = async () => {
+    if (!rejectionReason.trim()) {
+      toast.error('Please enter a rejection reason for the host');
+      return;
+    }
+
     try {
-      if (!rejectionReason.trim()) {
-        toast.error('Please provide a specific feedback reason for the host');
-        return;
-      }
       await propertyApi.rejectProperty(selectedPropertyId, rejectionReason);
-      toast.success('Property status marked as Rejected. Feedback recorded.');
+      toast.success('Property rejected and logged.');
       setShowRejectDialog(false);
       setRejectionReason('');
-      navigate('/admin-dashboard/rejected-pgs');
+      fetchPendingProperties();
     } catch (error) {
-      console.error('Error rejecting property:', error);
-      toast.error('Failed to reject property');
+      console.error('Rejection submission error:', error);
+      toast.error(error.response?.data?.message || 'Failed to reject property');
     }
   };
 
@@ -108,62 +138,73 @@ const PropertyApproval = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white">
-        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
-        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading audit queue...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#1f2226] flex flex-col items-center justify-center gap-4 text-[#f2f2f2] font-['Barlow_Semi_Condensed']">
+        <div className="h-8 w-8 border-2 border-[#ffb000] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-[#a7aaaf]">LOADING AUDIT QUEUE...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
+    <div className="bg-[#1f2226] text-[#f2f2f2] py-10 min-h-screen relative font-['Barlow_Semi_Condensed']">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         
-        {/* Top Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/admin-dashboard')}
-              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-amber-500">AUDIT VERIFICATION QUEUE</div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Pending Property Audits ({properties.length})
-              </h1>
+        {/* Top Board Header */}
+        <div className="board">
+          <div className="board-head">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/admin-dashboard')}
+                className="btn-solari btn-solari-steel text-xs py-1.5 px-3"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>BACK</span>
+              </button>
+              <span className="w-2.5 h-2.5 bg-[#ffb000]" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-[0.16em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                AUDIT VERIFICATION QUEUE
+              </h2>
+            </div>
+            <div className="flex items-center gap-6 text-xs uppercase tracking-[0.18em] text-[#a7aaaf]">
+              <span>PENDING REVIEWS: <b className="text-[#ffb000] font-mono">{properties.length}</b></span>
+              <span>INSPECTION: <b className="text-emerald-400 font-mono">ENFORCED</b></span>
+            </div>
+          </div>
+
+          <div className="py-4">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <FlapWord text="PENDING" size="clamp(22px, 3.4vw, 40px)" colorClass="text-[#f2f2f2]" />
+              <FlapWord text="AUDITS." size="clamp(22px, 3.4vw, 40px)" colorClass="text-[#ffb000]" />
             </div>
           </div>
         </div>
 
         {error ? (
-          <div className="p-8 rounded-2xl bg-[#141414] border border-red-500/30 text-center max-w-md mx-auto space-y-4 shadow-xl">
-            <p className="text-xs font-semibold text-red-400">{error}</p>
+          <div className="board text-center max-w-md mx-auto space-y-4">
+            <p className="text-xs font-mono text-red-400 uppercase tracking-wider">{error}</p>
             <button
               onClick={fetchPendingProperties}
-              className="px-6 py-2.5 rounded-lg bg-[#E50914] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
+              className="btn-solari btn-solari-amber text-xs"
             >
-              Retry
+              RETRY FETCH
             </button>
           </div>
         ) : properties.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-[#141414] border border-white/10 text-center max-w-md mx-auto space-y-4 shadow-xl">
-            <ShieldCheck className="w-8 h-8 text-emerald-400 mx-auto" />
+          <div className="board text-center max-w-md mx-auto space-y-4 py-12">
+            <ShieldCheck className="w-10 h-10 text-emerald-400 mx-auto" />
             <div className="space-y-1">
-              <h2 className="text-base font-bold text-white">Audit Queue Clear</h2>
-              <p className="text-xs text-neutral-400">
-                All submitted PG accommodation listings have been audited. There are no pending requests in queue.
+              <h2 className="text-xl font-bold text-white uppercase font-['Big_Shoulders_Display'] tracking-[0.1em]">
+                AUDIT QUEUE CLEAR
+              </h2>
+              <p className="text-xs text-[#a7aaaf]">
+                All submitted student PG listings have been reviewed and audited. Zero pending requests in queue.
               </p>
             </div>
             <button
               onClick={() => navigate('/admin-dashboard')}
-              className="w-full py-3 px-4 bg-white/5 border border-white/10 text-neutral-400 hover:text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
+              className="btn-solari btn-solari-steel text-xs"
             >
-              Return to Control Center
+              RETURN TO CONTROL CENTER
             </button>
           </div>
         ) : (
@@ -175,7 +216,7 @@ const PropertyApproval = () => {
               return (
                 <div
                   key={property.id || pIdx}
-                  className="rounded-2xl overflow-hidden bg-[#141414] border border-white/10 flex flex-col justify-between shadow-xl hover:border-red-600/50 hover:shadow-2xl hover:shadow-red-600/10 transition-all duration-300"
+                  className="rounded-[3px] overflow-hidden bg-[#0e0f11] border border-[#2a2d31] hover:border-[#ffb000]/60 transition-colors flex flex-col justify-between"
                 >
                   {/* Photo Carousel Area */}
                   <div className="relative aspect-[16/10] overflow-hidden bg-black group">
@@ -184,13 +225,13 @@ const PropertyApproval = () => {
                       alt={`${property.name} photo`}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0e0f11] via-transparent to-transparent opacity-80" />
 
-                    {/* Pending Pill */}
+                    {/* Pending Status Badge */}
                     <div className="absolute top-3 right-3">
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500 text-black shadow-md">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-[2px] bg-[#ffb000] text-[#0b0b0d] font-mono">
                         <Building className="w-3.5 h-3.5" />
-                        <span>Awaiting Audit</span>
+                        <span>AWAITING AUDIT</span>
                       </span>
                     </div>
 
@@ -199,26 +240,16 @@ const PropertyApproval = () => {
                       <>
                         <button
                           onClick={(e) => prevImage(property.id, e)}
-                          className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-black/80 text-white hover:bg-[#E50914] transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                          className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-[2px] bg-[#0b0b0d]/90 text-white hover:text-[#ffb000] border border-[#34373c] transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
                         >
                           <ChevronLeft className="w-4 h-4" />
                         </button>
                         <button
                           onClick={(e) => nextImage(property.id, e)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-black/80 text-white hover:bg-[#E50914] transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-[2px] bg-[#0b0b0d]/90 text-white hover:text-[#ffb000] border border-[#34373c] transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
                         >
                           <ChevronRight className="w-4 h-4" />
                         </button>
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                          {property.images.map((_, dotIdx) => (
-                            <div
-                              key={dotIdx}
-                              className={`h-1 rounded-full transition-all ${
-                                dotIdx === activeIdx ? 'w-3.5 bg-[#E50914]' : 'w-1 bg-white/40'
-                              }`}
-                            />
-                          ))}
-                        </div>
                       </>
                     )}
                   </div>
@@ -227,53 +258,57 @@ const PropertyApproval = () => {
                   <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                     <div className="space-y-3">
                       <div className="flex items-baseline justify-between gap-2">
-                        <h3 className="text-base font-bold text-white truncate">{property.name}</h3>
-                        <span className="text-sm font-extrabold text-[#E50914] shrink-0">₹{property.rent?.toLocaleString()}</span>
+                        <h3 className="text-lg font-bold text-white uppercase tracking-[0.08em] font-['Big_Shoulders_Display'] truncate">
+                          {property.name}
+                        </h3>
+                        <span className="text-base font-bold text-[#ffb000] font-['Big_Shoulders_Display'] shrink-0">
+                          ₹{property.rent?.toLocaleString()}/MO
+                        </span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-xs text-neutral-400">
-                        <MapPin className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
-                        <span className="truncate">{property.city}, {property.area}</span>
+                      <div className="flex items-center gap-1.5 text-xs text-[#a7aaaf]">
+                        <MapPin className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
+                        <span className="truncate uppercase">{property.city}, {property.area}</span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-white/10 text-xs text-white">
+                      <div className="grid grid-cols-2 gap-2 py-2 border-y border-[#202226] text-xs text-white">
                         <div>
-                          <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Inventory</span>
-                          <span className="font-semibold">{property.rooms} Rooms</span>
+                          <span className="text-[#a7aaaf] block text-[10px] uppercase tracking-wider">ROOMS</span>
+                          <span className="font-mono font-bold">{property.rooms} ROOMS</span>
                         </div>
                         <div>
-                          <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Structure</span>
-                          <span className="font-semibold truncate block">{property.buildingType || 'PG Unit'}</span>
+                          <span className="text-[#a7aaaf] block text-[10px] uppercase tracking-wider">STRUCTURE</span>
+                          <span className="font-mono font-bold uppercase truncate block">{property.buildingType || 'STUDENT PG'}</span>
                         </div>
                       </div>
 
                       {/* Host Info */}
-                      <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs space-y-0.5">
+                      <div className="p-2.5 rounded-[2px] bg-[#0b0b0d] border border-[#202226] text-xs space-y-0.5">
                         <div className="flex items-center gap-1.5 text-white font-medium truncate">
-                          <User className="w-3.5 h-3.5 text-[#E50914]" />
-                          <span>{property.ownerName}</span>
+                          <User className="w-3.5 h-3.5 text-[#ffb000]" />
+                          <span className="uppercase">{property.ownerName}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-neutral-400 text-[11px] pl-5">
+                        <div className="flex items-center gap-1.5 text-[#a7aaaf] text-[11px] pl-5 font-mono">
                           <span>{property.ownerPhone}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Audit Decision Buttons */}
-                    <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2">
+                    <div className="pt-3 border-t border-[#202226] grid grid-cols-2 gap-2">
                       <button
                         onClick={() => handleApproval(property.id, 'approve')}
-                        className="py-2.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+                        className="py-2 px-3 rounded-[2px] bg-emerald-500 hover:bg-emerald-400 text-[#0b0b0d] font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <Check className="w-4 h-4" />
-                        <span>Approve</span>
+                        <span>APPROVE PG</span>
                       </button>
                       <button
                         onClick={() => handleApproval(property.id, 'reject')}
-                        className="py-2.5 px-3 rounded-lg bg-[#141414] border border-red-500/40 text-red-500 hover:bg-[#E50914] hover:text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="py-2 px-3 rounded-[2px] bg-[#0b0b0d] border border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <X className="w-4 h-4" />
-                        <span>Reject</span>
+                        <span>REJECT</span>
                       </button>
                     </div>
 
@@ -288,39 +323,39 @@ const PropertyApproval = () => {
       {/* Rejection Reason Modal */}
       {showRejectDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 max-w-md w-full text-white shadow-2xl space-y-4">
-            <div className="flex items-center gap-2 text-red-500">
-              <AlertTriangle className="w-4.5 h-4.5" />
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white">Listing Rejection Feedback</h3>
+          <div className="board max-w-md w-full space-y-4">
+            <div className="flex items-center gap-2 text-red-400">
+              <AlertTriangle className="w-4 h-4" />
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white font-mono">LISTING REJECTION FEEDBACK</h3>
             </div>
             
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              This notice is saved to the audit record and displayed to the host for corrective action.
+            <p className="text-xs text-[#a7aaaf] leading-relaxed">
+              This notice will be recorded on the audit log and dispatched to the host warden for corrective action.
             </p>
 
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              placeholder="e.g. Inadequate room photography resolution, invalid phone contact, or address mismatch."
+              placeholder="E.G. INADEQUATE ROOM PHOTO RESOLUTION, MISSING MESS FOOD DETAILS, OR MISMATCHED ADDRESS..."
               rows={4}
-              className="w-full p-3.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full p-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase resize-none"
             />
 
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#202226]">
               <button
                 onClick={() => {
                   setShowRejectDialog(false);
                   setRejectionReason('');
                 }}
-                className="px-4 py-2 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                className="btn-solari btn-solari-steel text-xs py-1.5 px-3"
               >
-                Cancel
+                CANCEL
               </button>
               <button
                 onClick={handleRejectSubmit}
-                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                className="btn-solari text-xs py-1.5 px-4 bg-red-600 border-red-600 text-white hover:bg-red-500"
               >
-                Confirm Rejection
+                CONFIRM REJECTION
               </button>
             </div>
           </div>
@@ -332,4 +367,3 @@ const PropertyApproval = () => {
 };
 
 export default PropertyApproval;
-

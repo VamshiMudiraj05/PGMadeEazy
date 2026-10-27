@@ -13,7 +13,10 @@ import {
   Clock,
   Save,
   X,
-  Phone
+  Phone,
+  BedDouble,
+  ShieldAlert,
+  Sparkles
 } from 'lucide-react';
 import { propertyApi } from '../../../services/api';
 import { toast } from 'react-hot-toast';
@@ -39,8 +42,8 @@ const MyProperties = () => {
       const ownerProperties = await propertyApi.getPropertiesByOwner(user?.email || user?.name);
       setProperties(ownerProperties || []);
     } catch (err) {
-      setError('Failed to load properties');
-      toast.error('Failed to load properties');
+      setError('Failed to load host PG catalog');
+      toast.error('Failed to load host PG catalog');
     } finally {
       setLoading(false);
     }
@@ -50,25 +53,25 @@ const MyProperties = () => {
     switch (status) {
       case 'PENDING':
         return {
-          bg: 'bg-amber-500 text-black shadow-md',
+          bg: 'bg-[#ffb000]/15 text-[#ffb000] border border-[#ffb000]/40',
           icon: Clock,
           label: 'Awaiting Audit'
         };
       case 'APPROVED':
         return {
-          bg: 'bg-emerald-500 text-black shadow-md',
+          bg: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40',
           icon: CheckCircle2,
-          label: 'Live & Approved'
+          label: 'Live & Boarding'
         };
       case 'REJECTED':
         return {
-          bg: 'bg-red-600 text-white shadow-md',
+          bg: 'bg-red-500/15 text-red-400 border border-red-500/40',
           icon: XCircle,
           label: 'Changes Required'
         };
       default:
         return {
-          bg: 'bg-white/10 text-neutral-400',
+          bg: 'bg-neutral-800 text-neutral-400 border border-neutral-700',
           icon: AlertCircle,
           label: status || 'Draft'
         };
@@ -112,13 +115,13 @@ const MyProperties = () => {
     const numericFields = ['rent', 'rooms', 'deposit'];
     for (const field of numericFields) {
       if (editForm[field] && isNaN(Number(editForm[field]))) {
-        toast.error(`${field.replace(/([A-Z])/g, ' $1').toLowerCase()} must be a number`);
+        toast.error(`${field.replace(/([A-Z])/g, ' $1').toLowerCase()} must be a valid number`);
         return false;
       }
     }
     
     if (editForm.ownerPhone && !/^[0-9]{10}$/.test(editForm.ownerPhone)) {
-      toast.error('Phone number must be 10 digits');
+      toast.error('Warden phone number must be 10 digits');
       return false;
     }
     
@@ -133,12 +136,12 @@ const MyProperties = () => {
       formData.append('property', JSON.stringify(editForm));
       
       await propertyApi.updateProperty(propertyId, formData);
-      toast.success('Property updated successfully');
+      toast.success('PG listing updated successfully');
       loadProperties();
       setEditingProperty(null);
       setEditForm({});
     } catch {
-      toast.error('Failed to update property');
+      toast.error('Failed to update PG listing');
     }
   };
 
@@ -169,10 +172,10 @@ const MyProperties = () => {
   };
 
   const handleDelete = async (propertyId) => {
-    if (window.confirm('Are you sure you want to delete this property listing?')) {
+    if (window.confirm('Are you sure you want to delete this student PG listing from the departure board?')) {
       try {
         await propertyApi.deleteProperty(propertyId);
-        toast.success('Property deleted successfully');
+        toast.success('PG listing removed from platform');
         loadProperties();
       } catch {
         toast.error('Failed to delete property');
@@ -182,69 +185,79 @@ const MyProperties = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white">
-        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
-        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading property catalog...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0a0a0c] flex flex-col items-center justify-center gap-4 text-white">
+        <div className="h-8 w-8 border-2 border-[#ffb000] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-[#ffb000]">
+          SYNCING HOST PG MANIFEST...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
+    <div className="bg-[#0a0a0c] text-neutral-100 py-10 min-h-screen relative font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
-        {/* Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/provider-dashboard')}
-              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#E50914]">INVENTORY MANAGEMENT</div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Host Property Catalog
-              </h1>
+        {/* Departure Terminal Header */}
+        <div className="board p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/provider-dashboard')}
+                className="p-2.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-[#ffb000]/40 transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#ffb000] animate-pulse" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ffb000]">
+                    TERMINAL 02 // HOST ASSETS
+                  </span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white font-['Big_Shoulders_Display']">
+                  Student PG & Hostel Inventory
+                </h1>
+              </div>
             </div>
-          </div>
 
-          <button
-            onClick={() => navigate('/provider-dashboard/add-property')}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider bg-[#E50914] hover:bg-[#b80710] text-white shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all self-start sm:self-auto cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>List New Property</span>
-          </button>
+            <button
+              onClick={() => navigate('/provider-dashboard/add-property')}
+              className="btn-solari-amber inline-flex items-center gap-2 self-start sm:self-auto cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>List New Student PG</span>
+            </button>
+          </div>
         </div>
 
         {error ? (
-          <div className="p-8 rounded-2xl bg-[#141414] border border-red-500/30 text-center max-w-md mx-auto space-y-4">
-            <AlertCircle className="w-8 h-8 text-red-400 mx-auto" />
-            <p className="text-xs font-semibold text-red-400">{error}</p>
+          <div className="board p-8 text-center max-w-md mx-auto space-y-4">
+            <AlertCircle className="w-8 h-8 text-[#ffb000] mx-auto" />
+            <p className="text-xs font-mono font-semibold text-neutral-300">{error}</p>
             <button
               onClick={loadProperties}
-              className="px-6 py-2.5 rounded-lg bg-[#E50914] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
+              className="btn-solari-amber cursor-pointer"
             >
-              Retry Loading
+              Retry Sync
             </button>
           </div>
         ) : properties.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-[#141414] border border-white/10 text-center max-w-md mx-auto space-y-4 shadow-xl">
-            <Building2 className="w-8 h-8 text-neutral-400 mx-auto" />
+          <div className="board p-12 text-center max-w-md mx-auto space-y-4">
+            <Building2 className="w-8 h-8 text-neutral-500 mx-auto" />
             <div className="space-y-1">
-              <h2 className="text-base font-bold text-white">No Properties in Catalog</h2>
-              <p className="text-xs text-neutral-400">You haven't listed any accommodations under your host profile yet.</p>
+              <h2 className="text-lg font-bold text-white font-['Big_Shoulders_Display'] uppercase">
+                Zero Accommodations Listed
+              </h2>
+              <p className="text-xs font-mono text-neutral-400">
+                You haven't listed any student hostel or sharing PG under your warden profile yet.
+              </p>
             </div>
             <button
               onClick={() => navigate('/provider-dashboard/add-property')}
-              className="w-full py-3 px-4 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
+              className="btn-solari-amber w-full cursor-pointer"
             >
-              + List Your First Accommodation
+              + List First Student PG
             </button>
           </div>
         ) : (
@@ -258,20 +271,20 @@ const MyProperties = () => {
                 <div
                   key={property.id || pIdx}
                   id={`property-card-${property.id}`}
-                  className="rounded-2xl overflow-hidden bg-[#141414] border border-white/10 hover:border-red-600/50 transition-all duration-300 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-600/10"
+                  className="board flex flex-col justify-between overflow-hidden hover:border-[#ffb000]/60 transition-all duration-200"
                 >
-                  {/* Photo Header */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                  {/* Photo & Status Banner */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-black border-b border-neutral-800">
                     <img
                       src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                       alt={property.name}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
                     
                     {/* Status Pill */}
                     <div className="absolute top-3 right-3">
-                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${statusInfo.bg}`}>
+                      <span className={`inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded ${statusInfo.bg}`}>
                         <StatusIcon className="w-3 h-3" />
                         <span>{statusInfo.label}</span>
                       </span>
@@ -279,8 +292,8 @@ const MyProperties = () => {
 
                     {/* Rent Pill */}
                     <div className="absolute bottom-3 left-3">
-                      <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-white border border-white/15">
-                        ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-neutral-400 font-normal">/mo</span>
+                      <span className="text-xs font-mono font-bold px-3 py-1 rounded bg-black/90 text-[#ffb000] border border-[#ffb000]/40">
+                        ₹{property.rent?.toLocaleString()}<span className="text-[10px] text-neutral-400 font-normal">/bed/mo</span>
                       </span>
                     </div>
                   </div>
@@ -288,15 +301,17 @@ const MyProperties = () => {
                   {/* Card Content & Form Fields */}
                   <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                     {isEditing ? (
-                      <div className="space-y-3.5 text-xs">
+                      <div className="space-y-3.5 text-xs font-mono">
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Accommodation Title</label>
+                          <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">
+                            Hostel / PG Title
+                          </label>
                           <input
                             type="text"
                             name="name"
                             value={editForm.name}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                            className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                           />
                         </div>
 
@@ -308,40 +323,40 @@ const MyProperties = () => {
                               name="city"
                               value={editForm.city}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Area</label>
+                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Campus Hub</label>
                             <input
                               type="text"
                               name="area"
                               value={editForm.area}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-2">
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Rent (₹)</label>
+                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Bed Tariff (₹)</label>
                             <input
                               type="number"
                               name="rent"
                               value={editForm.rent}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Rooms</label>
+                            <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Bed Units</label>
                             <input
                               type="number"
                               name="rooms"
                               value={editForm.rooms}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                         </div>
@@ -354,7 +369,7 @@ const MyProperties = () => {
                               name="buildingType"
                               value={editForm.buildingType}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                           <div className="space-y-1">
@@ -364,42 +379,45 @@ const MyProperties = () => {
                               name="deposit"
                               value={editForm.deposit}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                             />
                           </div>
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Host Phone</label>
+                          <label className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Warden Phone</label>
                           <input
                             type="tel"
                             name="ownerPhone"
                             value={editForm.ownerPhone}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                            className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-xs text-white focus:outline-none focus:border-[#ffb000]"
                           />
                         </div>
                       </div>
                     ) : (
                       <div className="space-y-3">
                         <div className="space-y-1">
-                          <h3 className="text-base font-bold text-white truncate">
+                          <h3 className="text-base font-bold text-white uppercase font-['Big_Shoulders_Display'] tracking-wide truncate">
                             {property.name}
                           </h3>
-                          <div className="flex items-center gap-1.5 text-xs text-neutral-400">
-                            <MapPin className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
+                          <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono">
+                            <MapPin className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
                             <span className="truncate">{property.city}, {property.area}</span>
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 py-2 border-y border-white/10 text-xs text-white">
+                        <div className="grid grid-cols-2 gap-2 py-2 border-y border-neutral-800 text-xs font-mono">
                           <div>
-                            <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Inventory</span>
-                            <span className="font-semibold">{property.rooms} Units</span>
+                            <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Sharing Capacity</span>
+                            <span className="font-semibold text-white flex items-center gap-1 mt-0.5">
+                              <BedDouble className="w-3.5 h-3.5 text-[#ffb000]" />
+                              <span>{property.rooms} Bed Units</span>
+                            </span>
                           </div>
                           <div>
-                            <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Security Deposit</span>
-                            <span className="font-semibold">₹{property.deposit?.toLocaleString()}</span>
+                            <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Security Deposit</span>
+                            <span className="font-semibold text-white block mt-0.5">₹{property.deposit?.toLocaleString()}</span>
                           </div>
                         </div>
 
@@ -409,13 +427,13 @@ const MyProperties = () => {
                             {property.amenities.slice(0, 3).map((amenity, aIdx) => (
                               <span
                                 key={aIdx}
-                                className="px-2.5 py-0.5 rounded-md bg-[#141414] text-neutral-300 border border-white/10 text-[10px] font-semibold uppercase tracking-wider"
+                                className="px-2 py-0.5 rounded bg-neutral-900 text-neutral-300 border border-neutral-800 text-[10px] font-mono font-medium uppercase"
                               >
                                 {amenity}
                               </span>
                             ))}
                             {property.amenities.length > 3 && (
-                              <span className="px-2.5 py-0.5 rounded-md bg-[#141414] text-neutral-400 text-[10px] font-semibold">
+                              <span className="px-2 py-0.5 rounded bg-neutral-900 text-[#ffb000] border border-neutral-800 text-[10px] font-mono">
                                 +{property.amenities.length - 3}
                               </span>
                             )}
@@ -423,10 +441,12 @@ const MyProperties = () => {
                         )}
 
                         {/* Host Contact Box */}
-                        <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-xs space-y-0.5">
-                          <div className="font-semibold text-white truncate text-[11px]">{property.ownerName}</div>
+                        <div className="p-3 rounded bg-neutral-900/80 border border-neutral-800 text-xs font-mono space-y-0.5">
+                          <div className="font-semibold text-white truncate text-[11px] uppercase">
+                            Warden: {property.ownerName}
+                          </div>
                           <div className="flex items-center gap-1.5 text-neutral-400 text-[10px]">
-                            <Phone className="w-3 h-3 text-[#E50914] shrink-0" />
+                            <Phone className="w-3 h-3 text-[#ffb000] shrink-0" />
                             <span>{property.ownerPhone}</span>
                           </div>
                         </div>
@@ -434,19 +454,19 @@ const MyProperties = () => {
                     )}
 
                     {/* Action Bar */}
-                    <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                    <div className="pt-3 border-t border-neutral-800 flex items-center justify-between gap-2">
                       {isEditing ? (
                         <>
                           <button
                             onClick={() => handleSave(property.id)}
-                            className="flex-1 py-2.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-black text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+                            className="btn-solari-amber flex-1 py-2 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <Save className="w-4 h-4" />
-                            <span>Save</span>
+                            <span>Save Changes</span>
                           </button>
                           <button
                             onClick={handleCancel}
-                            className="py-2.5 px-3 rounded-lg bg-[#141414] text-neutral-400 hover:text-white border border-white/10 text-xs font-semibold transition-all cursor-pointer"
+                            className="py-2 px-3 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800 text-xs font-mono transition-all cursor-pointer"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -455,17 +475,17 @@ const MyProperties = () => {
                         <>
                           <button
                             onClick={() => handleEdit(property)}
-                            className="flex-1 py-2.5 px-3 rounded-lg bg-white/5 border border-white/10 text-white hover:border-[#E50914] hover:bg-[#E50914] text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                            className="btn-solari flex-1 py-2 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
-                            <span>Edit</span>
+                            <span>Edit Listing</span>
                           </button>
                           <button
                             onClick={() => handleDelete(property.id)}
-                            className="p-2.5 rounded-lg text-neutral-400 hover:text-red-400 hover:bg-red-600/10 transition-all cursor-pointer"
+                            className="p-2 rounded bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-red-400 hover:border-red-500/40 transition-all cursor-pointer"
                             title="Delete listing"
                           >
-                            <Trash2 className="w-4.5 h-4.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </>
                       )}

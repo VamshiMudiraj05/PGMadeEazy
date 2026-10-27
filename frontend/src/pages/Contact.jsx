@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Send, Clock, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { Phone, Mail, MapPin, Send, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+
+// Reusable Split-Flap Character Component
+function FlapChar({ char, size = "16px" }) {
+  const displayChar = char === " " ? "\u00A0" : char.toUpperCase();
+  const isSpecial = char === "+" || char === "-" || char === "/" || char === ":" || char === ".";
+
+  return (
+    <span 
+      className={`c ${isSpecial ? "op" : ""}`}
+      style={{ "--cw": size }}
+      aria-hidden="true"
+    >
+      <i className="u">{displayChar}</i>
+      <i className="l">{displayChar}</i>
+    </span>
+  );
+}
+
+// Reusable Split-Flap Word/String Component
+function FlapWord({ text, size = "16px", colorClass = "text-[#f2f2f2]" }) {
+  const chars = String(text).toUpperCase().split("");
+  return (
+    <span className={`fl ${colorClass}`}>
+      {chars.map((ch, idx) => (
+        <FlapChar key={idx} char={ch} size={size} />
+      ))}
+    </span>
+  );
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    category: 'STUDENT_PG_QUERY',
     subject: '',
     message: ''
   });
@@ -27,15 +58,17 @@ export default function Contact() {
     try {
       // Simulate API response
       await new Promise(resolve => setTimeout(resolve, 800));
-      toast.success('Inquiry dispatched. Our desk will reply within 2 hours.');
+      toast.success('Inquiry dispatched to student support desk.');
       setFormData({
         name: '',
         email: '',
+        phone: '',
+        category: 'STUDENT_PG_QUERY',
         subject: '',
         message: ''
       });
-    } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+    } catch {
+      toast.error('Failed to dispatch inquiry. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -44,70 +77,84 @@ export default function Contact() {
   const contactInfo = [
     {
       icon: Phone,
-      title: "Direct Phone Lines",
+      title: "Student Admissions Helpline",
+      code: "LINE // DIRECT",
       details: [
-        "+91 82475 93561 (Hotline)",
-        "+91 98765 43210 (Support Desk)"
+        "+91 82475 93561 (Student Desk)",
+        "+91 98765 43210 (Warden Line)"
       ]
     },
     {
       icon: Mail,
-      title: "Official Email Desks",
+      title: "Official Dispatch Desks",
+      code: "MAIL // RESPONSE <30M",
       details: [
         "support@pgmadeeazy.com",
-        "compliance@pgmadeeazy.com"
+        "admissions@pgmadeeazy.com"
       ]
     },
     {
       icon: MapPin,
-      title: "Headquarters",
+      title: "Campus Verification Centers",
+      code: "REGIONAL // HUBS",
       details: [
-        "Silicon Towers, HITEC City",
-        "Hyderabad, Telangana 500081"
+        "HITEC City / Gachibowli, Hyderabad",
+        "Koramangala 5th Block, Bangalore",
+        "Viman Nagar / Symbiosis Corridor, Pune"
       ]
     }
   ];
 
   return (
-    <div className="bg-[#050505] text-white min-h-screen py-16 lg:py-24 relative overflow-hidden select-none">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-1/5 left-1/4 w-[550px] h-[550px] bg-red-600/10 rounded-full blur-[180px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-1/6 w-[450px] h-[450px] bg-red-950/15 rounded-full blur-[160px] pointer-events-none -z-10" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16 relative z-10">
+    <div className="bg-[#1f2226] text-[#f2f2f2] min-h-screen py-10 sm:py-14 relative font-['Barlow_Semi_Condensed']">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
         
-        {/* Section Header */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/80 backdrop-blur-2xl border border-red-600/40 text-[11px] font-mono uppercase tracking-widest text-white shadow-[0_0_20px_rgba(229,9,20,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-[#E50914] animate-ping" />
-            <span className="text-[#E50914] font-bold">DIRECT SUPPORT DESK</span>
-            <span className="text-white/30">|</span>
-            <span>24/7 ASSISTANCE</span>
+        {/* 01. HEADER SOLARI CASING */}
+        <div className="board">
+          <div className="board-head">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-none bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-[0.16em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                DIRECT DESK // STUDENT SUPPORT
+              </h2>
+            </div>
+            <div className="flex items-center gap-6 text-xs uppercase tracking-[0.18em] text-[#a7aaaf]">
+              <span>DESK STATUS: <b className="text-emerald-400">ONLINE</b></span>
+              <span>EST. RESPONSE: <b className="text-[#ffb000]">&lt; 30 MINS</b></span>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Get in touch with our team.
-          </h1>
-          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed">
-            Have questions regarding booking verification, host compliance audit, or digital transaction records? Our team responds within 30 minutes during active desk hours.
-          </p>
+
+          {/* Split-Flap Title */}
+          <div className="py-6 sm:py-8 space-y-3">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <FlapWord text="DISPATCH" size="clamp(24px, 4vw, 50px)" colorClass="text-[#f2f2f2]" />
+              <FlapWord text="SUPPORT." size="clamp(24px, 4vw, 50px)" colorClass="text-[#ffb000]" />
+            </div>
+            <p className="text-base sm:text-lg text-[#a7aaaf] max-w-3xl leading-relaxed pt-2">
+              Have questions regarding student bed reservations, mess food verification, 1-month deposit protection, or listing your PG hostel? Our team responds within 30 minutes during active desk windows.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        {/* 02. MAIN TWO-COLUMN DISPATCH TERMINAL */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Contact Form (7 Cols) */}
-          <div className="lg:col-span-7 p-8 sm:p-10 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-2xl space-y-8 shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50914] to-transparent opacity-80" />
-            
-            <div className="space-y-1 pb-6 border-b border-white/10">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Send a Direct Inquiry</h2>
-              <p className="text-xs text-neutral-400">Fill out the parameters below and our desk will coordinate with you directly.</p>
+          {/* Form Console (7 cols) */}
+          <div className="lg:col-span-7 board">
+            <div className="board-head">
+              <h3 className="text-xl font-bold tracking-[0.14em] uppercase text-white font-['Big_Shoulders_Display']">
+                TRANSMIT INQUIRY
+              </h3>
+              <span className="text-xs uppercase tracking-[0.16em] text-[#ffb000]">
+                ENCRYPTED DISPATCH
+              </span>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                    Your Name
+            <form onSubmit={handleSubmit} className="space-y-5 pt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
+                    Student / Host Name
                   </label>
                   <input
                     type="text"
@@ -116,13 +163,13 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                    placeholder="e.g. Rahul Verma"
+                    className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase"
+                    placeholder="E.G. RAHUL VERMA"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
+                <div className="space-y-1.5">
+                  <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
                     Email Address
                   </label>
                   <input
@@ -132,15 +179,51 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                    placeholder="rahul@example.com"
+                    className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase"
+                    placeholder="STUDENT@COLLEGE.EDU"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="subject" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Subject / Topic
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="phone" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
+                    Contact Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="category" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
+                    Inquiry Category
+                  </label>
+                  <select
+                    id="category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-mono uppercase cursor-pointer"
+                  >
+                    <option value="STUDENT_PG_QUERY">STUDENT PG BED AVAILABILITY</option>
+                    <option value="MESS_AMENITIES">MESS FOOD & WIFI VERIFICATION</option>
+                    <option value="DEPOSIT_CHECKOUT">DEPOSIT REFUND / CHECKOUT</option>
+                    <option value="HOST_ONBOARDING">LIST A STUDENT PG HOSTEL</option>
+                    <option value="GENERAL_SUPPORT">GENERAL TECHNICAL SUPPORT</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="subject" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
+                  Subject Line
                 </label>
                 <input
                   type="text"
@@ -149,14 +232,14 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                  placeholder="Booking query, host verification compliance, or payment check"
+                  className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase"
+                  placeholder="E.G. GACHIBOWLI 2-SHARING AC ROOM INQUIRY"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="message" className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Your Message
+              <div className="space-y-1.5">
+                <label htmlFor="message" className="block text-[11px] font-bold uppercase tracking-[0.16em] text-[#a7aaaf]">
+                  Inquiry Details
                 </label>
                 <textarea
                   id="message"
@@ -164,70 +247,84 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows="5"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all resize-none"
-                  placeholder="Please describe how we can assist you with your booking or host listing..."
+                  rows="4"
+                  className="w-full px-3.5 py-2.5 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs text-white placeholder-[#5b5e63] focus:outline-none focus:border-[#ffb000] font-mono uppercase resize-none"
+                  placeholder="PLEASE SPECIFY YOUR COLLEGE, PREFERRED SHARING TYPE, AND MOVE-IN DATE..."
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full btn-solari btn-solari-amber justify-center text-center py-3 text-xs"
               >
                 {loading ? (
-                  <span>Dispatching Message...</span>
+                  <span>TRANSMITTING INQUIRY...</span>
                 ) : (
                   <>
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Submit Inquiry</span>
+                    <span>DISPATCH INQUIRY TO SUPPORT DESK</span>
+                    <span className="chev">
+                      <Send className="h-3.5 w-3.5" />
+                    </span>
                   </>
                 )}
               </button>
             </form>
           </div>
 
-          {/* Contact Desks (5 Cols) */}
+          {/* Right Desks & Operating Schedule (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Info Desks */}
+            {/* Information Desks */}
             {contactInfo.map((info, index) => (
               <div
                 key={index}
-                className="p-6 rounded-2xl bg-[#141414]/90 border border-white/10 hover:border-red-600/40 backdrop-blur-xl space-y-2 transition-all shadow-md"
+                className="board space-y-3"
               >
-                <div className="flex items-center gap-2.5 text-[#E50914]">
-                  <div className="p-2 rounded-lg bg-red-600/15 border border-red-600/30">
-                    <info.icon className="w-4 h-4 text-[#E50914]" />
+                <div className="flex items-center justify-between pb-2 border-b border-[#202226]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-[2px] bg-[#0b0b0d] border border-[#34373c] flex items-center justify-center text-[#ffb000]">
+                      <info.icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm font-bold uppercase tracking-[0.1em] text-white font-['Big_Shoulders_Display']">
+                      {info.title}
+                    </span>
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">{info.title}</span>
+                  <span className="text-[10px] font-mono text-[#a7aaaf]">
+                    {info.code}
+                  </span>
                 </div>
-                <div className="space-y-1 text-xs text-neutral-400 pt-2">
+
+                <div className="space-y-1 text-xs text-[#a7aaaf] pt-1 font-mono">
                   {info.details.map((detail, dIdx) => (
-                    <p key={dIdx} className="font-medium text-white">{detail}</p>
+                    <p key={dIdx} className="text-neutral-200">{detail}</p>
                   ))}
                 </div>
               </div>
             ))}
 
-            {/* Operating Hours */}
-            <div className="p-6 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-xl space-y-4 shadow-md">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#E50914]">
-                <Clock className="w-4 h-4" />
-                <span>Operating Window (IST)</span>
+            {/* Operating Windows Board */}
+            <div className="board space-y-4">
+              <div className="board-head">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#ffb000]">
+                  <Clock className="w-4 h-4" />
+                  <span>DESK TIMINGS (IST)</span>
+                </div>
+                <span className="text-[10px] font-mono text-emerald-400">ACTIVE NOW</span>
               </div>
-              <div className="space-y-2 text-xs divide-y divide-white/10">
-                <div className="flex justify-between pb-2">
-                  <span className="text-neutral-400">Monday - Friday:</span>
-                  <span className="text-white font-semibold">8:00 AM – 10:00 PM</span>
+
+              <div className="space-y-2.5 text-xs">
+                <div className="flex justify-between items-center pb-2 border-b border-[#202226]">
+                  <span className="text-[#a7aaaf] uppercase tracking-wider">Monday – Saturday</span>
+                  <span className="text-white font-mono font-bold">08:00 – 22:00 IST</span>
                 </div>
-                <div className="flex justify-between pt-2 pb-2">
-                  <span className="text-neutral-400">Saturday - Sunday:</span>
-                  <span className="text-white font-semibold">9:00 AM – 8:00 PM</span>
+                <div className="flex justify-between items-center pb-2 border-b border-[#202226]">
+                  <span className="text-[#a7aaaf] uppercase tracking-wider">Sunday Admissions</span>
+                  <span className="text-white font-mono font-bold">09:00 – 20:00 IST</span>
                 </div>
-                <div className="flex items-center gap-2 pt-3 text-emerald-400 text-xs font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-                  <span>Emergency Hotline: 24/7 Monitored</span>
+                <div className="pt-2 flex items-center gap-2 text-emerald-400 text-xs uppercase tracking-wider">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Student Emergency Line: 24/7 Monitored</span>
                 </div>
               </div>
             </div>
@@ -240,5 +337,3 @@ export default function Contact() {
     </div>
   );
 }
-
- 

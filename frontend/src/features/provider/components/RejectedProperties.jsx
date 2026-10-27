@@ -33,7 +33,7 @@ const RejectedProperties = () => {
       );
       setProperties(rejectedProperties);
     } catch (err) {
-      toast.error('Failed to load rejected properties');
+      toast.error('Failed to load audit findings');
     } finally {
       setLoading(false);
     }
@@ -41,50 +41,58 @@ const RejectedProperties = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white">
-        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
-        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading audit records...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0a0a0c] flex flex-col items-center justify-center gap-4 text-white">
+        <div className="h-8 w-8 border-2 border-[#ffb000] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-[#ffb000]">
+          SYNCING COMPLIANCE AUDIT RECORDS...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
+    <div className="bg-[#0a0a0c] text-neutral-100 py-10 min-h-screen relative font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
         {/* Navigation & Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/provider-dashboard')}
-              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#E50914]">COMPLIANCE & AUDITS</div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Rejected Listing Reviews
-              </h1>
+        <div className="board p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/provider-dashboard')}
+                className="p-2.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-[#ffb000]/40 transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#ffb000] animate-pulse" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ffb000]">
+                    TERMINAL 06 // COMPLIANCE AUDITS
+                  </span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white font-['Big_Shoulders_Display']">
+                  Rejected PG Listings & Revisions
+                </h1>
+              </div>
             </div>
           </div>
         </div>
 
         {properties.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-[#141414] border border-white/10 text-center max-w-md mx-auto space-y-4 shadow-xl">
+          <div className="board p-12 text-center max-w-md mx-auto space-y-4">
             <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
             <div className="space-y-1">
-              <h2 className="text-base font-bold text-white">Zero Flagged Listings</h2>
-              <p className="text-xs text-neutral-400">
-                All your submitted properties comply with platform guidelines and are active or in queue.
+              <h2 className="text-lg font-bold text-white uppercase font-['Big_Shoulders_Display']">
+                Zero Flagged Listings
+              </h2>
+              <p className="text-xs font-mono text-neutral-400">
+                All your submitted student accommodations comply with verification standards and are active or in queue.
               </p>
             </div>
             <button
               onClick={() => navigate('/provider-dashboard/my-properties')}
-              className="w-full py-3 px-4 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
+              className="btn-solari-amber w-full cursor-pointer"
             >
               Go to Properties Catalog
             </button>
@@ -94,19 +102,19 @@ const RejectedProperties = () => {
             {properties.map((property, pIdx) => (
               <div
                 key={property.id || pIdx}
-                className="rounded-2xl overflow-hidden bg-[#141414] border border-white/10 hover:border-red-600/50 transition-all duration-300 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-600/10"
+                className="board overflow-hidden flex flex-col justify-between hover:border-red-500/60 transition-all duration-200"
               >
                 {/* Photo Header */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                <div className="relative aspect-[16/10] overflow-hidden bg-black border-b border-neutral-800">
                   <img
                     src={getSecureImageUrl(property.images?.[0] || null, pIdx)}
                     alt={property.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
                   
                   <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-red-600 text-white shadow-md">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-red-500/15 text-red-400 border border-red-500/40">
                       <XCircle className="w-3.5 h-3.5" />
                       <span>Changes Required</span>
                     </span>
@@ -115,48 +123,48 @@ const RejectedProperties = () => {
 
                 {/* Card Content */}
                 <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    {/* Admin Reason Callout */}
-                    <div className="p-3.5 rounded-xl bg-black/60 border border-red-500/20 space-y-1">
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-500">
+                  <div className="space-y-3 font-mono">
+                    {/* Compliance Finding Note */}
+                    <div className="p-3 rounded bg-red-950/20 border border-red-500/30 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-red-400">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                        <span>Compliance Note:</span>
+                        <span>Audit Finding:</span>
                       </div>
-                      <p className="text-xs text-white leading-relaxed">
-                        {property.rejectionReason || 'Photos or property details required refinement. Please update and re-submit.'}
+                      <p className="text-xs text-neutral-200 leading-relaxed">
+                        {property.rejectionReason || 'Photos or accommodation details required refinement. Please update and re-submit.'}
                       </p>
                     </div>
 
                     <div className="space-y-1">
-                      <h3 className="text-base font-bold text-white truncate">
+                      <h3 className="text-base font-bold text-white uppercase font-['Big_Shoulders_Display'] tracking-wide truncate">
                         {property.name}
                       </h3>
                       
                       <div className="flex items-center gap-1.5 text-xs text-neutral-400">
-                        <MapPin className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
                         <span className="truncate">{property.city}, {property.area}</span>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-white/10 text-xs text-white">
+                    <div className="grid grid-cols-2 gap-2 py-2.5 border-y border-neutral-800 text-xs">
                       <div>
-                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Monthly Tariff</span>
-                        <span className="font-extrabold text-[#E50914]">₹{property.rent?.toLocaleString()}</span>
+                        <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Bed Tariff</span>
+                        <span className="font-extrabold text-[#ffb000]">₹{property.rent?.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-neutral-400 block text-[10px] uppercase tracking-wider">Inventory</span>
-                        <span className="font-semibold">{property.rooms} Rooms</span>
+                        <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Bed Units</span>
+                        <span className="font-semibold text-white">{property.rooms} Units</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Actions */}
                   <button
-                    onClick={() => navigate(`/provider/edit-property/${property.id}`)}
-                    className="w-full py-2.5 px-4 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    onClick={() => navigate('/provider-dashboard/my-properties')}
+                    className="btn-solari-amber w-full py-2.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
-                    <span>Update & Resubmit</span>
+                    <span>Update in Catalog</span>
                   </button>
 
                 </div>

@@ -17,10 +17,10 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
               onClick={() => handleChange({
                 target: { name: 'occupationType', value: 'business' }
               })}
-              className={`p-4 rounded-xl border font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`p-4 rounded-[2px] border font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 formData.occupationType === 'business'
                   ? 'border-red-600 bg-red-600/10 text-white shadow-[0_0_15px_rgba(229,9,20,0.2)]'
-                  : 'border-white/10 bg-black/60 text-neutral-400 hover:border-red-600/40 hover:text-white'
+                  : 'border-[#202226] bg-[#0e0f11] text-neutral-400 hover:border-red-600/40 hover:text-white'
               }`}
             >
               Business Enterprise / Firm
@@ -30,10 +30,10 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
               onClick={() => handleChange({
                 target: { name: 'occupationType', value: 'individual' }
               })}
-              className={`p-4 rounded-xl border font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`p-4 rounded-[2px] border font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 formData.occupationType === 'individual'
                   ? 'border-red-600 bg-red-600/10 text-white shadow-[0_0_15px_rgba(229,9,20,0.2)]'
-                  : 'border-white/10 bg-black/60 text-neutral-400 hover:border-red-600/40 hover:text-white'
+                  : 'border-[#202226] bg-[#0e0f11] text-neutral-400 hover:border-red-600/40 hover:text-white'
               }`}
             >
               Individual Landlord / Owner
@@ -51,7 +51,7 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="businessName"
                 value={formData.businessName}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
                 placeholder="Enter enterprise brand name"
               />
               {errors.businessName && <span className="text-red-500 text-xs font-semibold">{errors.businessName}</span>}
@@ -63,12 +63,12 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="businessType"
                 value={formData.businessType}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               >
-                <option value="" className="bg-[#141414]">Select Establishment Type</option>
-                <option value="hostel" className="bg-[#141414]">Student Hostel</option>
-                <option value="pg" className="bg-[#141414]">Paying Guest Complex</option>
-                <option value="apartment" className="bg-[#141414]">Managed Apartment Complex</option>
+                <option value="" className="bg-[#0e0f11]">Select Establishment Type</option>
+                <option value="hostel" className="bg-[#0e0f11]">Student Hostel</option>
+                <option value="pg" className="bg-[#0e0f11]">Paying Guest Complex</option>
+                <option value="apartment" className="bg-[#0e0f11]">Managed Apartment Complex</option>
               </select>
               {errors.businessType && <span className="text-red-500 text-xs font-semibold">{errors.businessType}</span>}
             </div>
@@ -79,13 +79,13 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="yearsInBusiness"
                 value={formData.yearsInBusiness}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               >
-                <option value="" className="bg-[#141414]">Select Operating Experience</option>
-                <option value="0" className="bg-[#141414]">Less than 1 Year</option>
-                <option value="1" className="bg-[#141414]">1-3 Years</option>
-                <option value="3" className="bg-[#141414]">3-5 Years</option>
-                <option value="5" className="bg-[#141414]">5+ Years</option>
+                <option value="" className="bg-[#0e0f11]">Select Operating Experience</option>
+                <option value="0" className="bg-[#0e0f11]">Less than 1 Year</option>
+                <option value="1" className="bg-[#0e0f11]">1-3 Years</option>
+                <option value="3" className="bg-[#0e0f11]">3-5 Years</option>
+                <option value="5" className="bg-[#0e0f11]">5+ Years</option>
               </select>
               {errors.yearsInBusiness && <span className="text-red-500 text-xs font-semibold">{errors.yearsInBusiness}</span>}
             </div>
@@ -97,7 +97,7 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="gstNumber"
                 value={formData.gstNumber}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all uppercase"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all uppercase"
                 placeholder="22AAAAA0000A1Z5"
               />
             </div>
@@ -108,7 +108,7 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="businessAddress"
                 value={formData.businessAddress}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white placeholder-neutral-500 text-xs h-24 resize-none focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white placeholder-neutral-500 text-xs h-24 resize-none focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
                 placeholder="Registered business physical address"
               />
               {errors.businessAddress && <span className="text-red-500 text-xs font-semibold">{errors.businessAddress}</span>}
@@ -124,12 +124,12 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="propertyType"
                 value={formData.propertyType}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               >
-                <option value="" className="bg-[#141414]">Select Property Type</option>
-                <option value="house" className="bg-[#141414]">Independent House</option>
-                <option value="apartment" className="bg-[#141414]">Apartment Unit</option>
-                <option value="villa" className="bg-[#141414]">Villa / Bungalow</option>
+                <option value="" className="bg-[#0e0f11]">Select Property Type</option>
+                <option value="house" className="bg-[#0e0f11]">Independent House</option>
+                <option value="apartment" className="bg-[#0e0f11]">Apartment Unit</option>
+                <option value="villa" className="bg-[#0e0f11]">Villa / Bungalow</option>
               </select>
               {errors.propertyType && <span className="text-red-500 text-xs font-semibold">{errors.propertyType}</span>}
             </div>
@@ -140,13 +140,13 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="yearsAsOwner"
                 value={formData.yearsAsOwner}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white text-xs focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white text-xs focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               >
-                <option value="" className="bg-[#141414]">Select Ownership Duration</option>
-                <option value="0" className="bg-[#141414]">Less than 1 Year</option>
-                <option value="1" className="bg-[#141414]">1-3 Years</option>
-                <option value="3" className="bg-[#141414]">3-5 Years</option>
-                <option value="5" className="bg-[#141414]">5+ Years</option>
+                <option value="" className="bg-[#0e0f11]">Select Ownership Duration</option>
+                <option value="0" className="bg-[#0e0f11]">Less than 1 Year</option>
+                <option value="1" className="bg-[#0e0f11]">1-3 Years</option>
+                <option value="3" className="bg-[#0e0f11]">3-5 Years</option>
+                <option value="5" className="bg-[#0e0f11]">5+ Years</option>
               </select>
               {errors.yearsAsOwner && <span className="text-red-500 text-xs font-semibold">{errors.yearsAsOwner}</span>}
             </div>
@@ -157,7 +157,7 @@ const OccupationDetails = ({ formData, handleChange, errors }) => {
                 name="propertyAddress"
                 value={formData.propertyAddress}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-lg bg-black/60 border border-white/15 text-white placeholder-neutral-500 text-xs h-24 resize-none focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full p-3.5 rounded-[2px] bg-[#0e0f11] border border-[#34373c] text-white placeholder-neutral-500 text-xs h-24 resize-none focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
                 placeholder="Physical address of property being listed"
               />
               {errors.propertyAddress && <span className="text-red-500 text-xs font-semibold">{errors.propertyAddress}</span>}

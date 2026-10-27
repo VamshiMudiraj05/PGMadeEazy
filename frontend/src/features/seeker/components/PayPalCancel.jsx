@@ -29,43 +29,40 @@ const PayPalCancel = () => {
   }, []);
 
   return (
-    <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex items-center justify-center p-4 text-white select-none relative">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-
-      <div className="p-8 sm:p-10 rounded-2xl max-w-md w-full bg-[#141414] border border-white/10 text-center shadow-2xl space-y-6">
+    <div className="min-h-[calc(100vh-140px)] bg-[#0b0b0d] flex items-center justify-center p-4 text-white select-none relative">
+      <div className="board max-w-md w-full text-center space-y-6">
         
         {/* Cancel Icon Badge */}
-        <div className="h-14 w-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-          <XCircle className="w-7 h-7" />
+        <div className="p-3 bg-[#0b0b0d] border border-[#ffb000]/40 text-[#ffb000] w-12 h-12 flex items-center justify-center mx-auto">
+          <XCircle className="w-6 h-6" />
         </div>
         
         <div className="space-y-1">
-          <h2 className="text-xl font-extrabold text-white tracking-tight">
-            Checkout Incomplete
+          <h2 className="text-xl font-bold uppercase tracking-[0.14em] text-white font-['Big_Shoulders_Display']">
+            CHECKOUT SESSION INCOMPLETE
           </h2>
-          <p className="text-xs text-neutral-400 leading-relaxed">
-            Your gateway session was cancelled or timed out. No charges were made to your account, and room hold has been released.
+          <p className="text-xs text-[#a7aaaf] leading-relaxed font-['Barlow_Semi_Condensed']">
+            Your payment gateway session was cancelled or timed out. No charges were deducted, and temporary room holds were released.
           </p>
         </div>
 
         {/* Cancelled Property Details (if available) */}
         {cancelledBooking && (
-          <div className="p-4 rounded-xl bg-black/60 border border-white/10 text-left text-xs space-y-2">
-            <div className="flex items-center gap-2 text-white font-bold">
-              <Building2 className="w-4 h-4 text-[#E50914] shrink-0" />
+          <div className="p-3.5 rounded-[2px] bg-[#0b0b0d] border border-[#26292d] text-left text-xs space-y-1.5 font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-white font-bold font-['Big_Shoulders_Display'] text-sm">
+              <Building2 className="w-4 h-4 text-[#ffb000] shrink-0" />
               <span className="truncate">{cancelledBooking.propertyName || 'Selected PG Property'}</span>
             </div>
             {cancelledBooking.checkInDate && (
-              <div className="flex items-center gap-2 text-neutral-400 text-[11px]">
-                <Calendar className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                <span>Schedule: {cancelledBooking.checkInDate} to {cancelledBooking.checkOutDate}</span>
+              <div className="flex items-center gap-2 text-[#a7aaaf] text-[11px]">
+                <Calendar className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
+                <span>SCHEDULE: {cancelledBooking.checkInDate} TO {cancelledBooking.checkOutDate}</span>
               </div>
             )}
             {cancelledBooking.totalAmount && (
-              <div className="pt-2 border-t border-white/10 flex justify-between items-center">
-                <span className="text-neutral-400">Unprocessed Fare:</span>
-                <span className="font-extrabold text-[#E50914]">${cancelledBooking.totalAmount} USD</span>
+              <div className="pt-2 border-t border-[#202226] flex justify-between items-center">
+                <span className="text-[#a7aaaf]">UNPROCESSED TARIFF:</span>
+                <span className="font-bold text-[#ffb000] font-['Big_Shoulders_Display'] text-base">${cancelledBooking.totalAmount} USD</span>
               </div>
             )}
           </div>
@@ -75,26 +72,27 @@ const PayPalCancel = () => {
         <div className="space-y-2.5">
           <button
             onClick={() => navigate('/seeker-dashboard/find-pg')}
-            className="w-full py-3.5 px-4 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="btn-solari btn-solari-amber text-xs w-full justify-center"
           >
             <RefreshCw className="w-4 h-4" />
-            <span>Try Reserving Again</span>
+            <span>TRY RESERVING AGAIN</span>
+            <span className="chev">→</span>
           </button>
           
           <button
             onClick={() => navigate('/seeker-dashboard/bookings')}
-            className="w-full py-3.5 px-4 bg-white/5 border border-white/10 text-white hover:bg-white/10 font-bold text-xs uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="btn-solari btn-solari-steel text-xs w-full justify-center"
           >
-            <Calendar className="w-4 h-4 text-[#E50914]" />
-            <span>View My Reservations</span>
+            <Calendar className="w-4 h-4 text-[#ffb000]" />
+            <span>VIEW MY RESERVATIONS</span>
           </button>
 
           <button
             onClick={() => navigate('/seeker-dashboard')}
-            className="w-full py-2 text-neutral-400 hover:text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full py-2 text-[#a7aaaf] hover:text-white font-['Barlow_Semi_Condensed'] uppercase tracking-wider text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return to Hub</span>
+            <span>RETURN TO RESIDENT HUB</span>
           </button>
         </div>
 

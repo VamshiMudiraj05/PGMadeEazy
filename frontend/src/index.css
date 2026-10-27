@@ -2,20 +2,21 @@
 
 @layer base {
   :root {
-    --brand-accent: #E50914;
-    --brand-accent-hover: #B80710;
-    --font-heading: "Inter Tight", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-    --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-    
-    /* Netflix Dark Theme Tokens */
-    --bg-main: #050505;
-    --bg-surface: #141414;
-    --bg-surface-elevated: #1a1a1a;
-    --border-subtle: rgba(255, 255, 255, 0.1);
-    --border-strong: rgba(229, 9, 20, 0.4);
-    --text-primary: #FFFFFF;
-    --text-secondary: #A3A3A3;
-    --text-muted: #737373;
+    --flap: #0b0b0d;
+    --cell-top: #1a1b1f;
+    --cell-bot: #131417;
+    --frame: #2a2d31;
+    --steel: #5b5e63;
+    --steel-lt: #a7aaaf;
+    --white: #f2f2f2;
+    --amber: #ffb000;
+    --red: #ff4b4b;
+    --red-deep: #b00020;
+    --rule: #202226;
+    --ground: #1f2226;
+    --disp: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --text: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+    --brand-accent: #ffb000;
   }
 
   * {
@@ -23,65 +24,189 @@
   }
 
   body {
-    font-family: var(--font-body);
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    letter-spacing: -0.012em;
+    margin: 0;
+    color: var(--white);
+    font: 400 17px/1.45 var(--text);
+    background-color: var(--ground);
+    font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    letter-spacing: -0.035em;
+    font-family: var(--disp);
   }
 }
 
-/* Custom Minimal Netflix Scrollbar */
+/* Custom Mechanical Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: var(--flap);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 3px;
+  background: var(--steel);
+  border: 2px solid var(--flap);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E50914;
+  background: var(--amber);
 }
 
-/* Micro-interactive utilities */
-.netflix-card {
-  background: rgba(20, 20, 20, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* ---------- Solari Split Flap Engine ---------- */
+.fl {
+  display: inline-flex;
+  gap: var(--cg, 2px);
+  vertical-align: middle;
 }
 
-.netflix-card:hover {
-  border-color: rgba(229, 9, 20, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 9, 20, 0.15);
+.c {
+  position: relative;
+  flex: none;
+  width: var(--cw, 16px);
+  height: calc(var(--cw, 16px) * 1.42);
+  border-radius: 2px;
+  perspective: 220px;
+  font: var(--fw, 700) calc(var(--cw, 16px) * 1.16)/1 var(--disp);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  user-select: none;
 }
 
-/* Input Fields */
-.input-netflix {
-  background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+.c i {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  padding-top: calc(var(--cw, 16px) * 0.06);
+  backface-visibility: hidden;
 }
 
-.input-netflix:focus {
-  outline: none;
-  border-color: #E50914;
-  box-shadow: 0 0 0 1px rgba(229, 9, 20, 0.5);
+.c .u {
+  clip-path: inset(0 0 50% 0);
+  background: var(--cell-top);
+  border-radius: 2px 2px 0 0;
 }
+
+.c .l {
+  clip-path: inset(50% 0 0 0);
+  background: var(--cell-bot);
+  border-radius: 0 0 2px 2px;
+}
+
+.c::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #000;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+/* Mechanical Departure Board Housing */
+.board {
+  background: var(--flap);
+  border-radius: 4px;
+  border: 1px solid #34373c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 5px #0f1012, 0 10px 20px -8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.4);
+  padding: clamp(16px, 2vw, 28px);
+}
+
+.board-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 8px;
+}
+
+/* Industrial Action Buttons */
+.btn-solari {
+  display: inline-flex;
+  align-items: stretch;
+  text-decoration: none;
+  border-radius: 3px;
+  font: 700 15px/1 var(--text);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+
+.btn-solari span {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  min-height: 44px;
+}
+
+.btn-solari .chev {
+  padding: 0 12px;
+  border-left: 1px solid;
+  display: grid;
+  place-items: center;
+}
+
+.btn-solari-amber {
+  background: var(--amber);
+  color: #111;
+  border-color: var(--amber);
+}
+
+.btn-solari-amber .chev {
+  border-left-color: rgba(0,0,0,0.25);
+}
+
+.btn-solari-amber:hover {
+  background: #ffc233;
+  border-color: #ffc233;
+}
+
+.btn-solari-steel {
+  background: #111214;
+  color: var(--white);
+  border-color: #3c4046;
+}
+
+.btn-solari-steel .chev {
+  border-left-color: #3c4046;
+}
+
+.btn-solari-steel:hover {
+  border-color: var(--steel-lt);
+}
+
+/* Timetable styling */
+.tbl-solari {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl-solari th {
+  font: 600 12px/1 var(--text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--steel-lt);
+  text-align: left;
+  padding: 12px 14px 10px 0;
+  white-space: nowrap;
+}
+
+.tbl-solari td {
+  padding: 7px 14px 7px 0;
+  border-top: 1px solid var(--rule);
+  white-space: nowrap;
+}
+

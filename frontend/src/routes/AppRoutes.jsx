@@ -90,20 +90,24 @@ const AppRoutes = () => {
 
       <Route path="/seeker-dashboard/saved-pgs" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-[#050505] py-12 px-4 sm:px-6 flex items-center justify-center relative select-none">
-            <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-red-600/5 rounded-full blur-[150px] pointer-events-none -z-10" />
-            <div className="max-w-md w-full p-8 rounded-2xl bg-[#141414] border border-white/10 text-center shadow-2xl space-y-4">
-              <div className="h-14 w-14 rounded-2xl bg-red-600/10 border border-red-600/30 flex items-center justify-center text-[#E50914] mx-auto mb-2 shadow-[0_0_15px_rgba(229,9,20,0.2)]">
-                <Bookmark className="w-7 h-7" />
+          <div className="min-h-screen bg-[#0a0a0c] py-12 px-4 sm:px-6 flex items-center justify-center font-sans">
+            <div className="board max-w-md w-full p-8 text-center space-y-4">
+              <div className="h-12 w-12 rounded bg-[#ffb000]/15 border border-[#ffb000]/40 flex items-center justify-center text-[#ffb000] mx-auto mb-2">
+                <Bookmark className="w-6 h-6" />
               </div>
-              <h1 className="text-2xl font-extrabold text-white">Saved Properties</h1>
-              <p className="text-xs text-neutral-400">
-                You haven't bookmarked any PG stays yet. Explore verified listings and click the save button to keep track of your favorites.
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono text-[#ffb000] uppercase tracking-[0.2em]">TERMINAL // WATCHLIST</span>
+                <h1 className="text-2xl font-extrabold uppercase text-white font-['Big_Shoulders_Display'] tracking-wide">
+                  Saved Student Accommodations
+                </h1>
+              </div>
+              <p className="text-xs font-mono text-neutral-400">
+                You haven't bookmarked any student PGs or hostels yet. Explore verified listings and click the save button to keep track of your favorites.
               </p>
               <div className="pt-2">
                 <Link
                   to="/seeker-dashboard/find-pg"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E50914] hover:bg-[#B80710] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(229,9,20,0.4)] cursor-pointer"
+                  className="btn-solari-amber inline-flex items-center gap-2 cursor-pointer"
                 >
                   <span>Browse Accommodations</span>
                   <ArrowRight className="w-4 h-4" />
@@ -122,22 +126,26 @@ const AppRoutes = () => {
 
       <Route path="/seeker-dashboard/messages" element={
         <ProtectedRoute>
-          <div className="min-h-screen bg-[#050505] py-12 px-4 sm:px-6 flex items-center justify-center relative select-none">
-            <div className="absolute top-1/3 right-1/3 w-[400px] h-[400px] bg-red-600/5 rounded-full blur-[150px] pointer-events-none -z-10" />
-            <div className="max-w-md w-full p-8 rounded-2xl bg-[#141414] border border-white/10 text-center shadow-2xl space-y-4">
-              <div className="h-14 w-14 rounded-2xl bg-red-600/10 border border-red-600/30 flex items-center justify-center text-[#E50914] mx-auto mb-2 shadow-[0_0_15px_rgba(229,9,20,0.2)]">
-                <MessageSquare className="w-7 h-7" />
+          <div className="min-h-screen bg-[#0a0a0c] py-12 px-4 sm:px-6 flex items-center justify-center font-sans">
+            <div className="board max-w-md w-full p-8 text-center space-y-4">
+              <div className="h-12 w-12 rounded bg-[#ffb000]/15 border border-[#ffb000]/40 flex items-center justify-center text-[#ffb000] mx-auto mb-2">
+                <MessageSquare className="w-6 h-6" />
               </div>
-              <h1 className="text-2xl font-extrabold text-white">Direct Host Inquiries</h1>
-              <p className="text-xs text-neutral-400">
-                No active conversations yet. When you request a room or contact a host provider, chat threads will be organized here.
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono text-[#ffb000] uppercase tracking-[0.2em]">TERMINAL // COMM CHANNEL</span>
+                <h1 className="text-2xl font-extrabold uppercase text-white font-['Big_Shoulders_Display'] tracking-wide">
+                  Direct Warden Inquiries
+                </h1>
+              </div>
+              <p className="text-xs font-mono text-neutral-400">
+                No active comms yet. When you request a bed reservation or transmit an inquiry to a hostel warden, transmission logs will appear here.
               </p>
               <div className="pt-2">
                 <Link
                   to="/seeker-dashboard/find-pg"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-red-600/40 text-neutral-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                  className="btn-solari inline-flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Find Accommodations</span>
+                  <span>Find Student Accommodations</span>
                 </Link>
               </div>
             </div>

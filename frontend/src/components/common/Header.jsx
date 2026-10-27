@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Building2, Menu, X, LogOut, LayoutDashboard, UserCircle, ArrowUpRight } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, UserCircle, ArrowUpRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Header() {
@@ -27,39 +27,38 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#050505]/90 backdrop-blur-2xl transition-colors">
-      <div className="max-w-7xl mx-auto flex h-16 sm:h-20 items-center justify-between px-4 sm:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-[#26292d] bg-[#181a1d]/95 backdrop-blur-xl shadow-[0_1px_0_rgba(255,255,255,0.04),0_8px_18px_-12px_rgba(0,0,0,0.8)]">
+      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-8">
         
-        {/* Brand / Logo */}
+        {/* Brand / Logo - Solari Split-Flap Emblem */}
         <NavLink
           to="/"
-          className="group flex items-center gap-3 transition-opacity hover:opacity-90"
+          className="group flex items-center gap-3 transition-opacity hover:opacity-95"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E50914] shadow-[0_0_15px_rgba(229,9,20,0.5)] text-white">
-            <Building2 className="h-5 w-5" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-[3px] bg-[#0b0b0d] border border-[#34373c] text-[#ffb000] shadow-sm font-['Big_Shoulders_Display'] text-lg font-bold">
+            PG
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white uppercase">
-              PG Made <span className="text-[#E50914]">Eazy</span>
+            <span className="text-xl font-bold tracking-[0.14em] text-[#f2f2f2] uppercase font-['Big_Shoulders_Display']">
+              PG MADE <span className="text-[#ffb000]">EAZY</span>
             </span>
-            <span className="h-2 w-2 rounded-full bg-[#E50914] animate-ping" />
           </div>
         </NavLink>
 
-        {/* Center Nav Links */}
+        {/* Center Nav Links - Restored Classic Options with Solari Styling */}
         <nav className="hidden md:flex items-center gap-8">
           {user ? (
             <NavLink
               to={getDashboardPath()}
               className={({ isActive }) =>
-                `flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors ${
+                `flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] transition-colors font-['Barlow_Semi_Condensed'] ${
                   isActive
-                    ? 'text-[#E50914]'
-                    : 'text-neutral-400 hover:text-white'
+                    ? 'text-[#ffb000]'
+                    : 'text-[#a7aaaf] hover:text-[#f2f2f2]'
                 }`
               }
             >
-              <LayoutDashboard className="h-3.5 w-3.5 text-[#E50914]" />
+              <LayoutDashboard className="h-3.5 w-3.5 text-[#ffb000]" />
               <span>
                 {getUserType(user.userType) === 'seeker'
                   ? 'Seeker Hub'
@@ -73,8 +72,8 @@ export default function Header() {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `text-xs font-bold tracking-wider uppercase transition-colors ${
-                    isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
+                  `text-xs font-semibold tracking-[0.18em] uppercase transition-colors font-['Barlow_Semi_Condensed'] ${
+                    isActive ? 'text-[#ffb000]' : 'text-[#a7aaaf] hover:text-[#f2f2f2]'
                   }`
                 }
               >
@@ -83,8 +82,8 @@ export default function Header() {
               <NavLink
                 to="/how-it-works"
                 className={({ isActive }) =>
-                  `text-xs font-bold tracking-wider uppercase transition-colors ${
-                    isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
+                  `text-xs font-semibold tracking-[0.18em] uppercase transition-colors font-['Barlow_Semi_Condensed'] ${
+                    isActive ? 'text-[#ffb000]' : 'text-[#a7aaaf] hover:text-[#f2f2f2]'
                   }`
                 }
               >
@@ -93,8 +92,8 @@ export default function Header() {
               <NavLink
                 to="/contact"
                 className={({ isActive }) =>
-                  `text-xs font-bold tracking-wider uppercase transition-colors ${
-                    isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
+                  `text-xs font-semibold tracking-[0.18em] uppercase transition-colors font-['Barlow_Semi_Condensed'] ${
+                    isActive ? 'text-[#ffb000]' : 'text-[#a7aaaf] hover:text-[#f2f2f2]'
                   }`
                 }
               >
@@ -108,18 +107,18 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2.5 py-1.5 px-3 rounded-full bg-[#141414] border border-white/10">
-                <UserCircle className="h-4 w-4 text-[#E50914]" />
-                <span className="text-xs font-semibold text-white truncate max-w-[120px]">
+              <div className="flex items-center gap-2.5 py-1 px-3 rounded-[3px] bg-[#0b0b0d] border border-[#34373c]">
+                <UserCircle className="h-4 w-4 text-[#ffb000]" />
+                <span className="text-xs font-semibold text-[#f2f2f2] truncate max-w-[120px] font-['Barlow_Semi_Condensed']">
                   {user.name}
                 </span>
-                <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-red-400 bg-red-600/15 border border-red-600/30 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#ffb000] bg-[#ffb000]/10 border border-[#ffb000]/30 px-1.5 py-0.5 rounded-[2px]">
                   {getUserType(user.userType)}
                 </span>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-red-400 border border-transparent hover:border-red-500/30 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-semibold text-[#a7aaaf] hover:text-[#ff4b4b] border border-transparent hover:border-[#ff4b4b]/30 transition-all cursor-pointer font-['Barlow_Semi_Condensed'] uppercase tracking-wider"
                 title="Log out"
               >
                 <LogOut className="h-3.5 w-3.5" />
@@ -130,16 +129,18 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <NavLink
                 to="/login"
-                className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-white transition-colors"
+                className="px-3 py-2 text-xs font-semibold tracking-[0.18em] uppercase text-[#a7aaaf] hover:text-white transition-colors font-['Barlow_Semi_Condensed']"
               >
                 Sign In
               </NavLink>
               <NavLink
                 to="/register"
-                className="group flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#E50914] hover:bg-[#b80710] shadow-[0_0_15px_rgba(229,9,20,0.4)] hover:shadow-[0_0_25px_rgba(229,9,20,0.7)] transition-all duration-300"
+                className="btn-solari btn-solari-amber text-xs"
               >
                 <span>Get Started</span>
-                <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5] transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="chev">
+                  <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5]" />
+                </span>
               </NavLink>
             </div>
           )}
@@ -149,7 +150,7 @@ export default function Header() {
         <div className="flex md:hidden items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-[#141414] border border-white/10 text-white hover:border-red-600/40 transition-colors"
+            className="p-2 rounded-[3px] bg-[#0b0b0d] border border-[#34373c] text-[#f2f2f2] hover:border-[#ffb000]/50 transition-colors"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -159,14 +160,14 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/10 bg-[#050505]/95 backdrop-blur-2xl px-6 py-6 space-y-4">
+        <div className="md:hidden border-b border-[#26292d] bg-[#121316]/98 px-6 py-6 space-y-4">
           {user ? (
             <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[#141414] border border-white/10">
-                <UserCircle className="h-5 w-5 text-[#E50914]" />
+              <div className="flex items-center gap-3 p-3 rounded-[3px] bg-[#0b0b0d] border border-[#34373c]">
+                <UserCircle className="h-5 w-5 text-[#ffb000]" />
                 <div>
-                  <p className="text-sm font-semibold text-white">{user.name}</p>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-400">
+                  <p className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{user.name}</p>
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#ffb000]">
                     {getUserType(user.userType)}
                   </span>
                 </div>
@@ -175,7 +176,7 @@ export default function Header() {
               <NavLink
                 to={getDashboardPath()}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full p-3 rounded-lg bg-[#E50914] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(229,9,20,0.4)]"
+                className="flex items-center justify-center gap-2 w-full p-2.5 rounded-[3px] bg-[#ffb000] text-[#0b0b0d] font-bold text-xs uppercase tracking-wider font-['Barlow_Semi_Condensed']"
               >
                 <LayoutDashboard className="h-4 w-4" />
                 <span>Open Dashboard</span>
@@ -183,7 +184,7 @@ export default function Header() {
 
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-center gap-2 w-full p-3 rounded-lg bg-[#141414] border border-white/10 text-red-400 text-xs font-semibold uppercase tracking-wider"
+                className="flex items-center justify-center gap-2 w-full p-2.5 rounded-[3px] bg-[#0b0b0d] border border-[#34373c] text-[#ff4b4b] text-xs font-semibold uppercase tracking-wider font-['Barlow_Semi_Condensed']"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Sign Out</span>
@@ -194,36 +195,36 @@ export default function Header() {
               <NavLink
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-semibold uppercase tracking-wider text-neutral-300 hover:text-white"
+                className="block py-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#a7aaaf] hover:text-white font-['Barlow_Semi_Condensed']"
               >
                 Explore
               </NavLink>
               <NavLink
                 to="/how-it-works"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-semibold uppercase tracking-wider text-neutral-300 hover:text-white"
+                className="block py-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#a7aaaf] hover:text-white font-['Barlow_Semi_Condensed']"
               >
                 How It Works
               </NavLink>
               <NavLink
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-semibold uppercase tracking-wider text-neutral-300 hover:text-white"
+                className="block py-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#a7aaaf] hover:text-white font-['Barlow_Semi_Condensed']"
               >
                 Contact
               </NavLink>
-              <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+              <div className="pt-4 border-t border-[#26292d] flex flex-col gap-2.5">
                 <NavLink
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#141414] border border-white/10"
+                  className="w-full text-center py-2.5 rounded-[3px] text-xs font-bold uppercase tracking-wider text-[#f2f2f2] bg-[#0b0b0d] border border-[#34373c] font-['Barlow_Semi_Condensed']"
                 >
                   Sign In
                 </NavLink>
                 <NavLink
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#E50914] shadow-[0_0_15px_rgba(229,9,20,0.4)]"
+                  className="w-full text-center py-2.5 rounded-[3px] text-xs font-bold uppercase tracking-wider text-[#0b0b0d] bg-[#ffb000] font-['Barlow_Semi_Condensed']"
                 >
                   Get Started
                 </NavLink>

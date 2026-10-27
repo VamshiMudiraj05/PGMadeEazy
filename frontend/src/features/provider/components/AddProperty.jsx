@@ -41,34 +41,34 @@ const validationSchema = {
 };
 
 const AMENITIES_OPTIONS = [
-  'Wi-Fi',
-  'AC',
-  'TV',
-  'Refrigerator',
+  'Wi-Fi 100Mbps+',
+  '3x Daily Mess Food',
+  'Air Conditioning',
   'Washing Machine',
-  'Parking',
-  'Security',
-  'Power Backup',
-  'Water Supply 24/7',
-  'Lift',
-  'CCTV',
-  'Gym',
-  'Swimming Pool',
-  'Garden',
-  'Housekeeping'
+  'Refrigerator',
+  '24/7 RO Drinking Water',
+  'Power Backup / Inverter',
+  'Biometric Gate Access',
+  'CCTV Surveillance',
+  'Study Desk & Lamp',
+  'Geyser / Hot Water',
+  'Housekeeping Daily',
+  'Attached Washroom',
+  'Two Wheeler Parking',
+  'Elevator / Lift'
 ];
 
 const RULES_OPTIONS = [
-  'No Smoking',
-  'No Pets',
-  'No Parties',
-  'No Guests Overnight',
-  'Vegetarians Only',
-  'No Alcohol',
-  'No Loud Music',
-  'Gate Closing Time',
-  'ID Proof Mandatory',
-  'Background Verification'
+  'Gate Curfew 10:00 PM',
+  'Strictly No Alcohol',
+  'Strictly No Smoking',
+  'College ID Mandatory',
+  'Govt ID Verification',
+  'Quiet Hours 10PM - 6AM',
+  'Day Visitors Allowed in Lounge Only',
+  'No Overnight Guests in Dorm',
+  'Advance Rent by 5th',
+  'Warden Contact Logged'
 ];
 
 export default function AddProperty() {
@@ -213,7 +213,7 @@ export default function AddProperty() {
 
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
-        toast.error('Please fill in all required fields');
+        toast.error('Please complete all mandatory manifest fields');
         setIsLoading(false);
         return;
       }
@@ -248,7 +248,7 @@ export default function AddProperty() {
       }
 
       await propertyApi.createProperty(submitData);
-      toast.success('Property submitted for admin approval!');
+      toast.success('Student PG submitted for admin audit queue!');
       navigate('/provider-dashboard/my-properties');
     } catch (error) {
       console.error('Error creating property:', error);
@@ -261,272 +261,272 @@ export default function AddProperty() {
   };
 
   return (
-    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
-
+    <div className="bg-[#0a0a0c] text-neutral-100 py-10 min-h-screen relative font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-8 space-y-8 relative z-10">
         
-        {/* Navigation Bar */}
-        <div className="flex items-center justify-between pb-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate('/provider-dashboard')}
-              className="p-2.5 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                List New Accommodation
-              </h1>
-              <p className="text-xs text-neutral-400 mt-0.5">Submit your verified PG residence or co-living property for compliance audit.</p>
+        {/* Navigation & Header */}
+        <div className="board p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/provider-dashboard')}
+                className="p-2.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-[#ffb000]/40 transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#ffb000] animate-pulse" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ffb000]">
+                    MANIFEST INGESTION // AUDIT QUEUE
+                  </span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white font-['Big_Shoulders_Display']">
+                  List New Student PG / Hostel
+                </h1>
+                <p className="text-xs font-mono text-neutral-400 mt-0.5">
+                  Register verified student accommodation for compliance audit & student booking roster.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {errors.global && (
-          <div className="p-4 rounded-xl bg-red-600/15 border border-red-600/30 text-xs text-red-400 flex items-center gap-2 font-semibold shadow-lg">
-            <AlertCircle className="w-4 h-4 shrink-0 text-[#E50914]" />
+          <div className="board p-4 text-xs font-mono text-red-400 border-red-500/40 flex items-center gap-2 bg-red-950/20">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
             <span>{errors.global}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           
-          {/* Section 1: Basic Information */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <Building className="w-3.5 h-3.5" />
-                <span>1. PROPERTY IDENTIFICATION</span>
-              </h2>
+          {/* Section 1: Hostel Identification */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center gap-2 text-[#ffb000]">
+              <Building className="w-4 h-4" />
+              <span>01 // HOSTEL IDENTIFICATION & WARDEN DETAILS</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Listing Title / Accommodation Name *
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                  Hostel / PG Title *
                 </label>
                 <input
                   type="text"
                   value={formData.basicInfo.name}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'name')}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                  placeholder="e.g. Skyline Luxury Executive PG"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] font-mono"
+                  placeholder="e.g. Skyline Scholar Heights Student PG"
                 />
-                {errors.basicInfo?.name && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.name}</p>}
+                {errors.basicInfo?.name && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.basicInfo.name}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
                   Structure Category *
                 </label>
                 <select
                   value={formData.basicInfo.buildingType || ''}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'buildingType')}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono cursor-pointer"
                 >
-                  <option value="" className="bg-[#141414]">Select structure type</option>
-                  <option value="Independent House" className="bg-[#141414]">Independent House</option>
-                  <option value="Apartment / Flat" className="bg-[#141414]">Apartment / Flat</option>
-                  <option value="Dedicated PG Building" className="bg-[#141414]">Dedicated PG Building</option>
-                  <option value="Hostel Complex" className="bg-[#141414]">Hostel Complex</option>
+                  <option value="" className="bg-neutral-900">Select structure type</option>
+                  <option value="Dedicated PG Building" className="bg-neutral-900">Dedicated Student PG Building</option>
+                  <option value="Hostel Complex" className="bg-neutral-900">University Hostel Complex</option>
+                  <option value="Apartment / Flat" className="bg-neutral-900">Student Shared Apartment</option>
+                  <option value="Independent House" className="bg-neutral-900">Independent Villa / House</option>
                 </select>
-                {errors.basicInfo?.buildingType && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.buildingType}</p>}
+                {errors.basicInfo?.buildingType && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.basicInfo.buildingType}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Resident Target Category *
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                  Resident Demographic *
                 </label>
                 <select
                   value={formData.basicInfo.category || ''}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'category')}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono cursor-pointer"
                 >
-                  <option value="" className="bg-[#141414]">Select resident category</option>
-                  <option value="Men / Boys Only" className="bg-[#141414]">Men / Boys Only</option>
-                  <option value="Women / Girls Only" className="bg-[#141414]">Women / Girls Only</option>
-                  <option value="Co-Living (Unisex)" className="bg-[#141414]">Co-Living (Unisex)</option>
-                  <option value="Working Professionals Only" className="bg-[#141414]">Working Professionals Only</option>
+                  <option value="" className="bg-neutral-900">Select resident category</option>
+                  <option value="Boys PG / Men" className="bg-neutral-900">Boys PG / Male Students</option>
+                  <option value="Girls PG / Women" className="bg-neutral-900">Girls PG / Female Students</option>
+                  <option value="Co-Living (Unisex)" className="bg-neutral-900">Co-Living / Unisex PG</option>
+                  <option value="Working Professionals / Students" className="bg-neutral-900">Students & Fresh Grads</option>
                 </select>
-                {errors.basicInfo?.category && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.category}</p>}
+                {errors.basicInfo?.category && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.basicInfo.category}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Host Legal Name *
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                  Warden / Host Full Name *
                 </label>
                 <input
                   type="text"
                   value={formData.basicInfo.ownerName}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'ownerName')}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Host Contact Line *
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                  Warden Direct Mobile *
                 </label>
                 <input
                   type="tel"
                   value={formData.basicInfo.ownerPhone}
                   onChange={(e) => handleInputChange(e, 'basicInfo', 'ownerPhone')}
                   placeholder="9876543210"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.basicInfo?.ownerPhone && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.basicInfo.ownerPhone}</p>}
+                {errors.basicInfo?.ownerPhone && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.basicInfo.ownerPhone}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">
-                  Host Email Record
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">
+                  Warden Email Dossier
                 </label>
                 <input
                   type="email"
                   value={formData.basicInfo.ownerEmail}
                   readOnly
-                  className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-xs text-neutral-400 cursor-not-allowed"
+                  className="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded text-xs text-neutral-500 cursor-not-allowed font-mono"
                 />
               </div>
             </div>
           </div>
 
-          {/* Section 2: Location Details */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>2. GEOGRAPHICAL LOCATION</span>
-              </h2>
+          {/* Section 2: Geographical Coordinates */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center gap-2 text-[#ffb000]">
+              <MapPin className="w-4 h-4" />
+              <span>02 // CAMPUS HUB & GEOGRAPHICAL LOCATION</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">City / Metropolitan *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">City *</label>
                 <input
                   type="text"
                   value={formData.location.city}
                   onChange={(e) => handleInputChange(e, 'location', 'city')}
                   placeholder="e.g. Hyderabad"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.location?.city && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.city}</p>}
+                {errors.location?.city && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.location.city}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">District / Locality *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Campus Hub / Locality *</label>
                 <input
                   type="text"
                   value={formData.location.area}
                   onChange={(e) => handleInputChange(e, 'location', 'area')}
-                  placeholder="e.g. Madhapur, Hitec City"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  placeholder="e.g. Madhapur, Near Metro & Universities"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.location?.area && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.area}</p>}
+                {errors.location?.area && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.location.area}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Postal Code *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Pincode *</label>
                 <input
                   type="text"
                   value={formData.location.pincode}
                   onChange={(e) => handleInputChange(e, 'location', 'pincode')}
                   placeholder="500081"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.location?.pincode && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.pincode}</p>}
+                {errors.location?.pincode && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.location.pincode}</p>}
               </div>
 
               <div className="sm:col-span-2 lg:col-span-3 space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Complete Street Address *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Full Proximity Address *</label>
                 <input
                   type="text"
                   value={formData.location.address}
                   onChange={(e) => handleInputChange(e, 'location', 'address')}
-                  placeholder="Street name, plot number, landmark, nearby metro station"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  placeholder="Plot number, building name, walking distance to colleges/tech parks"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.location?.address && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.location.address}</p>}
+                {errors.location?.address && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.location.address}</p>}
               </div>
             </div>
           </div>
 
-          {/* Section 3: Capacity & Pricing */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <DollarSign className="w-3.5 h-3.5" />
-                <span>3. INVENTORY & RENTAL TARIFF</span>
-              </h2>
+          {/* Section 3: Bed Units & Tariff */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center gap-2 text-[#ffb000]">
+              <DollarSign className="w-4 h-4" />
+              <span>03 // BED INVENTORY & STUDENT TARIFF (ZERO BROKERAGE)</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Total Room Units *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Available Bed Units *</label>
                 <input
                   type="number"
                   value={formData.propertyDetails.rooms}
                   onChange={(e) => handleInputChange(e, 'propertyDetails', 'rooms')}
-                  placeholder="e.g. 8"
+                  placeholder="e.g. 12"
                   min="1"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.propertyDetails?.rooms && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.propertyDetails.rooms}</p>}
+                {errors.propertyDetails?.rooms && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.propertyDetails.rooms}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Floor Area (Sq. Ft.) *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Floor Area (Sq. Ft.) *</label>
                 <input
                   type="number"
                   value={formData.propertyDetails.area}
                   onChange={(e) => handleInputChange(e, 'propertyDetails', 'area')}
-                  placeholder="e.g. 2400"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  placeholder="e.g. 2500"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.propertyDetails?.area && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.propertyDetails.area}</p>}
+                {errors.propertyDetails?.area && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.propertyDetails.area}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Monthly Rent (₹) *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Monthly Rent Per Bed (₹) *</label>
                 <input
                   type="number"
                   value={formData.pricing.rent}
                   onChange={(e) => handleInputChange(e, 'pricing', 'rent')}
-                  placeholder="e.g. 8500"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  placeholder="e.g. 7500"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.pricing?.rent && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.pricing.rent}</p>}
+                {errors.pricing?.rent && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.pricing.rent}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Security Deposit (₹) *</label>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400">Refundable Deposit (₹) *</label>
                 <input
                   type="number"
                   value={formData.pricing.deposit}
                   onChange={(e) => handleInputChange(e, 'pricing', 'deposit')}
-                  placeholder="e.g. 15000"
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                  placeholder="e.g. 10000"
+                  className="w-full px-4 py-3 bg-neutral-900 border border-neutral-700 rounded text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-mono"
                 />
-                {errors.pricing?.deposit && <p className="text-[11px] text-red-400 mt-0.5 font-semibold">{errors.pricing.deposit}</p>}
+                {errors.pricing?.deposit && <p className="text-[11px] font-mono text-red-400 mt-0.5">{errors.pricing.deposit}</p>}
               </div>
             </div>
           </div>
 
-          {/* Section 4: Photo Dropzone */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <UploadCloud className="w-3.5 h-3.5" />
-                <span>4. PHOTOGRAPHY GALLERY</span>
-              </h2>
-              <span className="text-xs text-neutral-400 font-medium">{previewImages.length} photo(s) selected</span>
+          {/* Section 4: Photo Gallery */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[#ffb000]">
+                <UploadCloud className="w-4 h-4" />
+                <span>04 // RESIDENCE PHOTO DROPZONE</span>
+              </div>
+              <span className="text-xs font-mono text-neutral-400">{previewImages.length} photo(s) selected</span>
             </div>
 
-            {/* Dropzone Container */}
-            <div className="relative border border-dashed border-white/15 hover:border-[#E50914] rounded-xl p-8 text-center bg-black/60 transition-colors">
+            <div className="relative border border-dashed border-neutral-700 hover:border-[#ffb000] rounded p-8 text-center bg-neutral-900/50 transition-colors">
               <input
                 type="file"
                 multiple
@@ -535,25 +535,24 @@ export default function AddProperty() {
                 className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 id="imageUpload"
               />
-              <UploadCloud className="w-8 h-8 text-[#E50914] mx-auto mb-2 pointer-events-none" />
-              <p className="text-xs font-bold text-white pointer-events-none uppercase tracking-wider">
-                Select high resolution photography
+              <UploadCloud className="w-8 h-8 text-[#ffb000] mx-auto mb-2 pointer-events-none" />
+              <p className="text-xs font-mono font-bold text-white uppercase tracking-wider pointer-events-none">
+                Select Hostel & Sharing Room Photos
               </p>
-              <p className="text-[11px] text-neutral-400 mt-1 pointer-events-none">
-                JPG, PNG, or WEBP up to 5MB each. Clear accommodation photos increase reservation velocity by 300%.
+              <p className="text-[11px] font-mono text-neutral-400 mt-1 pointer-events-none">
+                Upload clear shots of bedrooms, mess area, study spaces, and washrooms.
               </p>
             </div>
 
-            {/* Thumbnail Preview Grid */}
             {previewImages.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
                 {previewImages.map((url, index) => (
-                  <div key={index} className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group bg-black">
+                  <div key={index} className="relative aspect-[4/3] rounded overflow-hidden border border-neutral-800 bg-black">
                     <img src={url} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => removeFile(index)}
-                      className="absolute top-1.5 right-1.5 p-1 rounded-lg bg-black/80 text-red-400 hover:bg-red-600 hover:text-white transition-all cursor-pointer"
+                      className="absolute top-1 right-1 p-1 rounded bg-black/90 text-red-400 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
                       title="Remove image"
                     >
                       <X className="w-3.5 h-3.5" />
@@ -564,16 +563,14 @@ export default function AddProperty() {
             )}
           </div>
 
-          {/* Section 5: Inclusions & Amenities */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>5. VERIFIED AMENITIES</span>
-              </h2>
+          {/* Section 5: Student Amenities */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center gap-2 text-[#ffb000]">
+              <Sparkles className="w-4 h-4" />
+              <span>05 // VERIFIED STUDENT AMENITIES</span>
             </div>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               {AMENITIES_OPTIONS.map((amenity) => {
                 const isSelected = formData.amenities.includes(amenity);
                 return (
@@ -581,10 +578,10 @@ export default function AddProperty() {
                     key={amenity}
                     type="button"
                     onClick={() => handleAmenityToggle(amenity)}
-                    className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#E50914] text-white shadow-md'
-                        : 'bg-black/60 border border-white/10 text-neutral-400 hover:text-white hover:border-[#E50914]'
+                        ? 'bg-[#ffb000] text-black border border-[#ffb000]'
+                        : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-[#ffb000]/40'
                     }`}
                   >
                     {isSelected && <Check className="w-3.5 h-3.5" />}
@@ -595,16 +592,14 @@ export default function AddProperty() {
             </div>
           </div>
 
-          {/* Section 6: House Rules */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#141414] border border-white/10 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-3">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>6. RESIDENT CODE & RULES</span>
-              </h2>
+          {/* Section 6: Hostel Curfew & Code */}
+          <div className="board p-6 sm:p-8 space-y-6">
+            <div className="board-head pb-3 flex items-center gap-2 text-[#ffb000]">
+              <ShieldCheck className="w-4 h-4" />
+              <span>06 // HOSTEL REGULATIONS & CURFEW CODE</span>
             </div>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               {RULES_OPTIONS.map((rule) => {
                 const isSelected = formData.rules.includes(rule);
                 return (
@@ -612,10 +607,10 @@ export default function AddProperty() {
                     key={rule}
                     type="button"
                     onClick={() => handleRuleToggle(rule)}
-                    className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#E50914] text-white shadow-md'
-                        : 'bg-black/60 border border-white/10 text-neutral-400 hover:text-white hover:border-[#E50914]'
+                        ? 'bg-[#ffb000] text-black border border-[#ffb000]'
+                        : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-[#ffb000]/40'
                     }`}
                   >
                     {isSelected && <Check className="w-3.5 h-3.5" />}
@@ -631,16 +626,16 @@ export default function AddProperty() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+              className="px-5 py-2.5 rounded bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white font-mono text-xs uppercase tracking-wider transition-all cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2.5 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer disabled:opacity-50"
+              className="btn-solari-amber cursor-pointer disabled:opacity-50"
             >
-              {isLoading ? 'Submitting Property...' : 'Publish Listing'}
+              {isLoading ? 'Transmitting PG Manifest...' : 'Transmit for Audit'}
             </button>
           </div>
 
@@ -649,5 +644,3 @@ export default function AddProperty() {
     </div>
   );
 }
-
-

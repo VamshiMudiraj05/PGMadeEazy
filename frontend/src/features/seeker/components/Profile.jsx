@@ -80,7 +80,7 @@ export default function Profile() {
       await seekerService.updateSeekerProfile(user.id, profileData);
       setIsEditing(false);
       setError(null);
-      toast.success('Profile updated successfully!');
+      toast.success('Profile credentials updated successfully!');
     } catch (err) {
       setError('Failed to update profile');
       toast.error('Failed to update profile');
@@ -92,145 +92,156 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white">
-        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
-        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Loading profile record...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0b0b0d] flex flex-col items-center justify-center gap-4 text-white">
+        <div className="h-8 w-8 border-2 border-[#ffb000] border-t-transparent rounded-none animate-spin shadow-[0_0_10px_#ffb000]" />
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+          RETRIEVING SCHOLAR DOSSIER...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#050505] text-white py-10 min-h-screen relative select-none">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 right-1/3 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[180px] pointer-events-none -z-10" />
-
+    <div className="bg-[#0b0b0d] text-[#f2f2f2] py-8 min-h-screen relative select-none">
       <div className="max-w-4xl mx-auto px-4 sm:px-8 space-y-6 relative z-10">
         
         {/* Navigation Back */}
         <button
           onClick={() => navigate('/seeker-dashboard')}
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all text-xs font-semibold cursor-pointer"
+          className="btn-solari btn-solari-steel text-xs inline-flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Dashboard</span>
+          <ArrowLeft className="w-4 h-4 text-[#ffb000]" />
+          <span>RETURN TO RESIDENT HUB</span>
         </button>
 
         {error && (
-          <div className="bg-[#141414] border border-red-500/30 p-4 rounded-xl flex items-center gap-3 text-red-400 text-xs font-semibold">
-            <AlertCircle className="w-4 h-4 shrink-0 text-[#E50914]" />
+          <div className="p-3 bg-[#ff4b4b]/10 border border-[#ff4b4b]/30 rounded-[2px] flex items-center gap-3 text-[#ff4b4b] text-xs font-mono uppercase tracking-wider">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#ff4b4b]" />
             <span>{error}</span>
           </div>
         )}
 
-        <div className="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-8 shadow-2xl">
-          
-          {/* Header & Avatar Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        {/* Top Header Card */}
+        <div className="board">
+          <div className="board-head">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#ffb000] font-['Barlow_Semi_Condensed']">
+                SCHOLAR CREDENTIALS // AUDITED DOSSIER
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4 text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-[0.16em] text-[#a7aaaf]">
+              <span>KYC BADGE: <b className="text-emerald-400">VERIFIED</b></span>
+              <span>ROLE: <b className="text-[#ffb000]">STUDENT RESIDENT</b></span>
+            </div>
+          </div>
+
+          <div className="py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="h-14 w-14 rounded-xl bg-red-600/15 border border-red-600/30 flex items-center justify-center text-[#E50914] font-extrabold text-2xl shadow-[0_0_15px_rgba(229,9,20,0.3)]">
-                {profileData.fullName?.charAt(0)?.toUpperCase() || 'U'}
+              <div className="p-3 bg-[#0b0b0d] border border-[#ffb000]/60 text-[#ffb000] font-bold text-2xl font-['Big_Shoulders_Display'] w-14 h-14 flex items-center justify-center">
+                {profileData.fullName?.charAt(0)?.toUpperCase() || 'S'}
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                    {profileData.fullName || 'Seeker Resident'}
-                  </h1>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-black shadow-md">
-                    Verified Resident
-                  </span>
-                </div>
-                <p className="text-xs text-neutral-400 mt-0.5">{profileData.email}</p>
+                <h1 className="text-2xl font-bold uppercase tracking-[0.14em] text-white font-['Big_Shoulders_Display']">
+                  {profileData.fullName || 'SEEKER RESIDENT'}
+                </h1>
+                <p className="text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider mt-0.5">
+                  {profileData.email} // ID #{user?.id?.slice(-8) || 'SCHOLAR'}
+                </p>
               </div>
             </div>
 
             <button
               type="button"
               onClick={() => setIsEditing(!isEditing)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider bg-white/5 border border-white/10 text-white hover:bg-[#E50914] hover:border-[#E50914] shadow-sm hover:shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all self-start sm:self-auto cursor-pointer"
+              className="btn-solari btn-solari-steel text-xs self-start sm:self-auto"
             >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>{isEditing ? 'Cancel Editing' : 'Edit Credentials'}</span>
+              <Edit3 className="w-3.5 h-3.5 text-[#ffb000]" />
+              <span>{isEditing ? 'ABORT EDITING' : 'EDIT CREDENTIALS'}</span>
             </button>
           </div>
+        </div>
 
-          {/* Form / Content View */}
+        {/* Form / Content View */}
+        <div className="p-5 sm:p-6 rounded-[3px] bg-[#121316] border border-[#26292d] space-y-6">
           {isEditing ? (
             <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Section 1: Personal Details */}
               <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <User className="w-3.5 h-3.5" />
-                  <span>PERSONAL DETAILS</span>
+                  <span>PERSONAL RESIDENT DETAILS</span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Full Legal Name</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">FULL LEGAL NAME</label>
                     <input
                       type="text"
                       name="fullName"
                       value={profileData.fullName || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Email Address</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">EMAIL ADDRESS</label>
                     <input
                       type="email"
                       name="email"
                       value={profileData.email || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Phone Number</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">PHONE NUMBER</label>
                     <input
                       type="tel"
                       name="phone"
                       value={profileData.phone || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Date of Birth</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">DATE OF BIRTH</label>
                     <input
                       type="date"
                       name="dateOfBirth"
                       value={profileData.dateOfBirth || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Gender</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">GENDER</label>
                     <select
                       name="gender"
                       value={profileData.gender || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed'] uppercase cursor-pointer"
                       required
                     >
-                      <option value="" className="bg-[#141414]">Select Gender</option>
-                      <option value="male" className="bg-[#141414]">Male</option>
-                      <option value="female" className="bg-[#141414]">Female</option>
-                      <option value="other" className="bg-[#141414]">Other</option>
+                      <option value="" className="bg-[#121316]">SELECT GENDER</option>
+                      <option value="male" className="bg-[#121316]">MALE</option>
+                      <option value="female" className="bg-[#121316]">FEMALE</option>
+                      <option value="other" className="bg-[#121316]">OTHER</option>
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Current City</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">CURRENT BASE CITY</label>
                     <input
                       type="text"
                       name="currentCity"
                       value={profileData.currentCity || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed'] uppercase"
                       required
                     />
                   </div>
@@ -238,110 +249,90 @@ export default function Profile() {
               </div>
 
               {/* Section 2: Occupation Info */}
-              <div className="pt-6 border-t border-white/10 space-y-4">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+              <div className="pt-6 border-t border-[#202226] space-y-4">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <Briefcase className="w-3.5 h-3.5" />
-                  <span>COLLEGE / OCCUPATION DETAILS</span>
+                  <span>COLLEGE / ACADEMIC RECORDS</span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2 space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Occupation Profile</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">OCCUPATION PROFILE</label>
                     <select
                       name="occupationType"
                       value={profileData.occupationType || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed'] uppercase cursor-pointer"
                       required
                     >
-                      <option value="" className="bg-[#141414]">Select Occupation Type</option>
-                      <option value="student" className="bg-[#141414]">Student</option>
-                      <option value="professional" className="bg-[#141414]">Professional</option>
+                      <option value="" className="bg-[#121316]">SELECT OCCUPATION TYPE</option>
+                      <option value="student" className="bg-[#121316]">STUDENT</option>
+                      <option value="professional" className="bg-[#121316]">WORKING PROFESSIONAL</option>
                     </select>
                   </div>
 
                   {profileData.occupationType === 'student' ? (
                     <>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">College / University</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">COLLEGE / UNIVERSITY</label>
                         <input
                           type="text"
                           name="collegeName"
                           value={profileData.collegeName || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Degree / Major</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">DEGREE / COURSE</label>
                         <input
                           type="text"
                           name="courseName"
                           value={profileData.courseName || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Year of Study</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">YEAR OF STUDY</label>
                         <input
                           type="text"
                           name="yearOfStudy"
                           value={profileData.yearOfStudy || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Student Roll / ID</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">STUDENT ID / ROLL NO</label>
                         <input
                           type="text"
                           name="studentId"
                           value={profileData.studentId || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                     </>
                   ) : profileData.occupationType === 'professional' ? (
                     <>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Company / Organization</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">EMPLOYER ORG</label>
                         <input
                           type="text"
                           name="companyName"
                           value={profileData.companyName || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Designation / Title</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">JOB ROLE</label>
                         <input
                           type="text"
                           name="jobRole"
                           value={profileData.jobRole || ''}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                        />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Experience (Years)</label>
-                        <input
-                          type="text"
-                          name="workExperience"
-                          value={profileData.workExperience || ''}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
-                        />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Work ID</label>
-                        <input
-                          type="text"
-                          name="workId"
-                          value={profileData.workId || ''}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                          className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                         />
                       </div>
                     </>
@@ -350,58 +341,58 @@ export default function Profile() {
               </div>
 
               {/* Section 3: Identity & Emergency Contacts */}
-              <div className="pt-6 border-t border-white/10 space-y-4">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+              <div className="pt-6 border-t border-[#202226] space-y-4">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>GOVERNMENT ID & EMERGENCY CONTACTS</span>
+                  <span>IDENTITY & EMERGENCY WARDEN CONTACTS</span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Government ID Type</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">GOVERNMENT ID TYPE</label>
                     <select
                       name="govtIdType"
                       value={profileData.govtIdType || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed'] uppercase cursor-pointer"
                       required
                     >
-                      <option value="" className="bg-[#141414]">Select ID Type</option>
-                      <option value="aadhar" className="bg-[#141414]">Aadhaar Card</option>
-                      <option value="pan" className="bg-[#141414]">PAN Card</option>
-                      <option value="driving" className="bg-[#141414]">Driving License</option>
-                      <option value="passport" className="bg-[#141414]">Passport</option>
+                      <option value="" className="bg-[#121316]">SELECT ID TYPE</option>
+                      <option value="aadhaar" className="bg-[#121316]">AADHAAR CARD</option>
+                      <option value="pan" className="bg-[#121316]">PAN CARD</option>
+                      <option value="passport" className="bg-[#121316]">PASSPORT</option>
+                      <option value="driving_license" className="bg-[#121316]">DRIVING LICENSE</option>
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">ID Document Number</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">GOVT ID NUMBER</label>
                     <input
                       type="text"
                       name="govtIdNumber"
                       value={profileData.govtIdNumber || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Emergency Contact Name</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">EMERGENCY CONTACT PERSON</label>
                     <input
                       type="text"
                       name="emergencyContactName"
                       value={profileData.emergencyContactName || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[11px] font-bold uppercase tracking-widest text-neutral-300">Emergency Phone</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">EMERGENCY PHONE NUMBER</label>
                     <input
                       type="text"
                       name="emergencyContactNumber"
                       value={profileData.emergencyContactNumber || ''}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                      className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                       required
                     />
                   </div>
@@ -409,98 +400,99 @@ export default function Profile() {
               </div>
 
               {/* Save Action */}
-              <div className="pt-6 border-t border-white/10 flex justify-end">
+              <div className="pt-6 border-t border-[#202226] flex justify-end">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-3 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_15px_rgba(229,9,20,0.4)] transition-all cursor-pointer disabled:opacity-50"
+                  className="btn-solari btn-solari-amber text-xs"
                 >
-                  Save Profile Changes
+                  <span>COMMIT CHANGES</span>
+                  <span className="chev">✓</span>
                 </button>
               </div>
 
             </form>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-6">
               
               {/* Personal Info Grid */}
               <div className="space-y-3">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <User className="w-3.5 h-3.5" />
-                  <span>PERSONAL PROFILE</span>
+                  <span>PERSONAL RESIDENT PROFILE</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Full Legal Name</span>
-                    <span className="text-sm font-semibold text-white">{profileData.fullName || 'Not provided'}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">FULL LEGAL NAME</span>
+                    <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.fullName || 'Not provided'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Email</span>
-                    <span className="text-sm font-semibold text-white truncate block">{profileData.email || 'Not provided'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">EMAIL</span>
+                    <span className="text-sm font-semibold text-white truncate block font-['Barlow_Semi_Condensed']">{profileData.email || 'Not provided'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Contact Phone</span>
-                    <span className="text-sm font-semibold text-white">{profileData.phone || 'Not provided'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">CONTACT PHONE</span>
+                    <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.phone || 'Not provided'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Date of Birth</span>
-                    <span className="text-sm font-semibold text-white">{profileData.dateOfBirth || 'Not provided'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">DATE OF BIRTH</span>
+                    <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.dateOfBirth || 'Not provided'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Gender</span>
-                    <span className="text-sm font-semibold text-white capitalize">{profileData.gender || 'Not specified'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">GENDER</span>
+                    <span className="text-sm font-semibold text-white uppercase font-['Barlow_Semi_Condensed']">{profileData.gender || 'Not specified'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Current Base City</span>
-                    <span className="text-sm font-semibold text-white">{profileData.currentCity || 'Not provided'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">BASE CAMPUS CITY</span>
+                    <span className="text-sm font-semibold text-white uppercase font-['Barlow_Semi_Condensed']">{profileData.currentCity || 'Not provided'}</span>
                   </div>
                 </div>
               </div>
 
               {/* Occupation Info Grid */}
-              <div className="pt-6 border-t border-white/10 space-y-3">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+              <div className="pt-4 border-t border-[#202226] space-y-3">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <Briefcase className="w-3.5 h-3.5" />
-                  <span>COLLEGE / EMPLOYMENT RECORDS</span>
+                  <span>ACADEMIC / EMPLOYMENT RECORDS</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Occupation Status</span>
-                    <span className="text-sm font-semibold text-white capitalize">{profileData.occupationType || 'Not specified'}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">OCCUPATION TYPE</span>
+                    <span className="text-sm font-semibold text-white uppercase font-['Barlow_Semi_Condensed']">{profileData.occupationType || 'Not specified'}</span>
                   </div>
 
                   {profileData.occupationType === 'student' ? (
                     <>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">College Institution</span>
-                        <span className="text-sm font-semibold text-white">{profileData.collegeName || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">COLLEGE / UNIVERSITY</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.collegeName || 'N/A'}</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Degree Course</span>
-                        <span className="text-sm font-semibold text-white">{profileData.courseName || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">DEGREE COURSE</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.courseName || 'N/A'}</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Year of Study</span>
-                        <span className="text-sm font-semibold text-white">{profileData.yearOfStudy || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">YEAR OF STUDY</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.yearOfStudy || 'N/A'}</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Student ID</span>
-                        <span className="text-sm font-semibold text-white">{profileData.studentId || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">STUDENT ID</span>
+                        <span className="text-sm font-semibold text-white font-mono">{profileData.studentId || 'N/A'}</span>
                       </div>
                     </>
                   ) : profileData.occupationType === 'professional' ? (
                     <>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Employer Org</span>
-                        <span className="text-sm font-semibold text-white">{profileData.companyName || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">EMPLOYER ORG</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.companyName || 'N/A'}</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Designation</span>
-                        <span className="text-sm font-semibold text-white">{profileData.jobRole || 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">JOB ROLE</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.jobRole || 'N/A'}</span>
                       </div>
-                      <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Experience</span>
-                        <span className="text-sm font-semibold text-white">{profileData.workExperience ? `${profileData.workExperience} years` : 'N/A'}</span>
+                      <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">EXPERIENCE</span>
+                        <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.workExperience ? `${profileData.workExperience} years` : 'N/A'}</span>
                       </div>
                     </>
                   ) : null}
@@ -508,27 +500,27 @@ export default function Profile() {
               </div>
 
               {/* Identity & Emergency Grid */}
-              <div className="pt-6 border-t border-white/10 space-y-3">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914] flex items-center gap-2">
+              <div className="pt-4 border-t border-[#202226] space-y-3">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000] flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>COMPLIANCE & EMERGENCY CONTACTS</span>
+                  <span>AUDITED KYC & GUARDIAN CONTACTS</span>
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">ID Document Type</span>
-                    <span className="text-sm font-semibold text-white uppercase">{profileData.govtIdType || 'N/A'}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">ID DOCUMENT</span>
+                    <span className="text-sm font-semibold text-white uppercase font-['Barlow_Semi_Condensed']">{profileData.govtIdType || 'N/A'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">ID Number</span>
-                    <span className="text-sm font-semibold text-white">{profileData.govtIdNumber || 'N/A'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">ID NUMBER</span>
+                    <span className="text-sm font-semibold text-white font-mono">{profileData.govtIdNumber || 'N/A'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Emergency Person</span>
-                    <span className="text-sm font-semibold text-white">{profileData.emergencyContactName || 'N/A'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">EMERGENCY CONTACT</span>
+                    <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.emergencyContactName || 'N/A'}</span>
                   </div>
-                  <div className="p-4 rounded-xl bg-black/60 border border-white/10">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Emergency Phone</span>
-                    <span className="text-sm font-semibold text-white">{profileData.emergencyContactNumber || 'N/A'}</span>
+                  <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7aaaf] block mb-0.5 font-['Barlow_Semi_Condensed']">EMERGENCY PHONE</span>
+                    <span className="text-sm font-semibold text-white font-['Barlow_Semi_Condensed']">{profileData.emergencyContactNumber || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -541,5 +533,3 @@ export default function Profile() {
     </div>
   );
 }
-
-

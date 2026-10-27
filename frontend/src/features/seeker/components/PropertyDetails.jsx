@@ -21,7 +21,8 @@ import {
   ChevronLeft, 
   ChevronRight,
   Maximize2,
-  Key
+  Key,
+  BedDouble
 } from 'lucide-react';
 import BookingForm from './BookingForm';
 import { useNavigate } from 'react-router-dom';
@@ -86,43 +87,43 @@ const PropertyDetails = ({ property, onClose }) => {
   };
 
   return (
-    <div ref={modalContainerRef} className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md select-none">
-      <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">
+    <div ref={modalContainerRef} className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 select-none">
+      <div className="min-h-screen py-8 px-3 sm:px-6 flex items-center justify-center">
         
-        <div className="w-full max-w-5xl rounded-2xl bg-[#141414] border border-white/10 shadow-2xl overflow-hidden relative">
+        <div className="w-full max-w-5xl rounded-[3px] bg-[#121316] border border-[#26292d] shadow-2xl overflow-hidden relative">
           
-          {/* Header Bar */}
-          <div className="flex items-center justify-between p-6 border-b border-white/10 bg-[#050505] sticky top-0 z-20">
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                  {property.name}
+          {/* Top Board Header Bar */}
+          <div className="board-head sticky top-0 z-20 bg-[#121316] border-b border-[#26292d]">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-white font-['Big_Shoulders_Display'] uppercase tracking-[0.16em] flex items-center gap-2">
+                  <span>{property.name}</span>
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-[2px] bg-emerald-500 text-black">
+                    AUDITED
+                  </span>
                 </h2>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-black shadow-md">
-                  <ShieldCheck className="w-3 h-3" />
-                  <span>Audited Listing</span>
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-400 mt-1">
-                <MapPin className="w-3.5 h-3.5 text-[#E50914]" />
-                <span>{property.city}, {property.area}</span>
-                <span className="text-neutral-600">•</span>
-                <span>Type: <strong className="text-white font-semibold">{property.category || 'Paying Guest'}</strong></span>
+                <div className="flex items-center gap-2 text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider mt-0.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#ffb000]" />
+                  <span>{property.city}, {property.area}</span>
+                  <span className="text-[#34373c]">/</span>
+                  <span>CATEGORY: <strong className="text-white">{property.category || 'STUDENT PG'}</strong></span>
+                </div>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
+              className="p-1.5 rounded-[2px] bg-[#0b0b0d] border border-[#34373c] text-[#a7aaaf] hover:text-white hover:border-[#ffb000] transition-all cursor-pointer"
               aria-label="Close modal"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Photo Gallery Grid */}
-          <div className="p-6 pb-0">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-xl overflow-hidden bg-black border border-white/10">
+          {/* Photo Manifest Grid */}
+          <div className="p-4 sm:p-6 pb-0">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-[3px] overflow-hidden bg-[#0b0b0d] border border-[#26292d]">
               
               {/* Primary Large Photo */}
               <div
@@ -130,15 +131,15 @@ const PropertyDetails = ({ property, onClose }) => {
                   setCurrentImageIndex(0);
                   setShowLightbox(true);
                 }}
-                className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto h-72 md:h-96 group cursor-pointer overflow-hidden bg-black"
+                className="md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto h-64 md:h-88 group cursor-pointer overflow-hidden bg-black"
               >
                 <img
                   src={getSecureImageUrl(propertyImages[0] || null, 0)}
                   alt={`${property.name} Main View`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                 />
-                <div className="absolute bottom-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white border border-white/15">
-                  Audited Primary Angle
+                <div className="absolute bottom-2.5 left-2.5 bg-[#0b0b0d]/90 px-2 py-0.5 rounded-[2px] text-[10px] font-bold uppercase tracking-[0.18em] text-[#ffb000] border border-[#ffb000]/40 font-['Barlow_Semi_Condensed']">
+                  VERIFIED DORM VIEW // ANGLE 01
                 </div>
               </div>
 
@@ -150,17 +151,17 @@ const PropertyDetails = ({ property, onClose }) => {
                     setCurrentImageIndex(idx < propertyImages.length ? idx : 0);
                     setShowLightbox(true);
                   }}
-                  className="hidden md:block relative h-47 group cursor-pointer overflow-hidden bg-black"
+                  className="hidden md:block relative h-43 group cursor-pointer overflow-hidden bg-black"
                 >
                   <img
                     src={getSecureImageUrl(propertyImages[idx] || null, idx)}
                     alt={`${property.name} View ${idx + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100"
                   />
                   {idx === 4 && (
-                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-white font-bold text-xs gap-1.5 hover:bg-black/80 transition-colors">
-                      <Maximize2 className="w-3.5 h-3.5 text-[#E50914]" />
-                      <span>Full Gallery ({propertyImages.length})</span>
+                    <div className="absolute inset-0 bg-[#0b0b0d]/80 flex items-center justify-center text-white font-bold text-xs gap-1.5 hover:bg-[#0b0b0d]/90 transition-colors font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+                      <Maximize2 className="w-3.5 h-3.5 text-[#ffb000]" />
+                      <span>EXPAND ({propertyImages.length})</span>
                     </div>
                   )}
                 </div>
@@ -170,100 +171,102 @@ const PropertyDetails = ({ property, onClose }) => {
           </div>
 
           {/* Content Layout */}
-          <div className="p-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
             {/* Left Column (7 Cols) */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-4">
               
-              {/* Key Specs */}
-              <div className="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
-                <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#E50914]">
-                  SPECIFICATION SUMMARY
+              {/* Key Specs Board */}
+              <div className="p-4 rounded-[3px] bg-[#0b0b0d] border border-[#26292d] space-y-3">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#ffb000]">
+                  CAMPUS AUDIT MANIFEST // SPECIFICATIONS
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-                  <div>
-                    <span className="text-neutral-400 block">Room Inventory</span>
-                    <span className="text-white font-extrabold text-sm">{property.rooms} Units</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+                  <div className="p-2.5 rounded-[2px] bg-[#121316] border border-[#202226]">
+                    <span className="text-[#a7aaaf] block text-[10px]">ROOM INVENTORY</span>
+                    <span className="text-white font-extrabold text-sm font-['Big_Shoulders_Display']">{property.rooms} UNITS</span>
                   </div>
-                  <div>
-                    <span className="text-neutral-400 block">Structure Format</span>
-                    <span className="text-white font-extrabold text-sm">{property.buildingType || 'PG Building'}</span>
+                  <div className="p-2.5 rounded-[2px] bg-[#121316] border border-[#202226]">
+                    <span className="text-[#a7aaaf] block text-[10px]">BUILDING TYPE</span>
+                    <span className="text-white font-extrabold text-sm font-['Big_Shoulders_Display'] truncate block">{property.buildingType || 'STUDENT PG'}</span>
                   </div>
-                  <div>
-                    <span className="text-neutral-400 block">Geographic District</span>
-                    <span className="text-white font-extrabold text-sm truncate block">{property.area}</span>
+                  <div className="p-2.5 rounded-[2px] bg-[#121316] border border-[#202226]">
+                    <span className="text-[#a7aaaf] block text-[10px]">CAMPUS DISTRICT</span>
+                    <span className="text-white font-extrabold text-sm font-['Big_Shoulders_Display'] truncate block">{property.area}</span>
                   </div>
                 </div>
               </div>
 
               {/* Verified Amenities */}
-              <div className="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Audited Inclusions & Amenities
+              <div className="p-4 rounded-[3px] bg-[#0b0b0d] border border-[#26292d] space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#f2f2f2] font-['Barlow_Semi_Condensed']">
+                  AUDITED HOSTEL AMENITIES & INCLUSIONS
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {property.amenities && property.amenities.length > 0 ? (
                     property.amenities.map((amenity, aIdx) => {
                       const IconComp = amenityIcons[amenity] || ShieldCheck;
                       return (
                         <div
                           key={aIdx}
-                          className="flex items-center gap-2 p-2.5 rounded-lg bg-[#141414] border border-white/10 text-xs font-semibold text-neutral-200"
+                          className="flex items-center gap-2 p-2 rounded-[2px] bg-[#121316] border border-[#202226] text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-wider text-[#f2f2f2]"
                         >
-                          <IconComp className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
+                          <IconComp className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
                           <span className="truncate">{amenity}</span>
                         </div>
                       );
                     })
                   ) : (
-                    <p className="text-xs text-neutral-400 col-span-full">All standard hostel amenities verified by audit team.</p>
+                    <p className="text-xs text-[#a7aaaf] col-span-full font-['Barlow_Semi_Condensed']">
+                      All standard student hostel amenities verified by audit team.
+                    </p>
                   )}
                 </div>
               </div>
 
-              {/* Guidelines & Rules */}
-              <div className="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Host Guidelines & House Rules
+              {/* Host Guidelines & Rules */}
+              <div className="p-4 rounded-[3px] bg-[#0b0b0d] border border-[#26292d] space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#f2f2f2] font-['Barlow_Semi_Condensed']">
+                  HOSTEL DISCIPLINE & ENTRY REGULATIONS
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {property.rules && property.rules.length > 0 ? (
                     property.rules.map((rule, rIdx) => (
-                      <div key={rIdx} className="flex items-center gap-2 text-xs text-neutral-300">
+                      <div key={rIdx} className="flex items-center gap-2 text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                         <span>{rule}</span>
                       </div>
                     ))
                   ) : (
-                    <div className="flex items-center gap-2 text-xs text-neutral-300">
+                    <div className="flex items-center gap-2 text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>Standard residential code of conduct applies</span>
+                      <span>Standard student hostel code of conduct and curfew apply</span>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Host Contacts */}
-              <div className="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Verified Property Host
+              {/* Host / Warden Contacts */}
+              <div className="p-4 rounded-[3px] bg-[#0b0b0d] border border-[#26292d] space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#f2f2f2] font-['Barlow_Semi_Condensed']">
+                  AUTHORIZED PG HOST / WARDEN
                 </h3>
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-red-600/15 border border-red-600/30 flex items-center justify-center text-[#E50914]">
+                  <div className="p-2 rounded-[2px] bg-[#121316] border border-[#34373c] text-[#ffb000]">
                     <User className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white">{property.ownerName}</h4>
-                    <p className="text-xs text-neutral-400">Authorized Host / Operator</p>
+                    <h4 className="text-sm font-bold text-white font-['Big_Shoulders_Display'] uppercase tracking-wider">{property.ownerName}</h4>
+                    <p className="text-[11px] text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">AUTHORIZED HOST WARDEN</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-neutral-300">
-                  <div className="flex items-center gap-2 p-3 rounded-lg bg-[#141414] border border-white/10">
-                    <Phone className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+                  <div className="flex items-center gap-2 p-2 rounded-[2px] bg-[#121316] border border-[#202226]">
+                    <Phone className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
                     <span className="truncate">{property.ownerPhone}</span>
                   </div>
-                  <div className="flex items-center gap-2 p-3 rounded-lg bg-[#141414] border border-white/10">
-                    <Mail className="w-3.5 h-3.5 text-[#E50914] shrink-0" />
+                  <div className="flex items-center gap-2 p-2 rounded-[2px] bg-[#121316] border border-[#202226]">
+                    <Mail className="w-3.5 h-3.5 text-[#ffb000] shrink-0" />
                     <span className="truncate">{property.ownerEmail}</span>
                   </div>
                 </div>
@@ -272,53 +275,54 @@ const PropertyDetails = ({ property, onClose }) => {
             </div>
 
             {/* Right Column: Sticky Pricing Breakdown (5 Cols) */}
-            <div className="lg:col-span-5 lg:sticky lg:top-24">
-              <div className="p-6 rounded-2xl bg-black/80 border border-white/10 backdrop-blur-xl space-y-6 shadow-2xl">
+            <div className="lg:col-span-5 lg:sticky lg:top-20">
+              <div className="p-5 rounded-[3px] bg-[#0b0b0d] border border-[#26292d] space-y-5">
                 
                 {/* Price Display */}
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-widest block">
-                    MONTHLY RENT TARIFF
+                  <span className="text-[10px] font-mono font-bold text-[#a7aaaf] uppercase tracking-[0.2em] block">
+                    MONTHLY BED TARIFF
                   </span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-3xl font-extrabold text-white">
+                    <span className="text-3xl font-extrabold text-[#ffb000] font-['Big_Shoulders_Display'] tracking-wider">
                       ₹{property.rent?.toLocaleString()}
                     </span>
-                    <span className="text-xs text-neutral-400">/ resident month</span>
+                    <span className="text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">/ SCHOLAR MONTH</span>
                   </div>
                 </div>
 
                 {/* Pricing Breakdown */}
-                <div className="space-y-2.5 pt-4 border-t border-white/10 text-xs">
-                  <div className="flex justify-between text-neutral-400">
-                    <span>Monthly Accommodation Rent</span>
-                    <span className="text-white font-semibold">₹{property.rent?.toLocaleString()}</span>
+                <div className="space-y-2 pt-3 border-t border-[#202226] text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+                  <div className="flex justify-between text-[#a7aaaf]">
+                    <span>MONTHLY BED OCCUPANCY</span>
+                    <span className="text-white font-mono font-semibold">₹{property.rent?.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-neutral-400">
-                    <span>Security Deposit (Refundable)</span>
-                    <span className="text-white font-semibold">₹{property.deposit?.toLocaleString()}</span>
+                  <div className="flex justify-between text-[#a7aaaf]">
+                    <span>SECURITY DEPOSIT (REFUNDABLE)</span>
+                    <span className="text-white font-mono font-semibold">₹{property.deposit?.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-neutral-400">
-                    <span>Brokerage Markup</span>
-                    <span className="text-emerald-400 font-bold uppercase">₹0 (Zero Brokerage)</span>
+                  <div className="flex justify-between text-[#a7aaaf]">
+                    <span>STUDENT BROKERAGE MARKUP</span>
+                    <span className="text-emerald-400 font-mono font-bold">₹0 (ZERO BROKERAGE)</span>
                   </div>
                 </div>
 
                 {/* Trust Guarantee */}
-                <div className="p-3.5 rounded-xl bg-[#141414] border border-white/10 text-xs text-neutral-300 flex items-start gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-[#E50914] shrink-0 mt-0.5" />
+                <div className="p-3 rounded-[2px] bg-[#121316] border border-[#26292d] text-xs text-[#a7aaaf] flex items-start gap-2.5 font-['Barlow_Semi_Condensed']">
+                  <ShieldCheck className="w-4 h-4 text-[#ffb000] shrink-0 mt-0.5" />
                   <span>
-                    Secured by PG Made Eazy Digital Guarantee. Direct landlord reservation with encrypted PayPal checkout.
+                    Direct landlord reservation with zero student brokerage and verified digital receipt logs.
                   </span>
                 </div>
 
                 {/* Primary CTA */}
                 <button
                   onClick={handleOpenBooking}
-                  className="w-full py-3.5 rounded-lg font-bold text-xs uppercase tracking-wider text-white bg-[#E50914] hover:bg-[#b80710] shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-solari btn-solari-amber text-xs w-full justify-center"
                 >
                   <Key className="w-4 h-4" />
-                  <span>Reserve Room Online</span>
+                  <span>RESERVE HOSTEL BED</span>
+                  <span className="chev">→</span>
                 </button>
               </div>
             </div>
@@ -334,7 +338,7 @@ const PropertyDetails = ({ property, onClose }) => {
         <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-4">
           <button
             onClick={() => setShowLightbox(false)}
-            className="absolute top-4 right-4 p-2.5 rounded-full bg-white/10 text-white hover:bg-[#E50914] transition-colors cursor-pointer"
+            className="absolute top-4 right-4 p-2 rounded-[2px] bg-[#121316] border border-[#34373c] text-white hover:border-[#ffb000] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -343,20 +347,20 @@ const PropertyDetails = ({ property, onClose }) => {
             <img
               src={getSecureImageUrl(propertyImages[currentImageIndex], currentImageIndex)}
               alt={`${property.name} Full View`}
-              className="max-h-[75vh] w-auto max-w-full rounded-xl object-contain shadow-2xl"
+              className="max-h-[75vh] w-auto max-w-full rounded-[2px] object-contain border border-[#26292d]"
             />
 
             {propertyImages.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 p-2 rounded-full bg-black/80 text-white hover:bg-[#E50914] transition-colors cursor-pointer"
+                  className="absolute left-2 p-2 rounded-[2px] bg-black/80 text-white hover:bg-[#ffb000] hover:text-black transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 p-2 rounded-full bg-black/80 text-white hover:bg-[#E50914] transition-colors cursor-pointer"
+                  className="absolute right-2 p-2 rounded-[2px] bg-black/80 text-white hover:bg-[#ffb000] hover:text-black transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>
@@ -364,8 +368,8 @@ const PropertyDetails = ({ property, onClose }) => {
             )}
           </div>
 
-          <div className="mt-4 text-xs font-semibold text-neutral-400">
-            Photo {currentImageIndex + 1} of {propertyImages.length}
+          <div className="mt-4 text-xs font-mono uppercase tracking-widest text-[#a7aaaf]">
+            PHOTO {currentImageIndex + 1} OF {propertyImages.length}
           </div>
         </div>
       )}

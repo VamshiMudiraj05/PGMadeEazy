@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, 
@@ -6,69 +6,107 @@ import {
   Zap,
   ArrowRight,
   ArrowUpRight,
-  Sparkles,
+  CheckCircle2,
   Building2,
-  Users
+  GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+
+// Reusable Split-Flap Character Component
+function FlapChar({ char, size = "16px" }) {
+  const displayChar = char === " " ? "\u00A0" : char.toUpperCase();
+  const isSpecial = char === "+" || char === "-" || char === "/" || char === ":" || char === ".";
+
+  return (
+    <span 
+      className={`c ${isSpecial ? "op" : ""}`}
+      style={{ "--cw": size }}
+      aria-hidden="true"
+    >
+      <i className="u">{displayChar}</i>
+      <i className="l">{displayChar}</i>
+    </span>
+  );
+}
+
+// Reusable Split-Flap Word/String Component
+function FlapWord({ text, size = "16px", colorClass = "text-[#f2f2f2]" }) {
+  const chars = String(text).toUpperCase().split("");
+  return (
+    <span className={`fl ${colorClass}`}>
+      {chars.map((ch, idx) => (
+        <FlapChar key={idx} char={ch} size={size} />
+      ))}
+    </span>
+  );
+}
 
 const seekerSteps = [
   {
     step: '01',
-    title: 'Search & Precision Filtering',
-    description: 'Filter verified accommodations by precise geographic radius, budget brackets, room sharing format, and audited amenities list.',
-    highlight: 'Real-time directory'
+    code: 'STEP // DISCOVERY',
+    title: 'Search by Campus & College Corridor',
+    description: 'Filter verified student PGs and hostels by walking distance to university campuses, monthly budget brackets, room sharing format (Single, 2-Sharing, 3-Sharing), and mess meal inclusion.',
+    highlight: 'Real-time Vacancy Feed'
   },
   {
     step: '02',
-    title: 'Photo Audit & House Rules Inspection',
-    description: 'Inspect interior photography verified by our compliance team, along with clear security deposit terms, meal schedules, and curfew policies.',
-    highlight: '100% verified media'
+    code: 'STEP // INSPECTION',
+    title: 'Check Food Menu, WiFi & Room Specs',
+    description: 'Review physical on-site photos verified by our audit team. Inspect daily breakfast, lunch, and dinner menus, WiFi download speed tests, power backup, study desks, and curfew rules.',
+    highlight: '100% Physically Audited'
   },
   {
     step: '03',
-    title: 'Direct Reservation & Instant Record',
-    description: 'Confirm your stay with zero brokerage markup. Instantly obtain verifiable digital tax invoices and direct host contact details.',
-    highlight: 'Zero brokerage'
+    code: 'STEP // CHECK-IN',
+    title: 'Direct Booking with 0% Broker Fees',
+    description: 'Connect directly with the PG warden or owner. Lock your student bed with a transparent 1-month deposit, zero broker commission, and automated digital receipts for college records.',
+    highlight: '₹0 Student Brokerage'
   }
 ];
 
 const providerSteps = [
   {
     step: '01',
-    title: 'Listing Submission in Minutes',
-    description: 'Submit building location coordinates, room inventory, monthly rent tariffs, house rules, and high-resolution interior photos.',
-    highlight: 'Simple onboarding'
+    code: 'STEP // SUBMISSION',
+    title: 'Register PG Hostel & Bed Capacity',
+    description: 'Submit your hostel location near academic clusters, room categories, bed counts, monthly rent tariffs, mess facilities, and high-resolution room photos in under 5 minutes.',
+    highlight: '5-Minute Setup'
   },
   {
     step: '02',
-    title: '24-Hour Compliance Audit',
-    description: 'Our verification team reviews property documentation, amenities, and owner identification to issue the verified badge.',
-    highlight: 'Fast trust audit'
+    code: 'STEP // AUDIT',
+    title: '24-Hour On-Site Compliance Audit',
+    description: 'Our verification team reviews property documents, food hygiene standards, and security provisions (CCTV, biometric entry) to award the official Verified PG badge.',
+    highlight: 'Verified Badge Issued'
   },
   {
     step: '03',
-    title: 'Occupancy & Tenant Roster Control',
-    description: 'Track vacant beds, monitor confirmed tenant bookings, and maintain auditable payment logs directly from your command hub.',
-    highlight: 'Unified management'
+    code: 'STEP // ROSTER',
+    title: 'Manage Student Admissions & Rent',
+    description: 'Monitor vacant and occupied beds, receive direct student booking inquiries, and maintain transparent digital rent collection records directly from your host control desk.',
+    highlight: 'Full Occupancy Control'
   }
 ];
 
-const benefits = [
+const guarantees = [
+  {
+    icon: Zap,
+    rule: 'MANDATE 01',
+    title: 'Zero Broker Commission',
+    description: 'Students never pay broker fees, visit charges, or commission markups. Direct contact between college students and verified PG owners.'
+  },
   {
     icon: ShieldCheck,
-    title: 'Audited Compliance',
-    description: 'Every property host and student residence passes mandatory ID and documentation verification before going live.'
+    rule: 'MANDATE 02',
+    title: 'Audited Food & WiFi',
+    description: 'Every student PG undergoes on-site inspection for mess hygiene, drinking water RO purifiers, study WiFi speeds, and round-the-clock security.'
   },
   {
     icon: CreditCard,
-    title: 'Encrypted Digital Records',
-    description: 'Complete digital invoice generation and transparent deposit logging with full audit trails.'
-  },
-  {
-    icon: Zap,
-    title: '0% Brokerage Markup',
-    description: 'Direct connections between verified tenants and property owners. No middleman charges.'
+    rule: 'MANDATE 03',
+    title: '1-Month Deposit Protection',
+    description: 'Standardized security deposits with clear refund rules upon completing your college semester or internship. No bogus deductions.'
   }
 ];
 
@@ -89,151 +127,203 @@ export default function HowItWorks() {
   };
 
   const getCtaLabel = () => {
-    if (!user) return "Get Started";
+    if (!user) return "Find Student PGs";
     const type = getUserType();
-    if (type === "seeker") return "Browse Accommodations";
-    if (type === "provider") return "Manage Properties";
+    if (type === "seeker") return "Browse Student PGs";
+    if (type === "provider") return "Manage Hostel Beds";
     return "Operations Center";
   };
 
   return (
-    <div className="bg-[#050505] text-white min-h-screen py-16 lg:py-24 relative overflow-hidden select-none">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-1/6 left-1/5 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[170px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-1/6 w-[450px] h-[450px] bg-red-950/15 rounded-full blur-[160px] pointer-events-none -z-10" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-20 relative z-10">
+    <div className="bg-[#1f2226] text-[#f2f2f2] min-h-screen py-10 sm:py-14 relative font-['Barlow_Semi_Condensed']">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
         
-        {/* Header */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/80 backdrop-blur-2xl border border-red-600/40 text-[11px] font-mono uppercase tracking-widest text-white shadow-[0_0_20px_rgba(229,9,20,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-[#E50914] animate-ping" />
-            <span className="text-[#E50914] font-bold">METHODOLOGY & LIFECYCLE</span>
-            <span className="text-white/30">|</span>
-            <span>AUDITED CERTAINTY</span>
+        {/* 01. HERO SOLARI CASING */}
+        <div className="board">
+          <div className="board-head">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-none bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-[0.16em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                SYSTEM PROTOCOL // LIFECYCLE
+              </h2>
+            </div>
+            <div className="flex items-center gap-6 text-xs uppercase tracking-[0.18em] text-[#a7aaaf]">
+              <span>PROTOCOL: <b className="text-white">ON-SITE AUDITED</b></span>
+              <span>BROKERAGE: <b className="text-[#ffb000]">0% MANDATE</b></span>
+            </div>
           </div>
-          
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            How the platform works.
-          </h1>
-          
-          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed">
-            Whether searching for student accommodation or managing multi-unit residential facilities, our compliance-verified infrastructure eliminates friction.
-          </p>
 
-          {/* Perspective Selector */}
-          <div className="flex items-center gap-4 pt-4 border-b border-white/10 pb-4">
-            <button
-              onClick={() => setActivePerspective('seeker')}
-              className={`text-xs font-mono font-bold uppercase tracking-wider pb-2 transition-all cursor-pointer border-b-2 ${
-                activePerspective === 'seeker'
-                  ? 'text-white border-[#E50914]'
-                  : 'text-neutral-500 border-transparent hover:text-neutral-300'
-              }`}
-            >
-              For Residents & Seekers
-            </button>
-            <button
-              onClick={() => setActivePerspective('provider')}
-              className={`text-xs font-mono font-bold uppercase tracking-wider pb-2 transition-all cursor-pointer border-b-2 ${
-                activePerspective === 'provider'
-                  ? 'text-white border-[#E50914]'
-                  : 'text-neutral-500 border-transparent hover:text-neutral-300'
-              }`}
-            >
-              For Property Hosts
-            </button>
+          {/* Split-Flap Main Title */}
+          <div className="py-6 sm:py-8 space-y-3">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <FlapWord text="HOW" size="clamp(24px, 4vw, 50px)" colorClass="text-[#f2f2f2]" />
+              <FlapWord text="IT" size="clamp(24px, 4vw, 50px)" colorClass="text-[#f2f2f2]" />
+              <FlapWord text="WORKS." size="clamp(24px, 4vw, 50px)" colorClass="text-[#ffb000]" />
+            </div>
+            <p className="text-base sm:text-lg text-[#a7aaaf] max-w-3xl leading-relaxed pt-2">
+              From discovering verified beds near college campuses to moving in with guaranteed meal plans and zero brokerage, our audited workflow ensures transparent student living.
+            </p>
+          </div>
+
+          {/* Perspective Toggle Bar */}
+          <div className="pt-4 border-t border-[#202226] flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setActivePerspective('seeker')}
+                className={`py-2 px-4 rounded-[2px] text-xs font-bold uppercase tracking-[0.16em] transition-all cursor-pointer border ${
+                  activePerspective === 'seeker'
+                    ? 'bg-[#ffb000] text-[#0b0b0d] border-[#ffb000]'
+                    : 'bg-[#0b0b0d] text-[#a7aaaf] border-[#34373c] hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  <span>For Students & Scholars</span>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActivePerspective('provider')}
+                className={`py-2 px-4 rounded-[2px] text-xs font-bold uppercase tracking-[0.16em] transition-all cursor-pointer border ${
+                  activePerspective === 'provider'
+                    ? 'bg-[#ffb000] text-[#0b0b0d] border-[#ffb000]'
+                    : 'bg-[#0b0b0d] text-[#a7aaaf] border-[#34373c] hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4" />
+                  <span>For PG Owners & Wardens</span>
+                </span>
+              </button>
+            </div>
+
+            <div className="text-xs uppercase tracking-[0.16em] text-[#a7aaaf]">
+              <span>ACTIVE PERSPECTIVE: </span>
+              <b className="text-white font-mono">{activePerspective === 'seeker' ? 'STUDENT SEEKER' : 'PG HOST WARDEN'}</b>
+            </div>
           </div>
         </div>
 
-        {/* Numbered Step Progression */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* 02. STEP PROGRESSION (SOLARI INDUSTRIAL CARDS) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {(activePerspective === 'seeker' ? seekerSteps : providerSteps).map((item, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-2xl bg-[#141414]/90 border border-white/10 hover:border-red-600/40 backdrop-blur-2xl flex flex-col justify-between space-y-8 transition-all duration-300 shadow-xl group"
+              className="board flex flex-col justify-between space-y-6 group hover:border-[#ffb000]/60 transition-colors"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#E50914]">
-                    Step {item.step}
-                  </span>
-                  <span className="text-[10px] text-neutral-400 font-mono uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-black/60 border border-white/10">
+                <div className="flex items-center justify-between pb-3 border-b border-[#202226]">
+                  <div className="flex items-center gap-2">
+                    <span className="font-['Big_Shoulders_Display'] text-2xl font-bold text-[#ffb000]">
+                      {item.step}
+                    </span>
+                    <span className="text-[10px] font-mono tracking-[0.18em] uppercase text-[#a7aaaf]">
+                      {item.code}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.14em] font-semibold px-2 py-0.5 rounded-[2px] bg-[#0b0b0d] border border-[#34373c] text-neutral-300">
                     {item.highlight}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-red-400 transition-colors">
+                <h3 className="text-xl font-bold tracking-[0.08em] uppercase text-white font-['Big_Shoulders_Display'] group-hover:text-[#ffb000] transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#a7aaaf] leading-relaxed">
                   {item.description}
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-white/10 text-[11px] font-semibold text-neutral-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-                <span>Audited workflow</span>
+              <div className="pt-3 border-t border-[#202226] text-xs uppercase tracking-[0.14em] text-[#a7aaaf] flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-emerald-400">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  <span>AUDITED STAGE</span>
+                </span>
+                <span className="font-mono text-[11px] text-[#5b5e63]">GATE 0{idx + 1}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Value Principles Grid */}
-        <div className="pt-12 border-t border-white/10 space-y-12">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-widest text-[#E50914] mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>CORE GUARANTEES</span>
+        {/* 03. CORE GUARANTEES / MATRIX */}
+        <div className="board">
+          <div className="board-head">
+            <div>
+              <h2 className="text-2xl font-bold tracking-[0.16em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                CORE STUDENT GUARANTEES // ENFORCED
+              </h2>
+              <div className="text-xs uppercase tracking-[0.16em] text-[#a7aaaf] mt-1">
+                BUILT TO PROTECT STUDENTS & ENSURE TRANSPARENT HOUSING
+              </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-              Built on transparency.
-            </h2>
+            <span className="text-xs font-mono tracking-[0.16em] uppercase text-[#ffb000]">
+              100% COMPLIANCE
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {benefits.map((b, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+            {guarantees.map((g, idx) => (
               <div
                 key={idx}
-                className="p-7 rounded-2xl bg-[#141414]/80 border border-white/10 hover:border-red-600/40 backdrop-blur-xl space-y-3 transition-all"
+                className="p-5 bg-[#0e0f11] border border-[#2a2d31] rounded-[3px] space-y-3 hover:border-[#ffb000]/40 transition-colors"
               >
-                <div className="w-10 h-10 rounded-lg bg-red-600/15 border border-red-600/30 flex items-center justify-center text-[#E50914]">
-                  <b.icon className="h-5 w-5" />
+                <div className="flex items-center justify-between">
+                  <div className="w-9 h-9 rounded-[2px] bg-[#0b0b0d] border border-[#34373c] flex items-center justify-center text-[#ffb000]">
+                    <g.icon className="h-4 w-4" />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#a7aaaf] tracking-[0.14em]">
+                    {g.rule}
+                  </span>
                 </div>
-                <h3 className="text-base font-bold text-white tracking-tight">{b.title}</h3>
-                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{b.description}</p>
+                <h3 className="text-lg font-bold text-white font-['Big_Shoulders_Display'] uppercase tracking-[0.1em]">
+                  {g.title}
+                </h3>
+                <p className="text-xs text-[#a7aaaf] leading-relaxed">
+                  {g.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Action Console */}
-        <div className="p-8 sm:p-12 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-2xl flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50914] to-transparent opacity-80" />
-          
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              Ready to explore verified accommodations?
-            </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
-              Join thousands of students and engineering professionals simplifying paying guest living.
-            </p>
-          </div>
+        {/* 04. ACTION DISPATCH CONSOLE */}
+        <div className="board">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[11px] font-mono tracking-[0.18em] uppercase text-[#ffb000]">
+                <span className="w-2 h-2 rounded-none bg-[#ffb000]" />
+                <span>DISPATCH READY</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-[0.14em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                READY TO FIND YOUR VERIFIED STUDENT PG?
+              </h2>
+              <p className="text-xs sm:text-sm text-[#a7aaaf] max-w-xl">
+                Join thousands of college scholars reserving verified rooms with mess meals, high-speed WiFi, and zero brokerage.
+              </p>
+            </div>
 
-          <div className="flex items-center gap-3">
-            <Link
-              to={getCtaLink()}
-              className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
-            >
-              <span>{getCtaLabel()}</span>
-              <ArrowUpRight className="h-4 w-4 stroke-[2.5] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <Link
-              to="/contact"
-              className="px-5 py-3.5 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider border border-white/15 transition-colors cursor-pointer"
-            >
-              Contact Support
-            </Link>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                to={getCtaLink()}
+                className="btn-solari btn-solari-amber text-xs"
+              >
+                <span>{getCtaLabel()}</span>
+                <span className="chev">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+              <Link
+                to="/contact"
+                className="btn-solari btn-solari-steel text-xs"
+              >
+                <span>Contact Desk</span>
+                <span className="chev">
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -241,4 +331,3 @@ export default function HowItWorks() {
     </div>
   );
 }
- 

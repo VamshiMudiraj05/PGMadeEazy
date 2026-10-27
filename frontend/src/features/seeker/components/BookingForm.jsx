@@ -289,44 +289,49 @@ const BookingForm = ({ property, onClose }) => {
   return (
     <div 
       ref={modalRef}
-      className="fixed inset-0 bg-black/90 backdrop-blur-md z-[120] flex items-center justify-center p-3 sm:p-4 overflow-y-auto select-none"
+      className="fixed inset-0 bg-black/90 z-[120] flex items-center justify-center p-3 sm:p-4 overflow-y-auto select-none"
     >
-      <div className="p-5 sm:p-6 rounded-2xl max-w-lg w-full bg-[#141414] border border-white/10 shadow-2xl relative my-auto max-h-[92vh] flex flex-col space-y-4 overflow-hidden">
+      <div className="rounded-[3px] max-w-lg w-full bg-[#121316] border border-[#26292d] shadow-2xl relative my-auto max-h-[92vh] flex flex-col overflow-hidden">
         
-        {/* Modal Header */}
-        <div className="flex justify-between items-center pb-3.5 border-b border-white/10 shrink-0">
-          <div>
-            <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
-              Reserve Accommodation
-            </h2>
-            <p className="text-xs text-neutral-400 mt-0.5">{property.name} • {property.city}</p>
+        {/* Modal Terminal Header */}
+        <div className="board-head shrink-0 bg-[#121316] border-b border-[#26292d]">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-white font-['Big_Shoulders_Display'] uppercase tracking-[0.16em]">
+                BED RESERVATION MANIFEST
+              </h2>
+              <p className="text-[11px] text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+                {property.name} // {property.city}
+              </p>
+            </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-red-600/40 transition-all cursor-pointer"
+            className="p-1.5 rounded-[2px] bg-[#0b0b0d] border border-[#34373c] text-[#a7aaaf] hover:text-white hover:border-[#ffb000] transition-all cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-1 space-y-4 custom-scrollbar">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 custom-scrollbar">
           
           {/* Room Availability Indicator Pill */}
-          <div className="p-3 rounded-xl bg-black/60 border border-white/10">
+          <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Home className="w-3.5 h-3.5 text-[#E50914]" />
-                <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider">
-                  LIVE UNIT STATUS
+                <Home className="w-3.5 h-3.5 text-[#ffb000]" />
+                <span className="text-[10px] font-mono font-bold text-[#ffb000] uppercase tracking-[0.2em]">
+                  LIVE ROOM TELEMETRY
                 </span>
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+              <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-[2px] ${
                 availableRooms > 0 
-                  ? 'bg-emerald-500 text-black shadow-md' 
-                  : 'bg-red-600 text-white'
+                  ? 'bg-emerald-500 text-black' 
+                  : 'bg-[#ff4b4b] text-white'
               }`}>
-                {availableRooms} / {property.rooms} Units Available
+                {availableRooms} / {property.rooms} UNITS VACANT
               </span>
             </div>
           </div>
@@ -334,8 +339,8 @@ const BookingForm = ({ property, onClose }) => {
           {/* Rooms to Book & Guests Grid */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-                Units to Book
+              <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+                BED UNITS TO RESERVE
               </label>
               <input
                 type="number"
@@ -344,14 +349,14 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={availableRooms || 1}
-                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-                Number of Guests
+              <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+                TOTAL RESIDENTS
               </label>
               <input
                 type="number"
@@ -360,7 +365,7 @@ const BookingForm = ({ property, onClose }) => {
                 onChange={handleInputChange}
                 min="1"
                 max={property.capacity || 10}
-                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                 required
               />
             </div>
@@ -369,8 +374,8 @@ const BookingForm = ({ property, onClose }) => {
           {/* Dates Grid */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-                Check-in Date
+              <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+                CHECK-IN DATE
               </label>
               <input
                 type="text"
@@ -378,15 +383,15 @@ const BookingForm = ({ property, onClose }) => {
                 value={formData.checkInDate}
                 onChange={handleInputChange}
                 placeholder="DD/MM/YYYY"
-                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-[#a7aaaf]/50 focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                 required
                 maxLength="10"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-                Check-out Date
+              <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+                CHECK-OUT DATE
               </label>
               <input
                 type="text"
@@ -394,7 +399,7 @@ const BookingForm = ({ property, onClose }) => {
                 value={formData.checkOutDate}
                 onChange={handleInputChange}
                 placeholder="DD/MM/YYYY"
-                className="w-full px-3.5 py-2.5 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+                className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-[#a7aaaf]/50 focus:outline-none focus:border-[#ffb000] font-['Barlow_Semi_Condensed']"
                 required
                 maxLength="10"
               />
@@ -403,60 +408,60 @@ const BookingForm = ({ property, onClose }) => {
 
           {/* Resident Email (Read-only) */}
           <div className="space-y-1">
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-              Digital Invoice Recipient
+            <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+              DIGITAL INVOICE RECIPIENT
             </label>
             <input
               type="email"
               value={user.email}
               readOnly
-              className="w-full px-3.5 py-2.5 bg-black/30 border border-white/10 rounded-lg text-xs text-neutral-400 cursor-not-allowed"
+              className="w-full px-3 py-2 bg-[#0b0b0d] border border-[#26292d] rounded-[2px] text-xs text-[#a7aaaf] cursor-not-allowed font-['Barlow_Semi_Condensed']"
             />
           </div>
 
           {/* Payment Method Selector */}
           <div className="space-y-1">
-            <label className="block text-[10px] font-bold uppercase tracking-widest text-neutral-300">
-              Checkout Infrastructure
+            <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+              ESCROW GATEWAY
             </label>
-            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-black/60 border border-white/10 text-white text-xs font-semibold">
-              <CreditCard className="w-4 h-4 text-[#E50914]" />
-              <span>PayPal Encrypted Digital Gateway</span>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-[2px] bg-[#0b0b0d] border border-[#26292d] text-white text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+              <CreditCard className="w-4 h-4 text-[#ffb000]" />
+              <span>PAYPAL ENCRYPTED DIGITAL ESCROW GATEWAY</span>
             </div>
           </div>
 
           {/* Price Calculation Summary Box */}
           {calculatedAmount.inr > 0 ? (
-            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 space-y-1.5">
-              <div className="flex justify-between text-xs text-neutral-400">
-                <span>Duration Tariff:</span>
-                <span className="text-white font-medium">{calculatedAmount.days} night(s) × ₹{property.rent?.toLocaleString()}</span>
+            <div className="p-3.5 rounded-[2px] bg-[#0b0b0d] border border-[#ffb000]/40 space-y-1.5 font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+              <div className="flex justify-between text-xs text-[#a7aaaf]">
+                <span>DURATION TARIFF:</span>
+                <span className="text-white font-mono">{calculatedAmount.days} NIGHT(S) × ₹{property.rent?.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-xs text-neutral-400">
-                <span>Units Reserved:</span>
-                <span className="text-white font-medium">{formData.roomsToBook} unit(s)</span>
+              <div className="flex justify-between text-xs text-[#a7aaaf]">
+                <span>UNITS RESERVED:</span>
+                <span className="text-white font-mono">{formData.roomsToBook} UNIT(S)</span>
               </div>
-              <div className="pt-1.5 border-t border-white/10 flex justify-between items-baseline">
-                <span className="text-xs font-bold uppercase tracking-wider text-white">Calculated Amount:</span>
+              <div className="pt-2 border-t border-[#202226] flex justify-between items-baseline">
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-white">TOTAL PAYABLE:</span>
                 <div className="text-right">
-                  <span className="text-base sm:text-lg font-extrabold text-[#E50914]">
+                  <span className="text-xl font-bold text-[#ffb000] font-['Big_Shoulders_Display'] tracking-wider">
                     ₹{calculatedAmount.inr.toLocaleString()}
                   </span>
-                  <span className="text-[10px] text-neutral-400 block">
-                    (~${calculatedAmount.usd} USD)
+                  <span className="text-[10px] font-mono text-[#a7aaaf] block">
+                    (~${calculatedAmount.usd} USD ESCROW)
                   </span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-3 rounded-xl bg-black/60 border border-white/10 text-center text-xs text-neutral-400">
+            <div className="p-3 rounded-[2px] bg-[#0b0b0d] border border-[#26292d] text-center text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
               Specify check-in & check-out dates (DD/MM/YYYY) to calculate fare
             </div>
           )}
 
           {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-[#E50914]" />
+            <div className="p-2.5 rounded-[2px] bg-[#ff4b4b]/10 border border-[#ff4b4b]/30 text-xs text-[#ff4b4b] flex items-center gap-2 font-mono uppercase tracking-wider">
+              <AlertCircle className="w-4 h-4 shrink-0 text-[#ff4b4b]" />
               <span>{error}</span>
             </div>
           )}
@@ -465,17 +470,18 @@ const BookingForm = ({ property, onClose }) => {
           <button
             type="submit"
             disabled={loading || calculatedAmount.inr <= 0 || formData.roomsToBook > availableRooms || availableRooms === 0}
-            className="w-full py-3 px-6 rounded-lg font-bold text-xs uppercase tracking-wider text-white bg-[#E50914] hover:bg-[#b80710] shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+            className="btn-solari btn-solari-amber text-xs w-full justify-center disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
           >
             {loading ? (
-              <span>Redirecting to Gateway...</span>
+              <span>REDIRECTING TO PAYPAL GATEWAY...</span>
             ) : availableRooms === 0 ? (
-              'No Units Available'
+              'NO UNITS AVAILABLE'
             ) : calculatedAmount.inr > 0 ? (
-              `Proceed with ₹${calculatedAmount.inr.toLocaleString()} (PayPal)`
+              `AUTHORIZE ₹${calculatedAmount.inr.toLocaleString()} VIA PAYPAL`
             ) : (
-              'Specify Dates to Proceed'
+              'SPECIFY DATES TO PROCEED'
             )}
+            <span className="chev">→</span>
           </button>
         </form>
       </div>

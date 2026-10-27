@@ -5,7 +5,7 @@ import { ShieldCheck, FileText, User, Phone, AlertCircle } from 'lucide-react';
 const Verification = ({ formData, handleChange, errors }) => {
   return (
     <div className="space-y-6">
-      <div className="border-b border-white/10 pb-4">
+      <div className="border-b border-[#202226] pb-4">
         <h3 className="text-xl font-extrabold text-white tracking-tight">Owner Identity & Verification</h3>
         <p className="text-xs text-neutral-400 mt-1">Required for host onboarding and compliance verification.</p>
       </div>
@@ -23,18 +23,18 @@ const Verification = ({ formData, handleChange, errors }) => {
               name="govtIdType"
               value={formData.govtIdType}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all cursor-pointer"
             >
-              <option value="" className="bg-[#141414]">Select ID Type</option>
-              <option value="aadhar" className="bg-[#141414]">Aadhaar Card</option>
-              <option value="pan" className="bg-[#141414]">PAN Card</option>
-              <option value="dl" className="bg-[#141414]">Driving License</option>
-              <option value="passport" className="bg-[#141414]">Passport</option>
+              <option value="" className="bg-[#0e0f11]">Select ID Type</option>
+              <option value="aadhar" className="bg-[#0e0f11]">Aadhaar Card</option>
+              <option value="pan" className="bg-[#0e0f11]">PAN Card</option>
+              <option value="dl" className="bg-[#0e0f11]">Driving License</option>
+              <option value="passport" className="bg-[#0e0f11]">Passport</option>
             </select>
           </div>
           {errors.govtIdType && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.govtIdType}</span>
             </p>
           )}
@@ -52,13 +52,13 @@ const Verification = ({ formData, handleChange, errors }) => {
               name="govtIdNumber"
               value={formData.govtIdNumber}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="e.g. 1234 5678 9012"
             />
           </div>
           {errors.govtIdNumber && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.govtIdNumber}</span>
             </p>
           )}
@@ -76,13 +76,13 @@ const Verification = ({ formData, handleChange, errors }) => {
               name="emergencyContactName"
               value={formData.emergencyContactName}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="e.g. Property Co-owner / Manager"
             />
           </div>
           {errors.emergencyContactName && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.emergencyContactName}</span>
             </p>
           )}
@@ -100,13 +100,13 @@ const Verification = ({ formData, handleChange, errors }) => {
               name="emergencyContactNumber"
               value={formData.emergencyContactNumber}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="9876543210"
             />
           </div>
           {errors.emergencyContactNumber && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.emergencyContactNumber}</span>
             </p>
           )}
@@ -115,7 +115,7 @@ const Verification = ({ formData, handleChange, errors }) => {
       </div>
 
       {/* Terms Agreement Box */}
-      <div className="p-5 rounded-xl bg-black/60 border border-white/10">
+      <div className="p-5 rounded-[2px] bg-[#0e0f11] border border-[#202226]">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -127,7 +127,7 @@ const Verification = ({ formData, handleChange, errors }) => {
                 value: e.target.checked
               }
             })}
-            className="mt-1 h-4 w-4 rounded border-white/20 bg-[#141414] text-[#E50914] focus:ring-[#E50914] cursor-pointer"
+            className="mt-1 h-4 w-4 rounded border-white/20 bg-[#0e0f11] text-[#ffb000] focus:ring-[#ffb000] cursor-pointer"
           />
           <span className="text-xs text-neutral-400 leading-relaxed">
             I verify that I own or legally manage the listed properties and agree to the{" "}
@@ -137,7 +137,7 @@ const Verification = ({ formData, handleChange, errors }) => {
         </label>
         {errors.termsAgreed && (
           <p className="mt-2 text-xs text-red-400 flex items-center gap-1.5">
-            <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+            <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
             <span>{errors.termsAgreed}</span>
           </p>
         )}

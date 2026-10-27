@@ -11,7 +11,7 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-white/10 pb-4">
+      <div className="border-b border-[#202226] pb-4">
         <h3 className="text-xl font-extrabold text-white tracking-tight">Provider Personal Details</h3>
         <p className="text-xs text-neutral-400 mt-1">Please provide host verification contact details.</p>
       </div>
@@ -30,13 +30,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="e.g. Ramesh Chandra"
             />
           </div>
           {errors.fullName && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.fullName}</span>
             </p>
           )}
@@ -54,13 +54,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="ramesh@example.com"
             />
           </div>
           {errors.email && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.email}</span>
             </p>
           )}
@@ -78,13 +78,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="Min 6 characters"
             />
           </div>
           {errors.password && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.password}</span>
             </p>
           )}
@@ -102,13 +102,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="Re-enter password"
             />
           </div>
           {errors.confirmPassword && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.confirmPassword}</span>
             </p>
           )}
@@ -126,13 +126,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="9876543210"
             />
           </div>
           {errors.phone && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.phone}</span>
             </p>
           )}
@@ -151,12 +151,12 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               value={formData.dateOfBirth}
               onChange={handleChange}
               max={maxDate}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
             />
           </div>
           {errors.dateOfBirth && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.dateOfBirth}</span>
             </p>
           )}
@@ -171,16 +171,16 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all cursor-pointer"
+            className="w-full px-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all cursor-pointer"
           >
-            <option value="" className="bg-[#141414]">Select Gender</option>
-            <option value="male" className="bg-[#141414]">Male</option>
-            <option value="female" className="bg-[#141414]">Female</option>
-            <option value="other" className="bg-[#141414]">Other</option>
+            <option value="" className="bg-[#0e0f11]">Select Gender</option>
+            <option value="male" className="bg-[#0e0f11]">Male</option>
+            <option value="female" className="bg-[#0e0f11]">Female</option>
+            <option value="other" className="bg-[#0e0f11]">Other</option>
           </select>
           {errors.gender && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.gender}</span>
             </p>
           )}
@@ -198,13 +198,13 @@ const PersonalDetails = ({ formData, handleChange, errors }) => {
               name="currentCity"
               value={formData.currentCity}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/15 rounded-lg text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]/50 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-[#0e0f11] border border-[#34373c] rounded-[2px] text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ffb000] focus:ring-1 focus:ring-[#ffb000]/50 transition-all"
               placeholder="e.g. Hyderabad"
             />
           </div>
           {errors.currentCity && (
             <p className="text-xs text-red-400 flex items-center gap-1.5 mt-1.5">
-              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#E50914]" />
+              <AlertCircle className="h-3.5 w-3.5 inline shrink-0 text-[#ffb000]" />
               <span>{errors.currentCity}</span>
             </p>
           )}

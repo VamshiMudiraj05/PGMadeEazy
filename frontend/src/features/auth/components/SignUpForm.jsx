@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { ArrowLeft, ArrowRight, Check, Home, Building, Sparkles, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Home, Building, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import Cookies from "js-cookie";
 
@@ -13,6 +13,35 @@ import SeekerVerification from "../components/registration/seeker/Verification";
 // Provider Components
 import ProviderPersonalDetails from "../components/registration/provider/PersonalDetails";
 import ProviderVerification from "../components/registration/provider/Verification";
+
+// Reusable Split-Flap Character Component
+function FlapChar({ char, size = "16px" }) {
+  const displayChar = char === " " ? "\u00A0" : char.toUpperCase();
+  const isSpecial = char === "+" || char === "-" || char === "/" || char === ":" || char === ".";
+
+  return (
+    <span 
+      className={`c ${isSpecial ? "op" : ""}`}
+      style={{ "--cw": size }}
+      aria-hidden="true"
+    >
+      <i className="u">{displayChar}</i>
+      <i className="l">{displayChar}</i>
+    </span>
+  );
+}
+
+// Reusable Split-Flap Word/String Component
+function FlapWord({ text, size = "16px", colorClass = "text-[#f2f2f2]" }) {
+  const chars = String(text).toUpperCase().split("");
+  return (
+    <span className={`fl ${colorClass}`}>
+      {chars.map((ch, idx) => (
+        <FlapChar key={idx} char={ch} size={size} />
+      ))}
+    </span>
+  );
+}
 
 const MultiStepRegistration = () => {
   const navigate = useNavigate();
@@ -33,6 +62,7 @@ const MultiStepRegistration = () => {
       }
     }
   }, [user, navigate]);
+
   const [formData, setFormData] = useState({
     // Personal Information (Common)
     fullName: "",
@@ -89,7 +119,6 @@ const MultiStepRegistration = () => {
       [name]: type === 'checkbox' ? checked : value 
     });
 
-    // Clear error for this field if it exists
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -206,7 +235,7 @@ const MultiStepRegistration = () => {
     }
 
     try {
-      setMessage("Processing registration...");
+      setMessage("Processing registration in terminal registry...");
 
       const submissionData = removeEmptyFields({
         ...formData,
@@ -219,9 +248,10 @@ const MultiStepRegistration = () => {
           : [submissionData.houseRules];
       }
 
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
       const endpoint = userType === "seeker" ? 
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/register/seeker` :
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/register/provider`;
+        `${apiBaseUrl}/api/auth/register/seeker` :
+        `${apiBaseUrl}/api/auth/register/provider`;
 
       try {
         const response = await axios.post(endpoint, submissionData, {
@@ -231,7 +261,7 @@ const MultiStepRegistration = () => {
         });
         
         if (response.status === 200 || response.status === 201) {
-          setMessage("Registration successful! Redirecting to login...");
+          setMessage("Registration approved! Redirecting to login terminal...");
           setTimeout(() => {
             navigate("/login");
           }, 1200);
@@ -256,59 +286,63 @@ const MultiStepRegistration = () => {
       case 1:
         return (
           <div className="space-y-6">
-            <div className="space-y-1 pb-4 border-b border-white/10">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                Select Account Protocol
+            <div className="space-y-1 pb-4 border-b border-[#202226]">
+              <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-[0.14em] text-white font-['Big_Shoulders_Display']">
+                SELECT ACCOUNT PROTOCOL
               </h3>
-              <p className="text-xs text-neutral-400">
-                Choose your registration profile to access customized tooling.
+              <p className="text-xs text-[#a7aaaf]">
+                Choose your registration profile to configure access to the verified student PG network.
               </p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              
+              {/* Option 1: Seeker / Student */}
               <button
                 type="button"
                 onClick={() => handleUserTypeChange("seeker")}
-                className="group p-6 sm:p-8 rounded-2xl bg-black/60 border border-white/15 hover:border-red-600/50 hover:bg-[#141414] transition-all flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-lg"
+                className="group p-6 rounded-[3px] bg-[#0e0f11] border border-[#2a2d31] hover:border-[#ffb000] transition-colors flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-md"
               >
                 <div className="space-y-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-600/15 border border-red-600/30 text-[#E50914] group-hover:bg-[#E50914] group-hover:text-white transition-all">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[2px] bg-[#0b0b0d] border border-[#34373c] text-[#ffb000] group-hover:bg-[#ffb000] group-hover:text-[#0b0b0d] transition-colors">
                     <Home className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors">
-                    Resident / Seeker
+                  <h4 className="text-lg font-bold text-white uppercase tracking-[0.1em] font-['Big_Shoulders_Display'] group-hover:text-[#ffb000] transition-colors">
+                    Student / Seeker
                   </h4>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    Search and reserve paying guest accommodations, private studios, and verified student suites.
+                  <p className="text-xs text-[#a7aaaf] leading-relaxed">
+                    Search and reserve paying guest accommodations (PGs), sharing student beds, and verified hostel suites with mess meals.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
-                  <span>Register as Seeker</span>
-                  <ArrowRight className="h-4 w-4 text-[#E50914] group-hover:translate-x-1 transition-transform" />
+                <div className="pt-4 border-t border-[#202226] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
+                  <span>Register as Student</span>
+                  <ArrowRight className="h-4 w-4 text-[#ffb000] group-hover:translate-x-1 transition-transform" />
                 </div>
               </button>
 
+              {/* Option 2: Provider / PG Host */}
               <button
                 type="button"
                 onClick={() => handleUserTypeChange("provider")}
-                className="group p-6 sm:p-8 rounded-2xl bg-black/60 border border-white/15 hover:border-red-600/50 hover:bg-[#141414] transition-all flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-lg"
+                className="group p-6 rounded-[3px] bg-[#0e0f11] border border-[#2a2d31] hover:border-[#ffb000] transition-colors flex flex-col justify-between text-left space-y-6 cursor-pointer shadow-md"
               >
                 <div className="space-y-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-600/15 border border-red-600/30 text-[#E50914] group-hover:bg-[#E50914] group-hover:text-white transition-all">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[2px] bg-[#0b0b0d] border border-[#34373c] text-[#ffb000] group-hover:bg-[#ffb000] group-hover:text-[#0b0b0d] transition-colors">
                     <Building className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors">
-                    Host / Property Operator
+                  <h4 className="text-lg font-bold text-white uppercase tracking-[0.1em] font-['Big_Shoulders_Display'] group-hover:text-[#ffb000] transition-colors">
+                    Host / PG Warden
                   </h4>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    Publish building listings, manage tenant leases, and track digital payments.
+                  <p className="text-xs text-[#a7aaaf] leading-relaxed">
+                    List student hostels and PG rooms, manage bed occupancy, verify on-site compliance, and collect digital rents.
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
-                  <span>Register as Host</span>
-                  <ArrowRight className="h-4 w-4 text-[#E50914] group-hover:translate-x-1 transition-transform" />
+                <div className="pt-4 border-t border-[#202226] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white">
+                  <span>Register as PG Host</span>
+                  <ArrowRight className="h-4 w-4 text-[#ffb000] group-hover:translate-x-1 transition-transform" />
                 </div>
               </button>
+
             </div>
           </div>
         );
@@ -334,29 +368,47 @@ const MultiStepRegistration = () => {
   };
 
   return (
-    <div className="bg-[#050505] text-white min-h-[calc(100vh-80px)] flex items-center justify-center py-16 px-4 sm:px-8 relative overflow-hidden select-none">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-1/4 left-1/10 w-[550px] h-[550px] bg-red-600/10 rounded-full blur-[180px] pointer-events-none -z-10" />
-      <div className="absolute bottom-10 right-1/10 w-[500px] h-[500px] bg-red-950/15 rounded-full blur-[170px] pointer-events-none -z-10" />
-
-      <div className="w-full max-w-3xl relative z-10">
+    <div className="bg-[#1f2226] text-[#f2f2f2] min-h-[calc(100vh-80px)] flex items-center justify-center py-12 px-4 sm:px-8 relative font-['Barlow_Semi_Condensed']">
+      <div className="w-full max-w-3xl space-y-8">
         
-        {/* Main Wizard Card */}
-        <div className="p-8 sm:p-12 rounded-2xl bg-[#141414]/90 border border-white/10 backdrop-blur-2xl space-y-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50914] to-transparent opacity-80" />
+        {/* Top Split-Flap Board Header */}
+        <div className="board">
+          <div className="board-head">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-none bg-[#ffb000] shadow-[0_0_8px_#ffb000]" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-[0.16em] uppercase text-[#f2f2f2] font-['Big_Shoulders_Display']">
+                ONBOARDING REGISTRY // PROTOCOL
+              </h2>
+            </div>
+            <div className="flex items-center gap-6 text-xs uppercase tracking-[0.18em] text-[#a7aaaf]">
+              <span>VERIFICATION: <b className="text-emerald-400">MANDATORY</b></span>
+              <span>BROKERAGE: <b className="text-[#ffb000]">0% STRICT</b></span>
+            </div>
+          </div>
+
+          <div className="py-4 sm:py-6">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <FlapWord text="NEW" size="clamp(24px, 3.8vw, 44px)" colorClass="text-[#f2f2f2]" />
+              <FlapWord text="REGISTRATION." size="clamp(24px, 3.8vw, 44px)" colorClass="text-[#ffb000]" />
+            </div>
+          </div>
+        </div>
+
+        {/* Main Wizard Board */}
+        <div className="board space-y-6">
           
           {/* Header & Step Progress Bar */}
           {userType && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-neutral-400">
-                <span className="text-[#E50914]">
-                  Step {step} of {totalSteps}
+            <div className="space-y-2 pb-4 border-b border-[#202226]">
+              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-[#a7aaaf]">
+                <span className="text-[#ffb000]">
+                  STAGE {step} OF {totalSteps}
                 </span>
-                <span>{calculateProgress()}% Complete</span>
+                <span>{calculateProgress()}% COMPLETE</span>
               </div>
-              <div className="h-1.5 w-full bg-black/60 rounded-full overflow-hidden border border-white/10">
+              <div className="h-1.5 w-full bg-[#0b0b0d] rounded-none overflow-hidden border border-[#34373c]">
                 <div
-                  className="h-full bg-[#E50914] shadow-[0_0_10px_#E50914] transition-all duration-300 rounded-full"
+                  className="h-full bg-[#ffb000] shadow-[0_0_8px_#ffb000] transition-all duration-300"
                   style={{ width: `${calculateProgress()}%` }}
                 />
               </div>
@@ -364,22 +416,22 @@ const MultiStepRegistration = () => {
           )}
 
           {/* Form Content */}
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
             {renderStep()}
 
             {/* Error / Success Toast Message */}
             {message && (
               <div
-                className={`p-3.5 rounded-lg text-xs font-medium flex items-center gap-2.5 border backdrop-blur-md transition-all ${
-                  message.includes("successful")
+                className={`p-3 rounded-[2px] text-xs font-mono uppercase tracking-wider flex items-center gap-2 border ${
+                  message.includes("approved") || message.includes("successful")
                     ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
                     : "bg-red-500/10 text-red-300 border-red-500/30"
                 }`}
               >
-                {message.includes("successful") ? (
+                {message.includes("approved") || message.includes("successful") ? (
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 shrink-0 text-[#E50914]" />
+                  <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
                 )}
                 <span>{message}</span>
               </div>
@@ -387,33 +439,37 @@ const MultiStepRegistration = () => {
 
             {/* Navigation Buttons */}
             {step > 1 && (
-              <div className="flex items-center justify-between pt-6 border-t border-white/10">
+              <div className="flex items-center justify-between pt-6 border-t border-[#202226]">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-neutral-300 hover:text-white bg-black/60 hover:bg-black/90 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                  className="btn-solari btn-solari-steel text-xs"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Previous</span>
+                  <span>PREVIOUS STAGE</span>
                 </button>
 
                 {step < totalSteps ? (
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all ml-auto cursor-pointer"
+                    className="btn-solari btn-solari-amber text-xs ml-auto"
                   >
-                    <span>Next Step</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>NEXT STAGE</span>
+                    <span className="chev">
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={handleRegister}
-                    className="flex items-center gap-2 px-7 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all ml-auto cursor-pointer"
+                    className="btn-solari btn-solari-amber text-xs ml-auto bg-emerald-500 border-emerald-500 text-black hover:bg-emerald-400"
                   >
-                    <span>Complete Registration</span>
-                    <Check className="w-3.5 h-3.5" />
+                    <span>COMPLETE REGISTRATION</span>
+                    <span className="chev">
+                      <Check className="w-3.5 h-3.5" />
+                    </span>
                   </button>
                 )}
               </div>
@@ -421,14 +477,14 @@ const MultiStepRegistration = () => {
 
             {/* Login Link if Step 1 */}
             {step === 1 && (
-              <div className="text-center pt-4 border-t border-white/10">
-                <p className="text-xs text-neutral-400">
-                  Already have an account?{' '}
+              <div className="text-center pt-4 border-t border-[#202226]">
+                <p className="text-xs text-[#a7aaaf] uppercase tracking-wider">
+                  Already have an active account?{' '}
                   <Link
                     to="/login"
-                    className="font-bold text-[#E50914] hover:text-red-400 transition-colors"
+                    className="font-bold text-[#ffb000] hover:text-[#ffc233] transition-colors ml-1"
                   >
-                    Sign in here
+                    SIGN IN HERE →
                   </Link>
                 </p>
               </div>

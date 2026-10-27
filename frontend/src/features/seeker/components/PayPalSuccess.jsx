@@ -112,25 +112,27 @@ Thank you for choosing PG Made Eazy!
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex flex-col items-center justify-center gap-4 text-white select-none">
-        <div className="h-8 w-8 border-3 border-[#E50914] border-t-transparent rounded-full animate-spin shadow-[0_0_15px_#E50914]" />
-        <p className="text-xs font-bold uppercase tracking-widest text-neutral-400">Verifying gateway settlement...</p>
+      <div className="min-h-[calc(100vh-140px)] bg-[#0b0b0d] flex flex-col items-center justify-center gap-4 text-white select-none">
+        <div className="h-8 w-8 border-2 border-[#ffb000] border-t-transparent rounded-none animate-spin shadow-[0_0_10px_#ffb000]" />
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+          VERIFYING PAYPAL ESCROW SETTLEMENT...
+        </p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[calc(100vh-140px)] bg-[#050505] flex items-center justify-center p-4 text-white select-none relative">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-[150px] pointer-events-none -z-10" />
-
-        <div className="p-8 sm:p-10 rounded-2xl max-w-md w-full bg-[#141414] border border-white/10 text-center shadow-2xl space-y-6">
-          <div className="h-14 w-14 rounded-2xl bg-red-600/15 border border-red-600/30 flex items-center justify-center text-[#E50914] mx-auto shadow-[0_0_15px_rgba(229,9,20,0.3)]">
-            <CheckCircle2 className="w-7 h-7 rotate-45" />
+      <div className="min-h-[calc(100vh-140px)] bg-[#0b0b0d] flex items-center justify-center p-4 text-white select-none relative">
+        <div className="board max-w-md w-full text-center space-y-6">
+          <div className="p-3 bg-[#0b0b0d] border border-[#ff4b4b]/40 text-[#ff4b4b] w-12 h-12 flex items-center justify-center mx-auto">
+            <CheckCircle2 className="w-6 h-6 rotate-45" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-extrabold text-white tracking-tight">Payment Verification Failed</h2>
-            <p className="text-xs text-red-400 leading-relaxed bg-black/60 p-3.5 rounded-xl border border-red-500/20">
+            <h2 className="text-xl font-bold uppercase tracking-[0.14em] text-white font-['Big_Shoulders_Display']">
+              PAYMENT VERIFICATION FAILED
+            </h2>
+            <p className="text-xs text-[#ff4b4b] font-mono leading-relaxed bg-[#0b0b0d] p-3 rounded-[2px] border border-[#ff4b4b]/20">
               {error}
             </p>
           </div>
@@ -138,23 +140,24 @@ Thank you for choosing PG Made Eazy!
           <div className="space-y-2.5">
             <button
               onClick={() => navigate('/seeker-dashboard/find-pg')}
-              className="w-full py-3.5 px-4 rounded-lg font-bold text-xs uppercase tracking-wider bg-[#E50914] hover:bg-[#b80710] text-white shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all cursor-pointer"
+              className="btn-solari btn-solari-amber text-xs w-full justify-center"
             >
-              Try Reserving Again
+              TRY RESERVING AGAIN
+              <span className="chev">→</span>
             </button>
             
             <button
               onClick={() => navigate('/seeker-dashboard/bookings')}
-              className="w-full py-3 px-4 rounded-lg font-bold text-xs uppercase tracking-wider bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all cursor-pointer"
+              className="btn-solari btn-solari-steel text-xs w-full justify-center"
             >
-              View My Reservations
+              VIEW MY RESERVATIONS
             </button>
 
             <button
               onClick={() => navigate('/contact')}
-              className="w-full py-2 text-neutral-400 hover:text-white font-semibold text-xs transition-colors cursor-pointer"
+              className="w-full py-2 text-[#a7aaaf] hover:text-white font-['Barlow_Semi_Condensed'] uppercase tracking-wider text-xs transition-colors cursor-pointer"
             >
-              Contact Support Desk
+              CONTACT DISPATCH SUPPORT DESK →
             </button>
           </div>
         </div>
@@ -164,52 +167,53 @@ Thank you for choosing PG Made Eazy!
 
   if (receipt) {
     return (
-      <div className="min-h-screen bg-[#050505] text-white py-12 px-4 flex items-center justify-center select-none relative">
-        {/* Background Ambient Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-
-        <div className="p-8 rounded-2xl max-w-lg w-full bg-[#141414] border border-white/10 shadow-2xl relative space-y-6">
+      <div className="min-h-screen bg-[#0b0b0d] text-[#f2f2f2] py-12 px-4 flex items-center justify-center select-none relative">
+        <div className="board max-w-lg w-full space-y-6">
           
           {/* Success Banner */}
           <div className="text-center space-y-2">
-            <div className="h-14 w-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-              <CheckCircle2 className="w-7 h-7" />
+            <div className="p-3 bg-[#0b0b0d] border border-emerald-500/50 text-emerald-400 w-12 h-12 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">
-              TRANSACTION SETTLED
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-400">
+              ESCROW SETTLED // PROTOCOL VERIFIED
             </span>
-            <h2 className="text-2xl font-extrabold text-white tracking-tight">Stay Reservation Confirmed</h2>
-            <p className="text-xs text-neutral-400">Your digital escrow payment has been processed and host notified.</p>
+            <h2 className="text-2xl font-bold uppercase tracking-[0.14em] text-white font-['Big_Shoulders_Display']">
+              DORM BED RESERVATION CONFIRMED
+            </h2>
+            <p className="text-xs text-[#a7aaaf] font-['Barlow_Semi_Condensed']">
+              Your digital escrow payment has been processed and host warden notified.
+            </p>
           </div>
 
           {/* Digital Receipt Card */}
-          <div className="p-5 rounded-xl bg-black/60 border border-white/10 space-y-2.5 text-xs">
-            <div className="flex justify-between items-center text-neutral-400">
-              <span>Booking Reference:</span>
+          <div className="p-4 rounded-[2px] bg-[#0b0b0d] border border-[#26292d] space-y-2 text-xs font-['Barlow_Semi_Condensed'] uppercase tracking-wider">
+            <div className="flex justify-between items-center text-[#a7aaaf]">
+              <span>TICKET REFERENCE:</span>
               <span className="font-mono text-white font-bold">{receipt.bookingId}</span>
             </div>
-            <div className="flex justify-between items-center text-neutral-400">
-              <span>Accommodation:</span>
+            <div className="flex justify-between items-center text-[#a7aaaf]">
+              <span>ACCOMMODATION:</span>
               <span className="text-white font-medium">{receipt.propertyName}</span>
             </div>
-            <div className="flex justify-between items-center text-neutral-400">
-              <span>Check-in Date:</span>
+            <div className="flex justify-between items-center text-[#a7aaaf]">
+              <span>CHECK-IN SCHEDULE:</span>
               <span className="text-white font-medium">{receipt.checkInDate}</span>
             </div>
-            <div className="flex justify-between items-center text-neutral-400">
-              <span>Check-out Date:</span>
+            <div className="flex justify-between items-center text-[#a7aaaf]">
+              <span>CHECK-OUT SCHEDULE:</span>
               <span className="text-white font-medium">{receipt.checkOutDate}</span>
             </div>
-            <div className="flex justify-between items-center text-neutral-400">
-              <span>Occupants:</span>
-              <span className="text-white font-medium">{receipt.numberOfGuests} Resident(s)</span>
+            <div className="flex justify-between items-center text-[#a7aaaf]">
+              <span>OCCUPANTS:</span>
+              <span className="text-white font-medium">{receipt.numberOfGuests} SCHOLAR(S)</span>
             </div>
-            <div className="pt-2 border-t border-white/10 flex justify-between items-baseline">
-              <span className="font-bold text-white uppercase tracking-wider">Total Paid:</span>
-              <span className="text-lg font-extrabold text-[#E50914]">${receipt.totalAmount} USD</span>
+            <div className="pt-2 border-t border-[#202226] flex justify-between items-baseline">
+              <span className="font-bold text-white uppercase tracking-[0.16em]">TOTAL SETTLED:</span>
+              <span className="text-xl font-bold text-[#ffb000] font-['Big_Shoulders_Display'] tracking-wider">${receipt.totalAmount} USD</span>
             </div>
-            <div className="flex justify-between items-center text-[10px] text-neutral-400 pt-1">
-              <span>Gateway Transaction ID:</span>
+            <div className="flex justify-between items-center text-[10px] text-[#a7aaaf] pt-1">
+              <span>GATEWAY PAYPAL ID:</span>
               <span className="font-mono">{receipt.paymentId}</span>
             </div>
           </div>
@@ -218,18 +222,19 @@ Thank you for choosing PG Made Eazy!
           <div className="space-y-2.5">
             <button
               onClick={handleDownloadReceipt}
-              className="w-full py-3.5 px-4 rounded-lg font-bold text-xs uppercase tracking-wider text-black bg-emerald-500 hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer"
+              className="btn-solari btn-solari-amber text-xs w-full justify-center"
             >
               <Download className="w-4 h-4" />
-              <span>Download Tax Invoice (.txt)</span>
+              <span>DOWNLOAD DIGITAL RECEIPT (.TXT)</span>
+              <span className="chev">↓</span>
             </button>
             
             <button
               onClick={() => navigate('/seeker-dashboard/bookings')}
-              className="w-full py-3.5 px-4 rounded-lg font-bold text-xs uppercase tracking-wider bg-white/5 border border-white/10 text-white hover:bg-[#E50914] hover:border-[#E50914] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="btn-solari btn-solari-steel text-xs w-full justify-center"
             >
-              <ArrowLeft className="w-4 h-4 text-[#E50914]" />
-              <span>Go to My Reservations</span>
+              <ArrowLeft className="w-4 h-4 text-[#ffb000]" />
+              <span>GO TO MY RESERVATIONS</span>
             </button>
           </div>
 
